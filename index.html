@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎲 骰子游戏</title>
+<title>🎲 子游戏</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   
@@ -32,9 +32,7 @@
 
   .hidden-mode-bar {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 0; left: 0; right: 0;
     height: 4px;
     z-index: 100;
   }
@@ -54,8 +52,7 @@
 
   .mode-hint {
     position: fixed;
-    top: 6px;
-    right: 10px;
+    top: 6px; right: 10px;
     font-size: 0.65em;
     opacity: 0.25;
     z-index: 100;
@@ -63,16 +60,25 @@
   }
   .mode-hint:hover { opacity: 0.6; }
 
-  .balance-bar {
+  .status-bar {
     display: flex;
     justify-content: center;
-    gap: 40px;
+    gap: 30px;
     margin: 10px 0 20px;
-    font-size: 1.1em;
+    font-size: 1em;
+    flex-wrap: wrap;
   }
-  .balance-bar .item { display: flex; align-items: center; gap: 8px; }
-  .balance-bar .val { font-weight: bold; font-size: 1.3em; color: #ffd700; }
-  .balance-bar .val.opp { color: #ff6b6b; }
+  .status-bar .item { 
+    display: flex; 
+    align-items: center; 
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 12px;
+  }
+  .status-bar .val { font-weight: bold; font-size: 1.2em; color: #ffd700; }
+  .status-bar .val.water { color: #74c0fc; }
+  .status-bar .val.opp { color: #ff6b6b; }
 
   .table {
     background: radial-gradient(ellipse at center, #1a5c2e 0%, #0d3318 70%, #091a0d 100%);
@@ -115,43 +121,25 @@
     margin: 10px 0;
   }
 
-  .dice-slot {
-    text-align: center;
-  }
-  .dice-slot .slot-label {
-    font-size: 0.75em;
-    opacity: 0.5;
-    margin-bottom: 6px;
-  }
+  .dice-slot { text-align: center; }
+  .dice-slot .slot-label { font-size: 0.75em; opacity: 0.5; margin-bottom: 6px; }
 
-  .dice-wrap {
-    width: 90px;
-    height: 90px;
-    perspective: 500px;
-  }
+  .dice-wrap { width: 90px; height: 90px; perspective: 500px; }
 
   .dice {
-    width: 90px;
-    height: 90px;
+    width: 90px; height: 90px;
     background: linear-gradient(145deg, #fff, #e0e0e0);
     border-radius: 16px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    padding: 12px;
-    gap: 3px;
+    padding: 12px; gap: 3px;
     box-shadow: 0 6px 20px rgba(0,0,0,0.5), inset 0 2px 3px rgba(255,255,255,0.8);
     transition: transform 0.3s;
   }
 
-  .dice.rolling {
-    animation: roll 0.5s ease-out;
-  }
-
-  .dice.waiting {
-    opacity: 0.3;
-  }
-
+  .dice.rolling { animation: roll 0.5s ease-out; }
+  .dice.waiting { opacity: 0.3; }
   .dice.hidden-dice {
     background: linear-gradient(145deg, #c0392b, #96281b);
     box-shadow: 0 6px 20px rgba(0,0,0,0.5), inset 0 2px 3px rgba(255,255,255,0.2);
@@ -177,50 +165,47 @@
   .dot.visible { opacity: 1; }
   .dice.hidden-dice .dot { background: radial-gradient(circle at 35% 35%, #ff6b6b, #c0392b); }
 
-  .subtotal {
-    margin-top: 8px;
-    font-size: 0.9em;
-    opacity: 0.7;
-    min-height: 22px;
-  }
+  .subtotal { margin-top: 8px; font-size: 0.9em; opacity: 0.7; min-height: 22px; }
 
   .center-area {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-width: 100px;
-    padding-top: 30px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-width: 100px; padding-top: 30px;
   }
-  .vs-badge {
-    font-size: 2em;
-    font-weight: bold;
-    color: rgba(255,255,255,0.2);
-  }
+  .vs-badge { font-size: 2em; font-weight: bold; color: rgba(255,255,255,0.2); }
   .phase-label {
-    margin-top: 10px;
-    font-size: 0.85em;
-    padding: 4px 14px;
-    border-radius: 10px;
-    background: rgba(255,255,255,0.1);
-    min-height: 28px;
-    text-align: center;
+    margin-top: 10px; font-size: 0.85em; padding: 4px 14px;
+    border-radius: 10px; background: rgba(255,255,255,0.1);
+    min-height: 28px; text-align: center;
   }
 
-  .bet-area {
-    margin-top: 25px;
-    text-align: center;
-    display: none;
-  }
+  .bet-area { margin-top: 25px; text-align: center; display: none; }
   .bet-area.visible { display: block; }
+  .bet-title { font-size: 1.1em; margin-bottom: 15px; color: #ffd700; }
 
-  .bet-title {
-    font-size: 1.1em;
-    margin-bottom: 15px;
-    color: #ffd700;
+  .bet-type {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
   }
 
-  .bet-chips {
+  .type-btn {
+    padding: 14px 28px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .type-btn:hover { background: rgba(255,255,255,0.15); }
+  .type-btn.selected { border-color: #ffd700; background: rgba(255,215,0,0.2); }
+  .type-btn .emoji { font-size: 1.5em; display: block; margin-bottom: 4px; }
+  .type-btn .desc { font-size: 0.75em; opacity: 0.7; margin-top: 4px; }
+
+  .bet-amount {
     display: flex;
     justify-content: center;
     gap: 10px;
@@ -229,98 +214,63 @@
   }
 
   .chip {
-    width: 60px; height: 60px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 0.9em;
-    cursor: pointer;
+    width: 55px; height: 55px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 0.85em; cursor: pointer;
     border: 3px dashed rgba(255,255,255,0.4);
     transition: all 0.2s;
-    position: relative;
   }
   .chip:hover { transform: scale(1.1); }
   .chip.selected { border-style: solid; transform: scale(1.15); box-shadow: 0 0 20px rgba(255,255,255,0.3); }
   .chip.c10 { background: #3498db; color: #fff; }
-  .chip.c50 { background: #2ecc71; color: #fff; }
-  .chip.c100 { background: #e74c3c; color: #fff; }
-  .chip.c500 { background: #9b59b6; color: #fff; }
-  .chip.c1000 { background: #f39c12; color: #fff; }
-  .chip.cAll { background: linear-gradient(135deg, #ffd700, #ff6b00); color: #000; }
+  .chip.c20 { background: #2ecc71; color: #fff; }
+  .chip.c30 { background: #e74c3c; color: #fff; }
+  .chip.c60 { background: #9b59b6; color: #fff; }
 
   .confirm-bet {
-    padding: 14px 50px;
-    font-size: 1.1em;
-    font-weight: bold;
-    color: #000;
-    background: linear-gradient(145deg, #ffd700, #ffaa00);
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 4px 15px rgba(255,215,0,0.4);
+    padding: 14px 50px; font-size: 1.1em; font-weight: bold;
+    color: #000; background: linear-gradient(145deg, #ffd700, #ffaa00);
+    border: none; border-radius: 30px; cursor: pointer;
+    transition: all 0.3s; box-shadow: 0 4px 15px rgba(255,215,0,0.4);
   }
   .confirm-bet:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(255,215,0,0.6); }
   .confirm-bet:disabled { opacity: 0.4; cursor: not-allowed; }
 
   .main-btn {
-    display: block;
-    width: 100%;
-    max-width: 280px;
-    margin: 20px auto 0;
-    padding: 16px;
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #000;
+    display: block; width: 100%; max-width: 280px;
+    margin: 20px auto 0; padding: 16px;
+    font-size: 1.2em; font-weight: bold; color: #000;
     background: linear-gradient(145deg, #ffd700, #ffaa00);
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 5px 20px rgba(255,215,0,0.4);
+    border: none; border-radius: 30px; cursor: pointer;
+    transition: all 0.3s; box-shadow: 0 5px 20px rgba(255,215,0,0.4);
   }
   .main-btn:hover:not(:disabled) { transform: translateY(-2px); }
   .main-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
   .result-banner {
-    text-align: center;
-    font-size: 1.6em;
-    font-weight: bold;
-    margin: 20px 0 5px;
-    min-height: 40px;
-    display: none;
+    text-align: center; font-size: 1.4em; font-weight: bold;
+    margin: 20px 0 5px; min-height: 40px; display: none;
   }
   .result-banner.visible { display: block; }
   .result-banner.win { color: #51cf66; text-shadow: 0 0 20px rgba(81,207,102,0.5); }
   .result-banner.lose { color: #ff6b6b; text-shadow: 0 0 20px rgba(255,107,107,0.5); }
   .result-banner.tie { color: #ffd43b; }
   .result-detail {
-    text-align: center;
-    font-size: 0.95em;
-    opacity: 0.7;
-    margin-bottom: 10px;
-    display: none;
+    text-align: center; font-size: 0.9em; opacity: 0.7;
+    margin-bottom: 10px; display: none;
   }
   .result-detail.visible { display: block; }
 
   .history {
-    margin-top: 20px;
-    background: rgba(0,0,0,0.3);
-    border-radius: 16px;
-    padding: 14px;
-    max-height: 180px;
-    overflow-y: auto;
-    display: none;
+    margin-top: 20px; background: rgba(0,0,0,0.3);
+    border-radius: 16px; padding: 14px;
+    max-height: 180px; overflow-y: auto; display: none;
   }
   .history.visible { display: block; }
   .history h3 { font-size: 0.9em; opacity: 0.6; margin-bottom: 8px; }
   .hist-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 6px 8px;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex; justify-content: space-between;
+    padding: 6px 8px; border-bottom: 1px solid rgba(255,255,255,0.05);
     font-size: 0.8em;
   }
   .hist-item:last-child { border: none; }
@@ -332,64 +282,102 @@
   .hist-item .h-result.tie { color: #ffd43b; }
 
   .secret-panel {
-    position: fixed;
-    top: 50%;
-    left: 50%;
+    position: fixed; top: 50%; left: 50%;
     transform: translate(-50%, -50%) scale(0.8);
     background: rgba(20, 15, 40, 0.98);
     border: 1px solid rgba(255,215,0,0.3);
-    border-radius: 20px;
-    padding: 25px;
-    z-index: 200;
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.3s;
-    min-width: 280px;
+    border-radius: 20px; padding: 25px;
+    z-index: 200; opacity: 0; pointer-events: none;
+    transition: all 0.3s; min-width: 280px;
   }
   .secret-panel.open {
-    opacity: 1;
-    pointer-events: auto;
+    opacity: 1; pointer-events: auto;
     transform: translate(-50%, -50%) scale(1);
   }
   .secret-panel h3 { text-align: center; margin-bottom: 15px; color: #ffd700; font-size: 1em; }
   .secret-panel .opt {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 8px;
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 10px;
-    background: rgba(255,255,255,0.05);
-    color: #fff;
-    font-size: 0.95em;
-    cursor: pointer;
-    text-align: left;
+    display: block; width: 100%; padding: 12px; margin-bottom: 8px;
+    border: 1px solid rgba(255,255,255,0.15); border-radius: 10px;
+    background: rgba(255,255,255,0.05); color: #fff;
+    font-size: 0.95em; cursor: pointer; text-align: left;
     transition: all 0.2s;
   }
   .secret-panel .opt:hover { background: rgba(255,255,255,0.15); }
   .secret-panel .opt.active { border-color: #ffd700; background: rgba(255,215,0,0.15); }
   .secret-panel .close-btn {
-    display: block;
-    margin: 10px auto 0;
-    padding: 8px 30px;
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 20px;
-    background: none;
-    color: #fff;
-    cursor: pointer;
-    font-size: 0.85em;
+    display: block; margin: 10px auto 0; padding: 8px 30px;
+    border: 1px solid rgba(255,255,255,0.2); border-radius: 20px;
+    background: none; color: #fff; cursor: pointer; font-size: 0.85em;
   }
 
   .overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 199;
-    opacity: 0;
-    pointer-events: none;
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+    z-index: 199; opacity: 0; pointer-events: none;
     transition: opacity 0.3s;
   }
   .overlay.open { opacity: 1; pointer-events: auto; }
+
+  .name-setup {
+    display: flex; justify-content: center; align-items: center;
+    min-height: 60vh;
+  }
+  .setup-box {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px; padding: 30px;
+    min-width: 320px; text-align: center;
+  }
+  .setup-box h3 { margin-bottom: 20px; color: #ffd700; font-size: 1.3em; }
+  .setup-row { margin-bottom: 15px; text-align: left; }
+  .setup-row label { display: block; font-size: 0.9em; opacity: 0.8; margin-bottom: 6px; }
+  .setup-row input {
+    width: 100%; padding: 10px 14px;
+    border: 1px solid rgba(255,255,255,0.2); border-radius: 10px;
+    background: rgba(0,0,0,0.3); color: #fff;
+    font-size: 1em; outline: none; transition: border-color 0.2s;
+  }
+  .setup-row input:focus { border-color: #ffd700; }
+  .setup-btn {
+    margin-top: 10px; padding: 12px 40px;
+    font-size: 1.1em; font-weight: bold; color: #000;
+    background: linear-gradient(145deg, #ffd700, #ffaa00);
+    border: none; border-radius: 25px; cursor: pointer;
+    transition: all 0.3s; box-shadow: 0 4px 15px rgba(255,215,0,0.4);
+  }
+  .setup-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,215,0,0.6); }
+
+  .water-alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    background: rgba(20, 15, 40, 0.98);
+    border: 2px solid #74c0fc;
+    border-radius: 20px;
+    padding: 30px;
+    z-index: 300;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s;
+    text-align: center;
+    min-width: 280px;
+  }
+  .water-alert.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  .water-alert .emoji { font-size: 3em; margin-bottom: 15px; }
+  .water-alert .msg { font-size: 1.2em; margin-bottom: 20px; color: #74c0fc; }
+  .water-alert .close-btn {
+    padding: 10px 30px;
+    border: 1px solid #74c0fc;
+    border-radius: 20px;
+    background: none;
+    color: #74c0fc;
+    cursor: pointer;
+    font-size: 1em;
+  }
 
   @media (max-width: 600px) {
     .players { flex-direction: column; align-items: center; }
@@ -397,6 +385,7 @@
     .dice-wrap, .dice { width: 70px; height: 70px; padding: 8px; }
     .dot { width: 12px; height: 12px; }
     h1 { font-size: 1.4em; }
+    .bet-type { flex-direction: column; align-items: center; }
   }
 </style>
 </head>
@@ -408,7 +397,7 @@
   <div class="seg s2" onclick="setSecretMode(2)"></div>
   <div class="seg s3" onclick="setSecretMode(3)"></div>
 </div>
-<div class="mode-hint" id="modeHint">模式: 随机</div>
+<div class="mode-hint" id="modeHint">模式：随机</div>
 
 <div class="overlay" id="overlay" onclick="closeSecret()"></div>
 <div class="secret-panel" id="secretPanel">
@@ -420,18 +409,41 @@
   <button class="close-btn" onclick="closeSecret()">关闭</button>
 </div>
 
+<div class="water-alert" id="waterAlert">
+  <div class="emoji">💧</div>
+  <div class="msg" id="waterAlertMsg">喝一杯水！</div>
+  <button class="close-btn" onclick="closeWaterAlert()">知道了</button>
+</div>
+
 <div class="container">
   <h1 id="title">🎲 骰子对决</h1>
 
-  <div class="balance-bar">
-    <div class="item">👤 我的筹码: <span class="val" id="myBalance">10000</span></div>
-    <div class="item">🤖 对方筹码: <span class="val opp" id="oppBalance">10000</span></div>
+  <div class="name-setup" id="nameSetup">
+    <div class="setup-box">
+      <h3>🎮 游戏设置</h3>
+      <div class="setup-row">
+        <label>👤 你的名字:</label>
+        <input type="text" id="myNameInput" value="hold-master" maxlength="20">
+      </div>
+      <div class="setup-row">
+        <label>🤖 对方名字:</label>
+        <input type="text" id="oppNameInput" placeholder="输入对方名字" maxlength="20">
+      </div>
+      <button class="setup-btn" onclick="startGameSetup()">开始游戏</button>
+    </div>
+  </div>
+
+  <div class="status-bar" id="statusBar" style="display:none;">
+    <div class="item">⏱️ <span id="myNameLabel">hold-master</span>: <span class="val" id="myTime">120</span>分钟</div>
+    <div class="item">💧 水杯: <span class="val water" id="myWater">10</span></div>
+    <div class="item">⏱️ <span id="oppNameLabel">对方</span>: <span class="val opp" id="oppTime">120</span>分钟</div>
+    <div class="item">💧 水杯: <span class="val water opp" id="oppWater">10</span></div>
   </div>
 
   <div class="table">
     <div class="players">
       <div class="player-area me">
-        <div class="label">👤 我</div>
+        <div class="label" id="myLabel">👤 hold-master</div>
         <div class="dice-row">
           <div class="dice-slot">
             <div class="slot-label">骰子 1</div>
@@ -447,14 +459,14 @@
 
       <div class="center-area">
         <div class="vs-badge">VS</div>
-        <div class="phase-label" id="phaseLabel">点击下方开始</div>
+        <div class="phase-label" id="phaseLabel">设置名字后开始</div>
       </div>
 
       <div class="player-area opp">
-        <div class="label">🤖 对方</div>
+        <div class="label" id="oppLabel">🤖 对方</div>
         <div class="dice-row">
           <div class="dice-slot">
-            <div class="slot-label">骰子 1</div>
+            <div class="slot-label">子 1</div>
             <div class="dice-wrap"><div class="dice waiting" id="oppDice1"></div></div>
           </div>
           <div class="dice-slot">
@@ -468,19 +480,26 @@
 
     <div class="bet-area" id="betArea">
       <div class="bet-title">💰 下注阶段</div>
-      <p style="font-size:0.85em; opacity:0.6; margin-bottom:12px;" id="betHint">选择下注金额</p>
+      <p style="font-size:0.85em; opacity:0.6; margin-bottom:12px;" id="betHint">选择下注类型和金额</p>
       
-      <div class="bet-chips" id="betChips">
-        <div class="chip c10" onclick="selectChip(10)">10</div>
-        <div class="chip c50" onclick="selectChip(50)">50</div>
-        <div class="chip c100" onclick="selectChip(100)">100</div>
-        <div class="chip c500" onclick="selectChip(500)">500</div>
-        <div class="chip c1000" onclick="selectChip(1000)">1K</div>
-        <div class="chip cAll" onclick="selectChip(-1)">ALL</div>
+      <div class="bet-type">
+        <div class="type-btn" onclick="selectBetType('time')">
+          <span class="emoji">⏱️</span>
+          <div>押时间</div>
+          <div class="desc">输→加时间 赢→减时间</div>
+        </div>
+        <div class="type-btn" onclick="selectBetType('water')">
+          <span class="emoji">💧</span>
+          <div>押水</div>
+          <div class="desc">输→喝水 赢→减10分钟</div>
+        </div>
       </div>
 
-      <div style="text-align:center; margin-bottom:15px;">
-        <span style="font-size:1.1em; color:#ffd700;">👑 押自己赢</span>
+      <div class="bet-amount" id="betAmount">
+        <div class="chip c10" onclick="selectChip(10)">10</div>
+        <div class="chip c20" onclick="selectChip(20)">20</div>
+        <div class="chip c30" onclick="selectChip(30)">30</div>
+        <div class="chip c60" onclick="selectChip(60)">60</div>
       </div>
 
       <button class="confirm-bet" id="confirmBet" onclick="confirmBet()" disabled>确认下注</button>
@@ -489,7 +508,7 @@
     <div class="result-banner" id="resultBanner"></div>
     <div class="result-detail" id="resultDetail"></div>
 
-    <button class="main-btn" id="mainBtn" onclick="startRound()">🎲 开始新一局</button>
+    <button class="main-btn" id="mainBtn" onclick="startRound()" style="display:none;">🎲 开始新一局</button>
   </div>
 
   <div class="history" id="history">
@@ -501,13 +520,17 @@
 <script>
   let secretMode = 3;
   let roundNum = 0;
-  let myBalance = 10000;
-  let oppBalance = 10000;
-  let wins = 0, losses = 0, ties = 0;
+  let myTime = 120;
+  let oppTime = 120;
+  let myWater = 10;
+  let oppWater = 10;
+  let myName = 'hold-master';
+  let oppName = '对方';
 
   let phase = 'idle';
   let myD1 = 0, myD2 = 0, oppD1 = 0, oppD2 = 0;
-  let betAmount = 0, betDir = '';
+  let betType = ''; // 'time' or 'water'
+  let betAmount = 0;
   let selectedChip = 0;
 
   const DICE_PATTERNS = {
@@ -515,7 +538,7 @@
     4: [0,2,6,8], 5: [0,2,4,6,8], 6: [0,2,3,5,6,8]
   };
 
-  const MODE_NAMES = ['👑 我必赢', '💀 对方必赢', '🔥 5局内赢', '🎯 纯随机'];
+  const MODE_NAMES = ['👑 我必赢', ' 对方必赢', '🔥 5局内赢', '🎯 纯随机'];
 
   function renderDice(el, value, hidden) {
     el.className = 'dice' + (hidden ? ' hidden-dice' : '');
@@ -536,7 +559,7 @@
 
   function setSecretMode(m) {
     secretMode = m;
-    document.getElementById('modeHint').textContent = '模式: ' + MODE_NAMES[m].split(' ')[1];
+    document.getElementById('modeHint').textContent = '模式：' + MODE_NAMES[m].split(' ')[1];
     closeSecret();
     const bar = document.getElementById('secretBar');
     bar.style.boxShadow = '0 0 20px rgba(255,215,0,0.8)';
@@ -546,6 +569,15 @@
   function closeSecret() {
     document.getElementById('secretPanel').classList.remove('open');
     document.getElementById('overlay').classList.remove('open');
+  }
+
+  function showWaterAlert(msg) {
+    document.getElementById('waterAlertMsg').textContent = msg;
+    document.getElementById('waterAlert').classList.add('open');
+  }
+
+  function closeWaterAlert() {
+    document.getElementById('waterAlert').classList.remove('open');
   }
 
   let titleClicks = 0, titleTimer = null;
@@ -577,6 +609,13 @@
     return randInt(1, 6);
   }
 
+  function selectBetType(type) {
+    betType = type;
+    document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
+    event.currentTarget.classList.add('selected');
+    checkBetReady();
+  }
+
   function selectChip(val) {
     selectedChip = val;
     document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
@@ -585,18 +624,13 @@
   }
 
   function checkBetReady() {
-    document.getElementById('confirmBet').disabled = !selectedChip;
+    document.getElementById('confirmBet').disabled = !(betType && selectedChip);
   }
 
   function confirmBet() {
-    if (!selectedChip) return;
+    if (!betType || !selectedChip) return;
     
-    if (selectedChip === -1) {
-      betAmount = myBalance;
-    } else {
-      betAmount = Math.min(selectedChip, myBalance);
-    }
-    betDir = 'me';
+    betAmount = selectedChip;
 
     document.getElementById('betArea').classList.remove('visible');
     document.getElementById('phaseLabel').textContent = '投第2个骰子...';
@@ -604,16 +638,29 @@
     setTimeout(() => startPhase2(), 500);
   }
 
-  function startRound() {
-    if (myBalance <= 0 || oppBalance <= 0) {
-      myBalance = 10000;
-      oppBalance = 10000;
-      updateBalanceUI();
-    }
+  function startGameSetup() {
+    const myInput = document.getElementById('myNameInput').value.trim();
+    const oppInput = document.getElementById('oppNameInput').value.trim();
+    
+    myName = myInput || 'hold-master';
+    oppName = oppInput || '对方';
+    
+    document.getElementById('myNameLabel').textContent = myName;
+    document.getElementById('oppNameLabel').textContent = oppName;
+    document.getElementById('myLabel').textContent = ' ' + myName;
+    document.getElementById('oppLabel').textContent = '🤖 ' + oppName;
+    
+    document.getElementById('nameSetup').style.display = 'none';
+    document.getElementById('statusBar').style.display = 'flex';
+    document.getElementById('mainBtn').style.display = 'block';
+    document.getElementById('phaseLabel').textContent = '点击下方开始';
+  }
 
+  function startRound() {
     roundNum++;
     myD1 = myD2 = oppD1 = oppD2 = 0;
-    betAmount = 0; betDir = '';
+    betType = '';
+    betAmount = 0;
     selectedChip = 0;
 
     renderDice(document.getElementById('myDice1'), 0);
@@ -626,6 +673,7 @@
     document.getElementById('resultBanner').textContent = '';
     document.getElementById('resultDetail').className = 'result-detail';
     document.getElementById('betArea').classList.remove('visible');
+    document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
     document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
 
     document.getElementById('mainBtn').style.display = 'none';
@@ -659,8 +707,8 @@
         renderDice(myEl, myD1);
         renderDice(oppEl, oppD1);
         
-        document.getElementById('mySubtotal').textContent = '当前: ' + myD1;
-        document.getElementById('oppSubtotal').textContent = '当前: ' + oppD1;
+        document.getElementById('mySubtotal').textContent = '当前：' + myD1;
+        document.getElementById('oppSubtotal').textContent = '当前：' + oppD1;
         
         setTimeout(() => enterBetting(), 600);
       }
@@ -673,7 +721,7 @@
     document.getElementById('betArea').classList.add('visible');
     
     document.getElementById('betHint').textContent = 
-      `当前点数 → 我: ${myD1}  对方: ${oppD1}  (还有1个骰子未投)`;
+      `当前点数 → ${myName}: ${myD1}  ${oppName}: ${oppD1}  (还有1个骰子未投)`;
   }
 
   function startPhase2() {
@@ -705,8 +753,8 @@
         const myTotal = myD1 + myD2;
         const oppTotal = oppD1 + oppD2;
         
-        document.getElementById('mySubtotal').textContent = '总计: ' + myTotal;
-        document.getElementById('oppSubtotal').textContent = '总计: ' + oppTotal;
+        document.getElementById('mySubtotal').textContent = '总计：' + myTotal;
+        document.getElementById('oppSubtotal').textContent = '总计：' + oppTotal;
         
         setTimeout(() => showResult(myTotal, oppTotal), 500);
       }
@@ -719,58 +767,70 @@
     const banner = document.getElementById('resultBanner');
     const detail = document.getElementById('resultDetail');
     
-    let outcome, resultText;
+    let outcome, resultText, detailText;
     
     if (myTotal > oppTotal) {
       outcome = 'win';
-      resultText = '🎉 你赢了！';
-      myBalance += betAmount;
-      oppBalance -= betAmount;
-      wins++;
+      resultText = '🎉 ' + myName + ' 赢了！';
+      
+      if (betType === 'time') {
+        myTime = Math.max(0, myTime - betAmount);
+        oppTime += betAmount;
+        detailText = `押时间${betAmount}分钟 → ${myName}减${betAmount}分钟，${oppName}加${betAmount}分钟`;
+      } else {
+        myTime = Math.max(0, myTime - 10);
+        detailText = `押水 → ${myName}减10分钟`;
+      }
     } else if (myTotal < oppTotal) {
       outcome = 'lose';
-      resultText = '😢 你输了！';
-      myBalance -= betAmount;
-      oppBalance += betAmount;
-      losses++;
+      resultText = '😢 ' + myName + ' 输了！';
+      
+      if (betType === 'time') {
+        myTime += betAmount;
+        oppTime = Math.max(0, oppTime - betAmount);
+        detailText = `押时间${betAmount}分钟 → ${myName}加${betAmount}分钟，${oppName}减${betAmount}分钟`;
+      } else {
+        myWater = Math.max(0, myWater - 1);
+        detailText = `押水 → ${myName}喝一杯水！`;
+        setTimeout(() => showWaterAlert(myName + '，喝一杯水！'), 500);
+      }
     } else {
       outcome = 'tie';
       resultText = '⚖️ 平局！';
-      ties++;
+      detailText = '点数相同，无变化';
     }
     
     banner.textContent = resultText;
     banner.className = 'result-banner visible ' + outcome;
     
-    detail.textContent = `我 ${myD1}+${myD2}=${myTotal} vs ${oppD1}+${oppD2}=${oppTotal}  |  下注: ${betAmount} (押自己赢)`;
+    detail.textContent = myName + ' ' + myD1 + '+' + myD2 + '=' + myTotal + ' vs ' + oppD1 + '+' + oppD2 + '=' + oppTotal + ' ' + oppName + '  |  ' + detailText;
     detail.className = 'result-detail visible';
     
-    updateBalanceUI();
-    addHistory(myTotal, oppTotal, outcome, betAmount);
+    updateStatusUI();
+    addHistory(myTotal, oppTotal, outcome, betType, betAmount);
     
     document.getElementById('phaseLabel').textContent = '本局结束';
     document.getElementById('mainBtn').style.display = 'block';
     document.getElementById('mainBtn').textContent = '🎲 开始新一局';
   }
 
-  function updateBalanceUI() {
-    document.getElementById('myBalance').textContent = myBalance;
-    document.getElementById('oppBalance').textContent = oppBalance;
+  function updateStatusUI() {
+    document.getElementById('myTime').textContent = myTime;
+    document.getElementById('oppTime').textContent = oppTime;
+    document.getElementById('myWater').textContent = myWater;
+    document.getElementById('oppWater').textContent = oppWater;
   }
 
-  function addHistory(myT, oppT, outcome, bet) {
+  function addHistory(myT, oppT, outcome, bType, bAmt) {
     const hist = document.getElementById('history');
     const list = document.getElementById('histList');
     hist.classList.add('visible');
     
-    const txt = { win: '胜 +' + bet, lose: '负 -' + bet, tie: '平局' };
+    const typeIcon = bType === 'time' ? '⏱️' : '💧';
+    const txt = { win: '胜', lose: '负', tie: '平局' };
     const item = document.createElement('div');
     item.className = 'hist-item';
-    item.innerHTML = `
-      <span class="h-round">#${roundNum}</span>
-      <span class="h-detail">我${myT} vs ${oppT}对方</span>
-      <span class="h-result ${outcome}">${txt[outcome]}</span>
-    `;
+    item.innerHTML = '<span class="h-round">#' + roundNum + '</span><span class="h-detail">' + myName + ' ' + myT + ' vs ' + oppT + ' ' + oppName + '</span><span class="h-result ' + outcome + '">' + txt[outcome] + ' ' + typeIcon + bAmt + '</span>';
     list.insertBefore(item, list.firstChild);
   }
 
@@ -786,3 +846,13 @@
 
 </body>
 </html>
+
+--------------------------tgUZ7hCrRETyC7w6JFz6a4
+Content-Disposition: form-data; name="syntax"
+
+html
+--------------------------tgUZ7hCrRETyC7w6JFz6a4
+Content-Disposition: form-data; name="expiry"
+
+1440
+--------------------------tgUZ7hCrRETyC7w6JFz6a4--
