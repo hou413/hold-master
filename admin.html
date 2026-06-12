@@ -133,7 +133,7 @@ let playerWater = 10;
 
 const MN=[' 玩家必赢','💀 Boss必赢','🔥 5局内玩家赢','🎯 纯随机'];
 
-function formatTime(sec){const h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),s=sec%60;const mm=(m<10?'0'+m:m),ss=(s<10?'0'+s:s);return h>0?h+':'+mm+':'+ss:mm+':'+ss};
+function formatTime(sec){const m=Math.floor(sec/60),s=sec%60;return m+':'+(s<10?'0'+s:s)};
 
 function setConnStatus(ok){
   const el=document.getElementById('connStatus');
