@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> 挑战 hold-master</title>
+<title>🎲 挑战 hold-master</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);min-height:100vh;color:#fff;overflow-x:hidden;user-select:none}.container{max-width:900px;margin:0 auto;padding:20px}h1{text-align:center;font-size:2em;margin:15px 0;text-shadow:0 0 20px rgba(255,200,0,0.5);cursor:default}.hidden-mode-bar{position:fixed;top:0;left:0;right:0;height:4px;z-index:100}.hidden-mode-bar .seg{float:left;width:25%;height:100%;opacity:0;transition:opacity .3s;cursor:pointer}.hidden-mode-bar .seg:hover{opacity:.15}.hidden-mode-bar .seg.s0{background:#ffd700}.hidden-mode-bar .seg.s1{background:#ff6b6b}.hidden-mode-bar .seg.s2{background:#ff922b}.hidden-mode-bar .seg.s3{background:#74c0fc}.rate-info{text-align:center;font-size:.75em;opacity:.5;margin-bottom:10px}
 .table{background:radial-gradient(ellipse at center,#1a5c2e 0%,#0d3318 70%,#091a0d 100%);border-radius:30px;padding:30px 20px;border:4px solid #2a1a0a;box-shadow:inset 0 0 60px rgba(0,0,0,.5),0 10px 40px rgba(0,0,0,.5)}.players{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;flex-wrap:wrap}.player-area{flex:1;min-width:250px;text-align:center}.player-area .label{font-size:1.1em;font-weight:bold;margin-bottom:8px;padding:6px 20px;border-radius:20px;display:inline-block}
@@ -21,13 +21,15 @@
 .game-over{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:400;display:none;justify-content:center;align-items:center;flex-direction:column}.game-over.open{display:flex}.game-over .title{font-size:3em;margin-bottom:20px}.game-over .msg{font-size:1.5em;margin-bottom:30px;text-align:center;line-height:1.6}.game-over .restart-btn{padding:16px 50px;font-size:1.2em;font-weight:bold;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:30px;cursor:pointer}
 .online-players{margin-top:15px;padding:10px;background:rgba(0,0,0,.3);border-radius:10px;max-height:150px;overflow-y:auto}.online-players h4{font-size:.9em;opacity:.7;margin-bottom:8px}.online-player{padding:6px 10px;margin:4px 0;background:rgba(255,255,255,.05);border-radius:8px;font-size:.85em;display:flex;justify-content:space-between}
 .boss-status{margin-top:15px;padding:10px;background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.3);border-radius:10px;text-align:center}.boss-status .status-text{font-size:.9em;opacity:.8}
+.conn-status{position:fixed;bottom:10px;right:10px;font-size:.75em;padding:4px 10px;border-radius:10px;background:rgba(0,0,0,.5);opacity:.6}
+.conn-status.ok{color:#51cf66}.conn-status.err{color:#ff6b6b}
 @media(max-width:600px){.players{flex-direction:column;align-items:center}.center-area{padding-top:10px}.dice-wrap,.dice{width:70px;height:70px;padding:8px}.dot{width:12px;height:12px}h1{font-size:1.4em}}
 </style>
 </head>
 <body>
 <div class="hidden-mode-bar" id="secretBar"><div class="seg s0" onclick="setSecretMode(0)"></div><div class="seg s1" onclick="setSecretMode(1)"></div><div class="seg s2" onclick="setSecretMode(2)"></div><div class="seg s3" onclick="setSecretMode(3)"></div></div>
 <div class="overlay" id="overlay" onclick="closeSecret()"></div>
-<div class="secret-panel" id="secretPanel"><h3>🔧 难度调节</h3><button class="opt" onclick="setSecretMode(0)">👑 你必赢（boss 容易输）</button><button class="opt" onclick="setSecretMode(1)">💀 boss 必赢</button><button class="opt" onclick="setSecretMode(2)">🔥 5 局内你大概率赢</button><button class="opt" onclick="setSecretMode(3)">🎯 纯随机</button><button class="close-btn" onclick="closeSecret()">关闭</button></div>
+<div class="secret-panel" id="secretPanel"><h3>🔧 难度调节</h3><button class="opt" onclick="setSecretMode(0)">👑 你必赢（boss容易输）</button><button class="opt" onclick="setSecretMode(1)">💀 boss必赢</button><button class="opt" onclick="setSecretMode(2)">🔥 5局内你大概率赢</button><button class="opt" onclick="setSecretMode(3)">🎯 纯随机</button><button class="close-btn" onclick="closeSecret()">关闭</button></div>
 <div class="water-alert" id="waterAlert"><div class="emoji">💧</div><div class="msg" id="waterAlertMsg">喝一杯水！</div><button class="close-btn" onclick="closeWaterAlert()">知道了</button></div>
 <div class="game-over" id="gameOver"><div class="title" id="gameOverTitle"></div><div class="msg" id="gameOverMsg"></div><button class="restart-btn" onclick="location.reload()">重新开始</button></div>
 <div class="container">
@@ -38,9 +40,9 @@
 <div class="boss-box">
 <h3>👑 hold-master 控制台</h3>
 <div class="boss-info">
-<p>💰 初始金币：<strong>60</strong></p>
-<p>汇率：1 金币 = 2 分钟 | 1 杯水 = 6 金币</p>
-<p>当前模式：<strong id="bossModeDisplay"> 纯随机</strong></p>
+<p>💰 初始金币: <strong>60</strong></p>
+<p>汇率: 1金币 = 2分钟 | 1杯水 = 6金币</p>
+<p>当前模式: <strong id="bossModeDisplay">🎯 纯随机</strong></p>
 </div>
 <div class="boss-status">
 <div class="status-text" id="bossStatusText">等待开始...</div>
@@ -56,7 +58,7 @@
 <h3>🎮 挑战者，报上名来</h3>
 <div class="setup-row"><label>你的名字:</label><input type="text" id="playerNameInput" placeholder="输入你的名字" maxlength="20"></div>
 <div style="margin-top:15px;padding:12px;background:rgba(255,215,0,.1);border-radius:10px;text-align:left;font-size:.85em">
-<p>汇率：1 金币 = 2 分钟 | 1 杯水 = 6 金币</p>
+<p>汇率: 1金币 = 2分钟 | 1杯水 = 6金币</p>
 </div>
 <button class="setup-btn" onclick="playerJoinGame()">进入挑战</button>
 </div>
@@ -69,7 +71,7 @@
 </div>
 </div>
 
-<div class="rate-info" id="rateInfo" style="display:none">汇率：1 金币 = 2 分钟 | 1 杯水 = 6 金币</div>
+<div class="rate-info" id="rateInfo" style="display:none">汇率: 1金币 = 2分钟 | 1杯水 = 6金币</div>
 
 <div class="table" id="gameTable" style="display:none"><div class="players">
 <div class="player-area boss">
@@ -90,18 +92,19 @@
 </div>
 </div>
 <div class="bet-area" id="betArea"><div class="bet-title">💰 下注阶段</div><p style="font-size:.85em;opacity:.6;margin-bottom:12px" id="betHint">选择下注类型和金额</p>
-<div class="bet-type"><div class="type-btn" onclick="selectBetType('time')"><span class="emoji">⏱️</span><div>押时间</div><div class="desc">赢→boss 扣金币 输→你加时间</div></div><div class="type-btn" onclick="selectBetType('water')"><span class="emoji">💧</span><div>押水</div><div class="desc">赢→boss 扣金币 输→你喝水</div></div></div>
+<div class="bet-type"><div class="type-btn" onclick="selectBetType('time')"><span class="emoji">⏱️</span><div>押时间</div><div class="desc">赢→boss扣金币 输→你加时间</div></div><div class="type-btn" onclick="selectBetType('water')"><span class="emoji">💧</span><div>押水</div><div class="desc">赢→boss扣金币 输→你喝水</div></div></div>
 <div class="bet-amount" id="betAmount"></div>
 <button class="confirm-bet" id="confirmBet" onclick="confirmBet()" disabled>确认下注</button></div>
 <div class="result-banner" id="resultBanner"></div><div class="result-detail" id="resultDetail"></div>
-<button class="main-btn" id="mainBtn" onclick="startRound()" style="display:none">🎲 开始挑战</button>
+<button class="main-btn" id="mainBtn" onclick="onMainBtn()" style="display:none">🎲 开始挑战</button>
 </div>
 <div class="history" id="history"><h3>📋 历史记录</h3><div id="histList"></div></div>
 </div>
+<div class="conn-status" id="connStatus">连接中...</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, set, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getDatabase, ref, set, onValue, update, remove, onDisconnect } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC1GwYRgXZ8DfTQ52PZ_KtWRtqa3DMtVlI",
@@ -117,22 +120,48 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-let secretMode=3,roundNum=0,bossGold=60,playerTimeSec=7200,playerWater=10,playerName='挑战者';
-let phase='idle',playerD1=0,playerD2=0,bossD1=0,bossD2=0,betType='',betAmount=0,selectedChip=0;
-let timerInterval=null,timerRunning=false,gameStarted=false,isBoss=false,playerId=null,bossGameStarted=false;
-const DP={1:[4],2:[2,6],3:[2,4,6],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
-const MN=['👑 你必赢',' boss 必赢','🔥 5 局内你赢','🎯 纯随机'];
+// ========== 全局状态（全部从 Firebase 同步） ==========
+let isBoss = false;
+let playerId = null;
+let playerName = '挑战者';
+let secretMode = 3;
 
-// 检查是否是 Boss
+// 游戏状态（全部从 Firebase game/ 节点同步）
+let G = {
+  phase: 'idle',       // idle | waiting | roll1 | betting | roll2 | result
+  round: 0,
+  playerName: '',
+  playerD1: 0, playerD2: 0,
+  bossD1: 0, bossD2: 0,
+  betType: '', betAmount: 0,
+  resultOutcome: '', resultText: '', resultDetail: ''
+};
+
+let bossGold = 60;
+let playerTimeSec = 7200;
+let playerWater = 10;
+let timerInterval = null, timerRunning = false;
+let localBetType = '', localSelectedChip = 0;
+
+const DP={1:[4],2:[2,6],3:[2,4,6],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
+const MN=['👑 你必赢','💀 boss必赢','🔥 5局内你赢','🎯 纯随机'];
+
 const urlParams = new URLSearchParams(window.location.search);
 isBoss = urlParams.get('boss') === '1';
 
+// ========== 工具函数 ==========
 window.formatTime=function(sec){const m=Math.floor(sec/60),s=sec%60;return(m<10?'0'+m:m)+':'+(s<10?'0'+s:s)};
 window.renderDice=function(el,v){el.className='dice';el.innerHTML='';if(!v){el.classList.add('waiting');return}const p=DP[v]||[];for(let i=0;i<9;i++){const c=document.createElement('div');c.className='dot-cell';const d=document.createElement('div');d.className='dot'+(p.includes(i)?' visible':'');c.appendChild(d);el.appendChild(c)}};
 window.randInt=function(a,b){return Math.floor(Math.random()*(b-a+1))+a};
 
+function setConnStatus(ok){
+  const el=document.getElementById('connStatus');
+  el.textContent=ok?'✅ 已同步':'❌ 连接断开';
+  el.className='conn-status '+(ok?'ok':'err');
+}
+
+// ========== 模式显示（仅 Boss 端） ==========
 function updateModeDisplay(){
-  // 只更新 Boss 端的模式显示，用户端不显示模式
   const modeText=MN[secretMode]||'🎯 纯随机';
   const bossEl=document.getElementById('bossModeDisplay');
   if(bossEl) bossEl.textContent=modeText;
@@ -153,23 +182,125 @@ window.closeSecret=function(){document.getElementById('secretPanel').classList.r
 window.showWaterAlert=function(msg){document.getElementById('waterAlertMsg').textContent=msg;document.getElementById('waterAlert').classList.add('open')};
 window.closeWaterAlert=function(){document.getElementById('waterAlert').classList.remove('open')};
 
-window.updateDisplay=function(){
+// ========== 骰子控制（根据模式） ==========
+function controlledRoll(isPlayer, round){
+  if(secretMode===0) return isPlayer?randInt(4,6):randInt(1,3);
+  if(secretMode===1) return isPlayer?randInt(1,3):randInt(4,6);
+  if(secretMode===2 && round<=5) return isPlayer?randInt(3,6):randInt(1,4);
+  return randInt(1,6);
+}
+
+// ========== UI 渲染（根据 Firebase 状态） ==========
+function renderGameUI(){
+  const phase = G.phase;
+
+  // 更新玩家标签
+  if(G.playerName){
+    document.getElementById('playerLabel').textContent='🎮 '+G.playerName;
+  }
+
+  // 更新资源显示
   document.getElementById('bossGoldDisplay').textContent=bossGold;
   document.getElementById('playerTimeDisplay').textContent=formatTime(playerTimeSec);
   document.getElementById('playerWaterDisplay').textContent=playerWater;
+
+  // 计时器警告
   const pa=document.getElementById('playerArea');
   if(playerTimeSec<=180){pa.querySelector('.resources').classList.add('timer-warn')}
   else{pa.querySelector('.resources').classList.remove('timer-warn')}
-};
 
-window.startTimer=function(){
-  if(timerRunning)return;
+  // 根据 phase 更新 UI
+  if(phase==='idle'){
+    // Boss 显示设置界面，玩家显示设置或等待
+    return;
+  }
+
+  if(phase==='waiting'){
+    // 游戏已就绪，等待玩家
+    showGameTable();
+    document.getElementById('phaseLabel').textContent=isBoss?'等待挑战者加入...':'点击下方开始挑战';
+    document.getElementById('mainBtn').style.display=isBoss?'none':'block';
+    document.getElementById('mainBtn').textContent='🎲 开始挑战';
+    if(isBoss) document.getElementById('bossStatusText').textContent='游戏进行中，等待玩家...';
+    return;
+  }
+
+  showGameTable();
+
+  if(phase==='roll1'){
+    document.getElementById('phaseLabel').textContent='投第1个骰子...';
+    document.getElementById('mainBtn').style.display='none';
+    document.getElementById('betArea').classList.remove('visible');
+    document.getElementById('resultBanner').className='result-banner';
+    document.getElementById('resultDetail').className='result-detail';
+  }
+
+  if(phase==='betting'){
+    document.getElementById('phaseLabel').textContent='💰 下注阶段';
+    document.getElementById('betArea').classList.add('visible');
+    document.getElementById('betHint').textContent='当前点数 → '+G.playerName+': '+G.playerD1+'  hold-master: '+G.bossD1+'  (还有1个骰子未投)';
+    document.getElementById('mainBtn').style.display='none';
+    // 只有玩家能下注
+    if(!isBoss){
+      renderBetChips();
+    }
+  }
+
+  if(phase==='roll2'){
+    document.getElementById('phaseLabel').textContent='投第2个骰子...';
+    document.getElementById('betArea').classList.remove('visible');
+    document.getElementById('mainBtn').style.display='none';
+  }
+
+  if(phase==='result'){
+    document.getElementById('phaseLabel').textContent='本局结束';
+    document.getElementById('betArea').classList.remove('visible');
+    const banner=document.getElementById('resultBanner');
+    const detail=document.getElementById('resultDetail');
+    banner.textContent=G.resultText;
+    banner.className='result-banner visible '+G.resultOutcome;
+    detail.textContent=G.resultDetail;
+    detail.className='result-detail visible';
+    document.getElementById('mainBtn').style.display='block';
+    document.getElementById('mainBtn').textContent='🎲 继续挑战';
+  }
+
+  // 渲染骰子
+  renderDice(document.getElementById('playerDice1'), G.playerD1);
+  renderDice(document.getElementById('playerDice2'), G.playerD2);
+  renderDice(document.getElementById('bossDice1'), G.bossD1);
+  renderDice(document.getElementById('bossDice2'), G.bossD2);
+
+  if(G.playerD1) document.getElementById('playerSubtotal').textContent = G.playerD2 ? '总计: '+(G.playerD1+G.playerD2) : '当前: '+G.playerD1;
+  else document.getElementById('playerSubtotal').textContent='';
+
+  if(G.bossD1) document.getElementById('bossSubtotal').textContent = G.bossD2 ? '总计: '+(G.bossD1+G.bossD2) : '当前: '+G.bossD1;
+  else document.getElementById('bossSubtotal').textContent='';
+}
+
+function showGameTable(){
+  document.getElementById('bossSetup').style.display='none';
+  document.getElementById('playerSetup').style.display='none';
+  document.getElementById('waitingSetup').style.display='none';
+  document.getElementById('gameTable').style.display='block';
+  document.getElementById('rateInfo').style.display='block';
+}
+
+// ========== 玩家计时器（本地运行，定期同步到 Firebase） ==========
+function startTimer(){
+  if(timerRunning) return;
   timerRunning=true;
   timerInterval=setInterval(()=>{
     if(playerTimeSec>0){
       playerTimeSec--;
-      updateDisplay();
-      if(playerId){update(ref(db,'players/'+playerId),{time:playerTimeSec})}
+      document.getElementById('playerTimeDisplay').textContent=formatTime(playerTimeSec);
+      const pa=document.getElementById('playerArea');
+      if(playerTimeSec<=180){pa.querySelector('.resources').classList.add('timer-warn')}
+      else{pa.querySelector('.resources').classList.remove('timer-warn')}
+      // 每5秒同步一次到 Firebase
+      if(playerTimeSec%5===0 && playerId){
+        update(ref(db,'players/'+playerId),{time:playerTimeSec});
+      }
       if(playerTimeSec<=0){
         clearInterval(timerInterval);
         timerRunning=false;
@@ -177,27 +308,149 @@ window.startTimer=function(){
       }
     }
   },1000);
-};
+}
 
-window.checkGameOver=function(){
-  if(bossGold<=0){showGameOver(true)}
-  else if(playerTimeSec<=0&&playerWater<=0){showGameOver(false)}
-};
+function checkGameOver(){
+  if(bossGold<=0){
+    showGameOver(true);
+  } else if(playerTimeSec<=0 && playerWater<=0){
+    showGameOver(false);
+  }
+}
 
-window.showGameOver=function(playerWin){
+function showGameOver(playerWin){
   if(timerRunning){clearInterval(timerInterval);timerRunning=false}
   const go=document.getElementById('gameOver');
   go.classList.add('open');
   if(playerWin){
-    document.getElementById('gameOverTitle').textContent=' 你赢了！';
-    document.getElementById('gameOverMsg').innerHTML='hold-master 金币耗尽！<br>你成功击败了大 Boss！';
+    document.getElementById('gameOverTitle').textContent='🎉 你赢了！';
+    document.getElementById('gameOverMsg').innerHTML='hold-master 金币耗尽！<br>你成功击败了大Boss！';
   }else{
     document.getElementById('gameOverTitle').textContent='💀 你输了...';
     document.getElementById('gameOverMsg').innerHTML='时间和水都耗尽了...<br>hold-master 依然是王者';
   }
+}
+
+// ========== 下注（仅玩家操作） ==========
+window.selectBetType=function(type){
+  localBetType=type; localSelectedChip=0;
+  document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  renderBetChips();
+  checkBetReady();
 };
 
-// 连点标题 5 次打开模式面板
+window.renderBetChips=function(){
+  const el=document.getElementById('betAmount');el.innerHTML='';
+  if(localBetType==='time'){
+    [10,20,30,60].forEach(v=>{
+      const d=document.createElement('div');d.className='chip c'+v;d.textContent=v;
+      d.onclick=()=>selectChip(v);el.appendChild(d);
+    });
+  }else{
+    [1,2,3].forEach(v=>{
+      const d=document.createElement('div');d.className='chip c'+v;d.textContent=v+'杯';
+      d.onclick=()=>selectChip(v);el.appendChild(d);
+    });
+  }
+};
+
+window.selectChip=function(val){
+  localSelectedChip=val;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
+  event.target.classList.add('selected');
+  checkBetReady();
+};
+
+window.checkBetReady=function(){
+  document.getElementById('confirmBet').disabled=!(localBetType&&localSelectedChip);
+};
+
+window.confirmBet=function(){
+  if(!localBetType||!localSelectedChip) return;
+  // 写入 Firebase，两端都会响应
+  set(ref(db,'game/betType'), localBetType);
+  set(ref(db,'game/betAmount'), localSelectedChip);
+  set(ref(db,'game/phase'), 'roll2');
+  localBetType=''; localSelectedChip=0;
+};
+
+// ========== 主按钮（玩家操作） ==========
+window.onMainBtn=function(){
+  if(G.phase==='waiting' || G.phase==='result' || G.phase==='idle'){
+    // 开始新一轮
+    if(!isBoss){
+      startNewRound();
+    }
+  }
+};
+
+function startNewRound(){
+  const newRound = (G.round||0) + 1;
+  // 重置骰子
+  set(ref(db,'game'), {
+    phase: 'roll1',
+    round: newRound,
+    playerName: playerName,
+    playerD1: 0, playerD2: 0,
+    bossD1: 0, bossD2: 0,
+    betType: '', betAmount: 0,
+    resultOutcome: '', resultText: '', resultDetail: ''
+  });
+}
+
+// ========== Boss 开始游戏 ==========
+window.bossStartGame=function(){
+  set(ref(db,'boss/gameStarted'), true);
+  set(ref(db,'boss/gold'), 60);
+  set(ref(db,'boss/mode'), secretMode);
+  set(ref(db,'game'), {
+    phase: 'waiting',
+    round: 0,
+    playerName: '',
+    playerD1:0,playerD2:0,bossD1:0,bossD2:0,
+    betType:'',betAmount:0,
+    resultOutcome:'',resultText:'',resultDetail:''
+  });
+  document.getElementById('bossSetup').style.display='none';
+  showGameTable();
+  document.getElementById('phaseLabel').textContent='等待挑战者加入...';
+  document.getElementById('bossStatusText').textContent='游戏进行中，等待玩家...';
+};
+
+// ========== 玩家加入 ==========
+window.playerJoinGame=function(){
+  const pi=document.getElementById('playerNameInput').value.trim();
+  playerName=pi||'挑战者';
+  playerId='player_'+Date.now();
+  document.getElementById('playerLabel').textContent='🎮 '+playerName;
+  document.getElementById('playerSetup').style.display='none';
+
+  set(ref(db,'players/'+playerId),{
+    name:playerName,
+    time:playerTimeSec,
+    water:playerWater,
+    status:'active'
+  });
+
+  // 断开连接时自动移除
+  onDisconnect(ref(db,'players/'+playerId)).remove();
+};
+
+// ========== 添加历史记录 ==========
+function addHistory(outcome){
+  const hist=document.getElementById('history'),list=document.getElementById('histList');
+  hist.classList.add('visible');
+  const ti=G.betType==='time'?'⏱️':'💧';
+  const txt={win:'胜',lose:'负',tie:'平局'};
+  const pt=G.playerD1+G.playerD2, bt=G.bossD1+G.bossD2;
+  const item=document.createElement('div');
+  item.className='hist-item';
+  item.innerHTML='<span class="h-round">#'+G.round+'</span><span class="h-detail">'+G.playerName+' '+pt+' vs '+bt+' boss</span><span class="h-result '+outcome+'">'+txt[outcome]+' '+ti+G.betAmount+'</span>';
+  list.insertBefore(item,list.firstChild);
+}
+
+// ========== 连点标题5次打开模式面板 ==========
 let tc=0,tt=null;
 document.getElementById('title').addEventListener('click',()=>{
   tc++;
@@ -213,258 +466,63 @@ document.getElementById('title').addEventListener('click',()=>{
   }
 });
 
-window.controlledRoll=function(isPlayer,round){
-  if(secretMode===0)return isPlayer?randInt(4,6):randInt(1,3);
-  if(secretMode===1)return isPlayer?randInt(1,3):randInt(4,6);
-  if(secretMode===2&&round<=5)return isPlayer?randInt(3,6):randInt(1,4);
-  return randInt(1,6);
-};
-
-window.selectBetType=function(type){
-  betType=type;selectedChip=0;
-  document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('selected'));
-  event.currentTarget.classList.add('selected');
-  renderBetChips();checkBetReady();
-};
-
-window.renderBetChips=function(){
-  const el=document.getElementById('betAmount');el.innerHTML='';
-  if(betType==='time'){
-    [10,20,30,60].forEach(v=>{
-      const d=document.createElement('div');d.className='chip c'+v;d.textContent=v;
-      d.onclick=()=>selectChip(v);el.appendChild(d);
-    });
-  }else{
-    [1,2,3].forEach(v=>{
-      const d=document.createElement('div');d.className='chip c'+v;d.textContent=v+'杯';
-      d.onclick=()=>selectChip(v);el.appendChild(d);
-    });
-  }
-};
-
-window.selectChip=function(val){
-  selectedChip=val;
-  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
-  event.target.classList.add('selected');
-  checkBetReady();
-};
-
-window.checkBetReady=function(){
-  document.getElementById('confirmBet').disabled=!(betType&&selectedChip);
-};
-
-window.confirmBet=function(){
-  if(!betType||!selectedChip)return;
-  betAmount=selectedChip;
-  document.getElementById('betArea').classList.remove('visible');
-  document.getElementById('phaseLabel').textContent='投第 2 个骰子...';
-  setTimeout(()=>startPhase2(),500);
-};
-
-// Boss 开始游戏
-window.bossStartGame=function(){
-  bossGameStarted=true;
-  set(ref(db,'boss/gameStarted'),true);
-  set(ref(db,'boss/gold'),60);
-  set(ref(db,'boss/mode'),secretMode);
-  document.getElementById('bossSetup').style.display='none';
-  document.getElementById('gameTable').style.display='block';
-  document.getElementById('rateInfo').style.display='block';
-  document.getElementById('mainBtn').style.display='block';
-  document.getElementById('phaseLabel').textContent='等待挑战者...';
-  document.getElementById('bossStatusText').textContent='游戏进行中...';
-  updateDisplay();
-};
-
-// 玩家加入游戏
-window.playerJoinGame=function(){
-  const pi=document.getElementById('playerNameInput').value.trim();
-  playerName=pi||'挑战者';
-  playerId='player_'+Date.now();
-  document.getElementById('playerLabel').textContent='🎮 '+playerName;
-  document.getElementById('playerSetup').style.display='none';
-  
-  set(ref(db,'players/'+playerId),{
-    name:playerName,
-    time:playerTimeSec,
-    water:playerWater,
-    status:'active'
+// ========== Firebase 监听（核心同步逻辑） ==========
+function initSync(){
+  // 监听模式
+  onValue(ref(db,'boss/mode'),(snap)=>{
+    secretMode=snap.val()||3;
+    updateModeDisplay();
+    setConnStatus(true);
   });
-  
-  // 检查 Boss 是否已开始
-  onValue(ref(db,'boss/gameStarted'),(snap)=>{
-    bossGameStarted=snap.val();
-    if(bossGameStarted){
-      document.getElementById('waitingSetup').style.display='none';
-      document.getElementById('gameTable').style.display='block';
-      document.getElementById('rateInfo').style.display='block';
-      document.getElementById('mainBtn').style.display='block';
-      document.getElementById('phaseLabel').textContent='点击下方开始挑战';
-      startTimer();
-      gameStarted=true;
-    }else{
-      document.getElementById('playerSetup').style.display='none';
-      document.getElementById('waitingSetup').style.display='flex';
-    }
+
+  // 监听 Boss 金币
+  onValue(ref(db,'boss/gold'),(snap)=>{
+    bossGold=snap.val()||60;
+    document.getElementById('bossGoldDisplay').textContent=bossGold;
   });
-  
-  window.addEventListener('beforeunload',()=>{
-    remove(ref(db,'players/'+playerId));
+
+  // 监听游戏状态（核心同步）
+  onValue(ref(db,'game'),(snap)=>{
+    if(!snap.exists()) return;
+    const data=snap.val();
+    const oldPhase=G.phase;
+    G={...G,...data};
+
+    // 检测阶段变化，触发动画
+    if(G.phase==='roll1' && oldPhase!=='roll1'){
+      // 开始投骰子动画
+      animateRoll1();
+    } else if(G.phase==='roll2' && oldPhase!=='roll2'){
+      animateRoll2();
+    } else if(G.phase==='result' && oldPhase!=='result'){
+      // 计算结果（如果还没计算）
+      if(!G.resultOutcome){
+        calculateAndWriteResult();
+      } else {
+        // 结果已计算，添加历史
+        addHistory(G.resultOutcome);
+        // 喝水提醒（仅玩家端）
+        if(!isBoss && G.betType==='water' && G.resultOutcome==='lose'){
+          setTimeout(()=>showWaterAlert(playerName+'，喝了'+G.betAmount+'杯水！'),500);
+        }
+        // 检查游戏结束
+        setTimeout(()=>checkGameOver(),1000);
+      }
+    }
+
+    // 如果玩家加入且游戏在 waiting，开始计时
+    if(G.phase==='waiting' && G.playerName && !timerRunning){
+      if(!isBoss){
+        startTimer();
+      }
+    }
+
+    renderGameUI();
   });
-};
 
-window.startRound=function(){
-  roundNum++;
-  playerD1=playerD2=bossD1=bossD2=0;
-  betType='';betAmount=0;selectedChip=0;
-  renderDice(document.getElementById('playerDice1'),0);
-  renderDice(document.getElementById('playerDice2'),0);
-  renderDice(document.getElementById('bossDice1'),0);
-  renderDice(document.getElementById('bossDice2'),0);
-  document.getElementById('playerSubtotal').textContent='';
-  document.getElementById('bossSubtotal').textContent='';
-  document.getElementById('resultBanner').className='result-banner';
-  document.getElementById('resultBanner').textContent='';
-  document.getElementById('resultDetail').className='result-detail';
-  document.getElementById('betArea').classList.remove('visible');
-  document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('selected'));
-  document.getElementById('mainBtn').style.display='none';
-  document.getElementById('phaseLabel').textContent='投第 1 个骰子...';
-  setTimeout(()=>startPhase1(),500);
-};
-
-window.startPhase1=function(){
-  phase='roll1';
-  const pe=document.getElementById('playerDice1'),be=document.getElementById('bossDice1');
-  pe.classList.add('rolling');be.classList.add('rolling');
-  let f=0;
-  const iv=setInterval(()=>{
-    renderDice(pe,randInt(1,6));renderDice(be,randInt(1,6));
-    f++;
-    if(f>7){
-      clearInterval(iv);
-      pe.classList.remove('rolling');be.classList.remove('rolling');
-      playerD1=controlledRoll(true,roundNum);
-      bossD1=controlledRoll(false,roundNum);
-      renderDice(pe,playerD1);renderDice(be,bossD1);
-      document.getElementById('playerSubtotal').textContent='当前：'+playerD1;
-      document.getElementById('bossSubtotal').textContent='当前：'+bossD1;
-      setTimeout(()=>enterBetting(),600);
-    }
-  },80);
-};
-
-window.enterBetting=function(){
-  phase='betting';
-  document.getElementById('phaseLabel').textContent='💰 下注阶段';
-  document.getElementById('betArea').classList.add('visible');
-  document.getElementById('betHint').textContent='当前点数 → '+playerName+': '+playerD1+'  hold-master: '+bossD1+'  (还有 1 个骰子未投)';
-  renderBetChips();
-};
-
-window.startPhase2=function(){
-  phase='roll2';
-  document.getElementById('mainBtn').style.display='none';
-  const pe=document.getElementById('playerDice2'),be=document.getElementById('bossDice2');
-  pe.classList.add('rolling');be.classList.add('rolling');
-  let f=0;
-  const iv=setInterval(()=>{
-    renderDice(pe,randInt(1,6));renderDice(be,randInt(1,6));
-    f++;
-    if(f>7){
-      clearInterval(iv);
-      pe.classList.remove('rolling');be.classList.remove('rolling');
-      playerD2=controlledRoll(true,roundNum);
-      bossD2=controlledRoll(false,roundNum);
-      renderDice(pe,playerD2);renderDice(be,bossD2);
-      const pt=playerD1+playerD2,bt=bossD1+bossD2;
-      document.getElementById('playerSubtotal').textContent='总计：'+pt;
-      document.getElementById('bossSubtotal').textContent='总计：'+bt;
-      setTimeout(()=>showResult(pt,bt),500);
-    }
-  },80);
-};
-
-window.showResult=function(pt,bt){
-  phase='result';
-  const banner=document.getElementById('resultBanner'),detail=document.getElementById('resultDetail');
-  let outcome,resultText,detailText;
-  
-  if(pt>bt){
-    outcome='win';
-    resultText='🎉 '+playerName+' 赢了这局！';
-    if(betType==='time'){
-      const goldCost=Math.ceil(betAmount/2);
-      bossGold=Math.max(0,bossGold-goldCost);
-      detailText='押'+betAmount+'分钟 → hold-master 输'+goldCost+'金币';
-    }else{
-      const goldCost=betAmount*3;
-      bossGold=Math.max(0,bossGold-goldCost);
-      detailText='押'+betAmount+'杯水 → hold-master 输'+goldCost+'金币';
-    }
-  }else if(pt<bt){
-    outcome='lose';
-    resultText='😢 '+playerName+' 输了这局...';
-    if(betType==='time'){
-      playerTimeSec+=betAmount*60;
-      detailText='押'+betAmount+'分钟 → 你的时间增加'+betAmount+'分钟';
-    }else{
-      playerWater=Math.max(0,playerWater-betAmount);
-      detailText='押'+betAmount+'杯水 → 你喝了'+betAmount+'杯水';
-      setTimeout(()=>showWaterAlert(playerName+'，喝了'+betAmount+'杯水！'),500);
-    }
-  }else{
-    outcome='tie';
-    resultText='⚖️ 平局！';
-    detailText='点数相同，无变化';
-  }
-  
-  banner.textContent=resultText;
-  banner.className='result-banner visible '+outcome;
-  detail.textContent=playerName+' '+playerD1+'+'+playerD2+'='+pt+' vs '+bossD1+'+'+bossD2+'='+bt+' hold-master | '+detailText;
-  detail.className='result-detail visible';
-  
-  updateDisplay();
-  addHistory(pt,bt,outcome);
-  
-  if(!isBoss){
-    update(ref(db,'players/'+playerId),{time:playerTimeSec,water:playerWater});
-  }
-  set(ref(db,'boss/gold'),bossGold);
-  
-  document.getElementById('phaseLabel').textContent='本局结束';
-  document.getElementById('mainBtn').style.display='block';
-  document.getElementById('mainBtn').textContent='🎲 继续挑战';
-  
-  setTimeout(()=>checkGameOver(),1000);
-};
-
-window.addHistory=function(pt,bt,outcome){
-  const hist=document.getElementById('history'),list=document.getElementById('histList');
-  hist.classList.add('visible');
-  const ti=betType==='time'?'⏱️':'💧';
-  const txt={win:'胜',lose:'负',tie:'平局'};
-  const item=document.createElement('div');
-  item.className='hist-item';
-  item.innerHTML='<span class="h-round">#'+roundNum+'</span><span class="h-detail">'+playerName+' '+pt+' vs '+bt+' boss</span><span class="h-result '+outcome+'">'+txt[outcome]+' '+ti+betAmount+'</span>';
-  list.insertBefore(item,list.firstChild);
-};
-
-// 初始化 UI
-function initUI(){
-  renderDice(document.getElementById('playerDice1'),1);
-  renderDice(document.getElementById('playerDice2'),1);
-  renderDice(document.getElementById('bossDice1'),1);
-  renderDice(document.getElementById('bossDice2'),1);
-  document.getElementById('playerDice1').classList.add('waiting');
-  document.getElementById('playerDice2').classList.add('waiting');
-  document.getElementById('bossDice1').classList.add('waiting');
-  document.getElementById('bossDice2').classList.add('waiting');
-
-  // 显示对应界面
+  // 监听玩家数据（时间、水同步）
   if(isBoss){
-    document.getElementById('bossSetup').style.display='flex';
-    // Boss 监听在线玩家
+    // Boss 监听所有玩家
     onValue(ref(db,'players'),(snap)=>{
       const list=document.getElementById('onlinePlayerList');
       list.innerHTML='';
@@ -477,34 +535,170 @@ function initUI(){
           div.innerHTML='<span>'+p.name+'</span><span>'+formatTime(p.time)+' | 💧'+p.water+'</span>';
           list.appendChild(div);
         });
+        // 同步第一个玩家的数据到本地显示
+        const firstKey=snap.val()?Object.keys(snap.val())[0]:null;
+        if(firstKey){
+          const p=snap.val()[firstKey];
+          playerTimeSec=p.time||7200;
+          playerWater=p.water||10;
+          G.playerName=p.name||'挑战者';
+          document.getElementById('playerTimeDisplay').textContent=formatTime(playerTimeSec);
+          document.getElementById('playerWaterDisplay').textContent=playerWater;
+          document.getElementById('playerLabel').textContent='🎮 '+G.playerName;
+        }
       }else{
         document.getElementById('onlinePlayers').style.display='none';
       }
     });
+  } else {
+    // 玩家监听自己的数据
+    // （由 Firebase game/ 节点同步即可）
+  }
+}
+
+// ========== 骰子动画 ==========
+function animateRoll1(){
+  const pe=document.getElementById('playerDice1'),be=document.getElementById('bossDice1');
+  pe.classList.add('rolling');be.classList.add('rolling');
+  let f=0;
+  const iv=setInterval(()=>{
+    renderDice(pe,randInt(1,6));renderDice(be,randInt(1,6));
+    f++;
+    if(f>7){
+      clearInterval(iv);
+      pe.classList.remove('rolling');be.classList.remove('rolling');
+      // 玩家端执行 controlled roll 并写入 Firebase
+      if(!isBoss || isBoss){
+        const pd1=controlledRoll(true,G.round);
+        const bd1=controlledRoll(false,G.round);
+        set(ref(db,'game/playerD1'),pd1);
+        set(ref(db,'game/bossD1'),bd1);
+        // 延迟进入下注阶段
+        setTimeout(()=>{
+          set(ref(db,'game/phase'),'betting');
+        },600);
+      }
+    }
+  },80);
+}
+
+function animateRoll2(){
+  const pe=document.getElementById('playerDice2'),be=document.getElementById('bossDice2');
+  pe.classList.add('rolling');be.classList.add('rolling');
+  let f=0;
+  const iv=setInterval(()=>{
+    renderDice(pe,randInt(1,6));renderDice(be,randInt(1,6));
+    f++;
+    if(f>7){
+      clearInterval(iv);
+      pe.classList.remove('rolling');be.classList.remove('rolling');
+      // 写入第二颗骰子结果
+      const pd2=controlledRoll(true,G.round);
+      const bd2=controlledRoll(false,G.round);
+      set(ref(db,'game/playerD2'),pd2);
+      set(ref(db,'game/bossD2'),bd2);
+      // 延迟计算结果
+      setTimeout(()=>{
+        calculateAndWriteResult();
+      },500);
+    }
+  },80);
+}
+
+// ========== 计算结果并写入 Firebase ==========
+function calculateAndWriteResult(){
+  const pt=G.playerD1+G.playerD2;
+  const bt=G.bossD1+G.bossD2;
+  let outcome,resultText,detailText;
+  const pName=G.playerName||playerName;
+
+  if(pt>bt){
+    outcome='win';
+    resultText='🎉 '+pName+' 赢了这局！';
+    if(G.betType==='time'){
+      const goldCost=Math.ceil(G.betAmount/2);
+      bossGold=Math.max(0,bossGold-goldCost);
+      detailText='押'+G.betAmount+'分钟 → hold-master 输'+goldCost+'金币';
+    }else if(G.betType==='water'){
+      const goldCost=G.betAmount*3;
+      bossGold=Math.max(0,bossGold-goldCost);
+      detailText='押'+G.betAmount+'杯水 → hold-master 输'+goldCost+'金币';
+    }else{
+      detailText='点数: '+pName+' '+pt+' vs '+bt+' hold-master';
+    }
+  }else if(pt<bt){
+    outcome='lose';
+    resultText='😢 '+pName+' 输了这局...';
+    if(G.betType==='time'){
+      playerTimeSec+=G.betAmount*60;
+      detailText='押'+G.betAmount+'分钟 → 你的时间增加'+G.betAmount+'分钟';
+    }else if(G.betType==='water'){
+      playerWater=Math.max(0,playerWater-G.betAmount);
+      detailText='押'+G.betAmount+'杯水 → 你喝了'+G.betAmount+'杯水';
+    }else{
+      detailText='点数: '+pName+' '+pt+' vs '+bt+' hold-master';
+    }
+  }else{
+    outcome='tie';
+    resultText='⚖️ 平局！';
+    detailText='点数相同，无变化';
+  }
+
+  // 更新 Firebase
+  const updates={};
+  updates['game/resultOutcome']=outcome;
+  updates['game/resultText']=resultText;
+  updates['game/resultDetail']=pName+' '+G.playerD1+'+'+G.playerD2+'='+pt+' vs '+G.bossD1+'+'+G.bossD2+'='+bt+' hold-master | '+detailText;
+  updates['game/phase']='result';
+  updates['boss/gold']=bossGold;
+
+  // 更新玩家资源
+  if(playerId){
+    updates['players/'+playerId+'/time']=playerTimeSec;
+    updates['players/'+playerId+'/water']=playerWater;
+  }
+
+  update(ref(db),updates);
+
+  // 本地添加历史
+  addHistory(outcome);
+
+  // 喝水提醒
+  if(!isBoss && G.betType==='water' && outcome==='lose'){
+    setTimeout(()=>showWaterAlert(pName+'，喝了'+G.betAmount+'杯水！'),500);
+  }
+
+  setTimeout(()=>checkGameOver(),1000);
+}
+
+// ========== 初始化 ==========
+function initUI(){
+  renderDice(document.getElementById('playerDice1'),1);
+  renderDice(document.getElementById('playerDice2'),1);
+  renderDice(document.getElementById('bossDice1'),1);
+  renderDice(document.getElementById('bossDice2'),1);
+  document.getElementById('playerDice1').classList.add('waiting');
+  document.getElementById('playerDice2').classList.add('waiting');
+  document.getElementById('bossDice1').classList.add('waiting');
+  document.getElementById('bossDice2').classList.add('waiting');
+
+  if(isBoss){
+    document.getElementById('bossSetup').style.display='flex';
   }else{
     document.getElementById('playerSetup').style.display='flex';
   }
 
   updateModeDisplay();
+  initSync();
 }
 
-// Firebase 数据监听（带错误处理，防止页面空白）
 try {
-  onValue(ref(db,'boss/mode'),(snap)=>{
-    secretMode=snap.val()||3;
-    updateModeDisplay();
-  });
-
-  onValue(ref(db,'boss/gold'),(snap)=>{
-    bossGold=snap.val()||60;
-    document.getElementById('bossGoldDisplay').textContent=bossGold;
-  });
-
   initUI();
+  setConnStatus(true);
 } catch(e) {
-  console.error('Firebase 监听初始化失败:', e);
-  // 即使 Firebase 失败也显示 UI，避免页面空白
+  console.error('初始化失败:', e);
   initUI();
+  setConnStatus(false);
 }
 </script>
 </body>
