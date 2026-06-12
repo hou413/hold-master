@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🎲 挑战 hold-master</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);min-height:100vh;color:#fff;overflow-x:hidden;user-select:none}.container{max-width:900px;margin:0 auto;padding:20px}h1{text-align:center;font-size:2em;margin:15px 0;text-shadow:0 0 20px rgba(255,200,0,0.5);cursor:default}.hidden-mode-bar{position:fixed;top:0;left:0;right:0;height:4px;z-index:100}.hidden-mode-bar .seg{float:left;width:25%;height:100%;opacity:0;transition:opacity .3s;cursor:pointer}.hidden-mode-bar .seg:hover{opacity:.15}.hidden-mode-bar .seg.s0{background:#ffd700}.hidden-mode-bar .seg.s1{background:#ff6b6b}.hidden-mode-bar .seg.s2{background:#ff922b}.hidden-mode-bar .seg.s3{background:#74c0fc}.rate-info{text-align:center;font-size:.75em;opacity:.5;margin-bottom:10px}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);min-height:100vh;color:#fff;overflow-x:hidden;user-select:none}.container{max-width:900px;margin:0 auto;padding:20px}h1{text-align:center;font-size:2em;margin:15px 0;text-shadow:0 0 20px rgba(255,200,0,0.5);cursor:default}.rate-info{text-align:center;font-size:.75em;opacity:.5;margin-bottom:10px}
 .table{background:radial-gradient(ellipse at center,#1a5c2e 0%,#0d3318 70%,#091a0d 100%);border-radius:30px;padding:30px 20px;border:4px solid #2a1a0a;box-shadow:inset 0 0 60px rgba(0,0,0,.5),0 10px 40px rgba(0,0,0,.5)}.players{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;flex-wrap:wrap}.player-area{flex:1;min-width:250px;text-align:center}.player-area .label{font-size:1.1em;font-weight:bold;margin-bottom:8px;padding:6px 20px;border-radius:20px;display:inline-block}
 .player-area .resources{margin-bottom:10px;padding:8px 12px;background:rgba(0,0,0,.3);border-radius:12px;display:inline-block;min-width:180px}
 .player-area .resources .res-item{display:flex;align-items:center;justify-content:center;gap:6px;margin:4px 0;font-size:.95em}
@@ -14,43 +14,18 @@
 .timer-warn .res-time{animation:pulse 1s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 .player-area.boss .label{background:rgba(255,215,0,.2);color:#ffd700}.player-area.player .label{background:rgba(81,207,102,.2);color:#51cf66}.dice-row{display:flex;justify-content:center;gap:20px;margin:10px 0}.dice-slot{text-align:center}.dice-slot .slot-label{font-size:.75em;opacity:.5;margin-bottom:6px}.dice-wrap{width:90px;height:90px;perspective:500px}.dice{width:90px;height:90px;background:linear-gradient(145deg,#fff,#e0e0e0);border-radius:16px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:12px;gap:3px;box-shadow:0 6px 20px rgba(0,0,0,.5),inset 0 2px 3px rgba(255,255,255,.8);transition:transform .3s}.dice.rolling{animation:roll .5s ease-out}.dice.waiting{opacity:.3}@keyframes roll{0%{transform:rotateX(0) rotateY(0) scale(.8)}25%{transform:rotateX(180deg) rotateY(90deg) scale(1.1)}50%{transform:rotateX(360deg) rotateY(180deg) scale(.9)}75%{transform:rotateX(540deg) rotateY(270deg) scale(1.05)}100%{transform:rotateX(720deg) rotateY(360deg) scale(1)}}.dot-cell{display:flex;align-items:center;justify-content:center}.dot{width:16px;height:16px;background:radial-gradient(circle at 35% 35%,#4a4a4a,#1a1a1a);border-radius:50%;box-shadow:inset 0 2px 3px rgba(0,0,0,.5);opacity:0;transition:opacity .2s}.dot.visible{opacity:1}.subtotal{margin-top:8px;font-size:.9em;opacity:.7;min-height:22px}.center-area{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:100px;padding-top:30px}.vs-badge{font-size:2em;font-weight:bold;color:rgba(255,255,255,.2)}.phase-label{margin-top:10px;font-size:.85em;padding:4px 14px;border-radius:10px;background:rgba(255,255,255,.1);min-height:28px;text-align:center}.bet-area{margin-top:25px;text-align:center;display:none}.bet-area.visible{display:block}.bet-title{font-size:1.1em;margin-bottom:15px;color:#ffd700}.bet-type{display:flex;justify-content:center;gap:15px;margin-bottom:20px;flex-wrap:wrap}.type-btn{padding:14px 24px;border:2px solid rgba(255,255,255,.3);border-radius:14px;background:rgba(255,255,255,.05);color:#fff;font-size:1em;cursor:pointer;transition:all .2s;text-align:center}.type-btn:hover{background:rgba(255,255,255,.15)}.type-btn.selected{border-color:#ffd700;background:rgba(255,215,0,.2)}.type-btn .emoji{font-size:1.5em;display:block;margin-bottom:4px}.type-btn .desc{font-size:.75em;opacity:.7;margin-top:4px}.bet-amount{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:15px}.chip{width:55px;height:55px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:.85em;cursor:pointer;border:3px dashed rgba(255,255,255,.4);transition:all .2s}.chip:hover{transform:scale(1.1)}.chip.selected{border-style:solid;transform:scale(1.15);box-shadow:0 0 20px rgba(255,255,255,.3)}.chip.c10{background:#3498db}.chip.c20{background:#2ecc71}.chip.c30{background:#e74c3c}.chip.c60{background:#9b59b6}.chip.c1{background:#1abc9c}.chip.c2{background:#e67e22}.chip.c3{background:#c0392b}.confirm-bet{padding:14px 50px;font-size:1.1em;font-weight:bold;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:30px;cursor:pointer;transition:all .3s;box-shadow:0 4px 15px rgba(255,215,0,.4)}.confirm-bet:hover{transform:translateY(-2px)}.confirm-bet:disabled{opacity:.4;cursor:not-allowed}.main-btn{display:block;width:100%;max-width:280px;margin:20px auto 0;padding:16px;font-size:1.2em;font-weight:bold;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:30px;cursor:pointer;transition:all .3s;box-shadow:0 5px 20px rgba(255,215,0,.4)}.main-btn:hover:not(:disabled){transform:translateY(-2px)}.main-btn:disabled{opacity:.4;cursor:not-allowed}.result-banner{text-align:center;font-size:1.4em;font-weight:bold;margin:20px 0 5px;min-height:40px;display:none}.result-banner.visible{display:block}.result-banner.win{color:#51cf66;text-shadow:0 0 20px rgba(81,207,102,.5)}.result-banner.lose{color:#ff6b6b;text-shadow:0 0 20px rgba(255,107,107,.5)}.result-banner.tie{color:#ffd43b}.result-detail{text-align:center;font-size:.9em;opacity:.7;margin-bottom:10px;display:none}.result-detail.visible{display:block}.history{margin-top:20px;background:rgba(0,0,0,.3);border-radius:16px;padding:14px;max-height:180px;overflow-y:auto;display:none}.history.visible{display:block}.history h3{font-size:.9em;opacity:.6;margin-bottom:8px}.hist-item{display:flex;justify-content:space-between;padding:6px 8px;border-bottom:1px solid rgba(255,255,255,.05);font-size:.8em}.hist-item:last-child{border:none}.hist-item .h-round{opacity:.4;width:40px}.hist-item .h-detail{flex:1;text-align:center}.hist-item .h-result{width:80px;text-align:right;font-weight:bold}.hist-item .h-result.win{color:#51cf66}.hist-item .h-result.lose{color:#ff6b6b}.hist-item .h-result.tie{color:#ffd43b}
-.secret-panel{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.8);background:rgba(20,15,40,.98);border:1px solid rgba(255,215,0,.3);border-radius:20px;padding:25px;z-index:200;opacity:0;pointer-events:none;transition:all .3s;min-width:280px}.secret-panel.open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}.secret-panel h3{text-align:center;margin-bottom:15px;color:#ffd700;font-size:1em}.secret-panel .opt{display:block;width:100%;padding:12px;margin-bottom:8px;border:1px solid rgba(255,255,255,.15);border-radius:10px;background:rgba(255,255,255,.05);color:#fff;font-size:.95em;cursor:pointer;text-align:left;transition:all .2s}.secret-panel .opt:hover{background:rgba(255,255,255,.15)}.secret-panel .opt.active{border-color:#ffd700;background:rgba(255,215,0,.15)}.secret-panel .close-btn{display:block;margin:10px auto 0;padding:8px 30px;border:1px solid rgba(255,255,255,.2);border-radius:20px;background:none;color:#fff;cursor:pointer;font-size:.85em}.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:199;opacity:0;pointer-events:none;transition:opacity .3s}.overlay.open{opacity:1;pointer-events:auto}
-.name-setup{display:flex;justify-content:center;align-items:center;min-height:60vh}.setup-box{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:30px;min-width:320px;text-align:center}.setup-box h3{margin-bottom:20px;color:#ffd700;font-size:1.3em}.setup-row{margin-bottom:15px;text-align:left}.setup-row label{display:block;font-size:.9em;opacity:.8;margin-bottom:6px}.setup-row input{width:100%;padding:10px 14px;border:1px solid rgba(255,255,255,.2);border-radius:10px;background:rgba(0,0,0,.3);color:#fff;font-size:1em;outline:none}.setup-row input:focus{border-color:#ffd700}.setup-btn{margin-top:10px;padding:12px 40px;font-size:1.1em;font-weight:bold;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:25px;cursor:pointer;transition:all .3s;box-shadow:0 4px 15px rgba(255,215,0,.4)}.setup-btn:hover{transform:translateY(-2px)}
-.boss-setup{display:flex;justify-content:center;align-items:center;min-height:60vh}.boss-box{background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.3);border-radius:20px;padding:30px;min-width:320px;text-align:center}.boss-box h3{margin-bottom:20px;color:#ffd700;font-size:1.3em}.boss-info{margin-bottom:20px;padding:15px;background:rgba(0,0,0,.3);border-radius:10px;text-align:left;font-size:.9em}.boss-info p{margin-bottom:8px}
 .water-alert{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.8);background:rgba(20,15,40,.98);border:2px solid #74c0fc;border-radius:20px;padding:30px;z-index:300;opacity:0;pointer-events:none;transition:all .3s;text-align:center;min-width:280px}.water-alert.open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}.water-alert .emoji{font-size:3em;margin-bottom:15px}.water-alert .msg{font-size:1.2em;margin-bottom:20px;color:#74c0fc}.water-alert .close-btn{padding:10px 30px;border:1px solid #74c0fc;border-radius:20px;background:none;color:#74c0fc;cursor:pointer;font-size:1em}
 .game-over{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:400;display:none;justify-content:center;align-items:center;flex-direction:column}.game-over.open{display:flex}.game-over .title{font-size:3em;margin-bottom:20px}.game-over .msg{font-size:1.5em;margin-bottom:30px;text-align:center;line-height:1.6}.game-over .restart-btn{padding:16px 50px;font-size:1.2em;font-weight:bold;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:30px;cursor:pointer}
-.online-players{margin-top:15px;padding:10px;background:rgba(0,0,0,.3);border-radius:10px;max-height:150px;overflow-y:auto}.online-players h4{font-size:.9em;opacity:.7;margin-bottom:8px}.online-player{padding:6px 10px;margin:4px 0;background:rgba(255,255,255,.05);border-radius:8px;font-size:.85em;display:flex;justify-content:space-between}
-.boss-status{margin-top:15px;padding:10px;background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.3);border-radius:10px;text-align:center}.boss-status .status-text{font-size:.9em;opacity:.8}
-.conn-status{position:fixed;bottom:10px;right:10px;font-size:.75em;padding:4px 10px;border-radius:10px;background:rgba(0,0,0,.5);opacity:.6}
-.conn-status.ok{color:#51cf66}.conn-status.err{color:#ff6b6b}
+.name-setup{display:flex;justify-content:center;align-items:center;min-height:60vh}.setup-box{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:30px;min-width:320px;text-align:center}.setup-box h3{margin-bottom:20px;color:#ffd700;font-size:1.3em}.setup-row{margin-bottom:15px;text-align:left}.setup-row label{display:block;font-size:.9em;opacity:.8;margin-bottom:6px}.setup-row input{width:100%;padding:10px 14px;border:1px solid rgba(255,255,255,.2);border-radius:10px;background:rgba(0,0,0,.3);color:#fff;font-size:1em;outline:none}.setup-row input:focus{border-color:#ffd700}.setup-btn{margin-top:10px;padding:12px 40px;font-size:1.1em;font-weight:bold;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:25px;cursor:pointer;transition:all .3s;box-shadow:0 4px 15px rgba(255,215,0,.4)}.setup-btn:hover{transform:translateY(-2px)}
+.waiting-setup{display:flex;justify-content:center;align-items:center;min-height:60vh}
 @media(max-width:600px){.players{flex-direction:column;align-items:center}.center-area{padding-top:10px}.dice-wrap,.dice{width:70px;height:70px;padding:8px}.dot{width:12px;height:12px}h1{font-size:1.4em}}
 </style>
 </head>
 <body>
-<div class="hidden-mode-bar" id="secretBar"><div class="seg s0" onclick="setSecretMode(0)"></div><div class="seg s1" onclick="setSecretMode(1)"></div><div class="seg s2" onclick="setSecretMode(2)"></div><div class="seg s3" onclick="setSecretMode(3)"></div></div>
-<div class="overlay" id="overlay" onclick="closeSecret()"></div>
-<div class="secret-panel" id="secretPanel"><h3>🔧 难度调节</h3><button class="opt" onclick="setSecretMode(0)">👑 你必赢（boss容易输）</button><button class="opt" onclick="setSecretMode(1)">💀 boss必赢</button><button class="opt" onclick="setSecretMode(2)">🔥 5局内你大概率赢</button><button class="opt" onclick="setSecretMode(3)">🎯 纯随机</button><button class="close-btn" onclick="closeSecret()">关闭</button></div>
 <div class="water-alert" id="waterAlert"><div class="emoji">💧</div><div class="msg" id="waterAlertMsg">喝一杯水！</div><button class="close-btn" onclick="closeWaterAlert()">知道了</button></div>
 <div class="game-over" id="gameOver"><div class="title" id="gameOverTitle"></div><div class="msg" id="gameOverMsg"></div><button class="restart-btn" onclick="location.reload()">重新开始</button></div>
 <div class="container">
-<h1 id="title">🎲 挑战 hold-master</h1>
-
-<!-- Boss 设置界面 -->
-<div class="boss-setup" id="bossSetup" style="display:none">
-<div class="boss-box">
-<h3>👑 hold-master 控制台</h3>
-<div class="boss-info">
-<p>💰 初始金币: <strong>60</strong></p>
-<p>汇率: 1金币 = 2分钟 | 1杯水 = 6金币</p>
-<p>当前模式: <strong id="bossModeDisplay">🎯 纯随机</strong></p>
-</div>
-<div class="boss-status">
-<div class="status-text" id="bossStatusText">等待开始...</div>
-</div>
-<button class="setup-btn" id="bossStartBtn" onclick="bossStartGame()">🎮 开始游戏</button>
-<div class="online-players" id="onlinePlayers" style="display:none;margin-top:15px"><h4>🎮 在线玩家</h4><div id="onlinePlayerList"></div></div>
-</div>
-</div>
+<h1>🎲 挑战 hold-master</h1>
 
 <!-- 玩家设置界面 -->
 <div class="name-setup" id="playerSetup" style="display:none">
@@ -64,10 +39,11 @@
 </div>
 </div>
 
-<!-- 等待 Boss 开始界面 -->
-<div class="name-setup" id="waitingSetup" style="display:none">
+<!-- 等待界面 -->
+<div class="waiting-setup" id="waitingSetup" style="display:none">
 <div class="setup-box">
-<h3>⏳ 等待 Boss 开始游戏...</h3>
+<h3>⏳ 等待游戏开始...</h3>
+<p style="opacity:.7;margin-top:15px">游戏即将开始，请稍候</p>
 </div>
 </div>
 
@@ -98,9 +74,8 @@
 <div class="result-banner" id="resultBanner"></div><div class="result-detail" id="resultDetail"></div>
 <button class="main-btn" id="mainBtn" onclick="onMainBtn()" style="display:none">🎲 开始挑战</button>
 </div>
-<div class="history" id="history"><h3>📋 历史记录</h3><div id="histList"></div></div>
+<div class="history" id="history"><h3> 历史记录</h3><div id="histList"></div></div>
 </div>
-<div class="conn-status" id="connStatus">连接中...</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -120,15 +95,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// ========== 全局状态（全部从 Firebase 同步） ==========
-let isBoss = false;
+// ========== 全局状态 ==========
 let playerId = null;
 let playerName = '挑战者';
 let secretMode = 3;
 
-// 游戏状态（全部从 Firebase game/ 节点同步）
+// 游戏状态（全部从 Firebase 同步）
 let G = {
-  phase: 'idle',       // idle | waiting | roll1 | betting | roll2 | result
+  phase: 'idle',
   round: 0,
   playerName: '',
   playerD1: 0, playerD2: 0,
@@ -142,47 +116,20 @@ let playerTimeSec = 7200;
 let playerWater = 10;
 let timerInterval = null, timerRunning = false;
 let localBetType = '', localSelectedChip = 0;
+let historyAdded = new Set(); // 防止重复添加历史
 
 const DP={1:[4],2:[2,6],3:[2,4,6],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
-const MN=['👑 你必赢','💀 boss必赢','🔥 5局内你赢','🎯 纯随机'];
-
-const urlParams = new URLSearchParams(window.location.search);
-isBoss = urlParams.get('boss') === '1';
+const MN=['👑 你必赢','💀 boss必赢',' 5局内你赢','🎯 纯随机'];
 
 // ========== 工具函数 ==========
 window.formatTime=function(sec){const m=Math.floor(sec/60),s=sec%60;return(m<10?'0'+m:m)+':'+(s<10?'0'+s:s)};
 window.renderDice=function(el,v){el.className='dice';el.innerHTML='';if(!v){el.classList.add('waiting');return}const p=DP[v]||[];for(let i=0;i<9;i++){const c=document.createElement('div');c.className='dot-cell';const d=document.createElement('div');d.className='dot'+(p.includes(i)?' visible':'');c.appendChild(d);el.appendChild(c)}};
 window.randInt=function(a,b){return Math.floor(Math.random()*(b-a+1))+a};
 
-function setConnStatus(ok){
-  const el=document.getElementById('connStatus');
-  el.textContent=ok?'✅ 已同步':'❌ 连接断开';
-  el.className='conn-status '+(ok?'ok':'err');
-}
-
-// ========== 模式显示（仅 Boss 端） ==========
-function updateModeDisplay(){
-  const modeText=MN[secretMode]||'🎯 纯随机';
-  const bossEl=document.getElementById('bossModeDisplay');
-  if(bossEl) bossEl.textContent=modeText;
-}
-
-window.setSecretMode=function(m){
-  secretMode=m;
-  updateModeDisplay();
-  closeSecret();
-  const b=document.getElementById('secretBar');
-  b.style.boxShadow='0 0 20px rgba(255,215,0,.8)';
-  setTimeout(()=>b.style.boxShadow='none',500);
-  if(isBoss){
-    set(ref(db,'boss/mode'),m);
-  }
-};
-window.closeSecret=function(){document.getElementById('secretPanel').classList.remove('open');document.getElementById('overlay').classList.remove('open')};
-window.showWaterAlert=function(msg){document.getElementById('waterAlertMsg').textContent=msg;document.getElementById('waterAlert').classList.add('open')};
 window.closeWaterAlert=function(){document.getElementById('waterAlert').classList.remove('open')};
+window.showWaterAlert=function(msg){document.getElementById('waterAlertMsg').textContent=msg;document.getElementById('waterAlert').classList.add('open')};
 
-// ========== 骰子控制（根据模式） ==========
+// ========== 骰子控制 ==========
 function controlledRoll(isPlayer, round){
   if(secretMode===0) return isPlayer?randInt(4,6):randInt(1,3);
   if(secretMode===1) return isPlayer?randInt(1,3):randInt(4,6);
@@ -190,38 +137,28 @@ function controlledRoll(isPlayer, round){
   return randInt(1,6);
 }
 
-// ========== UI 渲染（根据 Firebase 状态） ==========
+// ========== UI 渲染 ==========
 function renderGameUI(){
   const phase = G.phase;
 
-  // 更新玩家标签
   if(G.playerName){
     document.getElementById('playerLabel').textContent='🎮 '+G.playerName;
   }
 
-  // 更新资源显示
   document.getElementById('bossGoldDisplay').textContent=bossGold;
   document.getElementById('playerTimeDisplay').textContent=formatTime(playerTimeSec);
   document.getElementById('playerWaterDisplay').textContent=playerWater;
 
-  // 计时器警告
   const pa=document.getElementById('playerArea');
   if(playerTimeSec<=180){pa.querySelector('.resources').classList.add('timer-warn')}
   else{pa.querySelector('.resources').classList.remove('timer-warn')}
 
-  // 根据 phase 更新 UI
-  if(phase==='idle'){
-    // Boss 显示设置界面，玩家显示设置或等待
-    return;
-  }
+  if(phase==='idle') return;
 
   if(phase==='waiting'){
-    // 游戏已就绪，等待玩家
     showGameTable();
-    document.getElementById('phaseLabel').textContent=isBoss?'等待挑战者加入...':'点击下方开始挑战';
-    document.getElementById('mainBtn').style.display=isBoss?'none':'block';
-    document.getElementById('mainBtn').textContent='🎲 开始挑战';
-    if(isBoss) document.getElementById('bossStatusText').textContent='游戏进行中，等待玩家...';
+    document.getElementById('phaseLabel').textContent='等待游戏开始...';
+    document.getElementById('mainBtn').style.display='none';
     return;
   }
 
@@ -240,10 +177,7 @@ function renderGameUI(){
     document.getElementById('betArea').classList.add('visible');
     document.getElementById('betHint').textContent='当前点数 → '+G.playerName+': '+G.playerD1+'  hold-master: '+G.bossD1+'  (还有1个骰子未投)';
     document.getElementById('mainBtn').style.display='none';
-    // 只有玩家能下注
-    if(!isBoss){
-      renderBetChips();
-    }
+    renderBetChips();
   }
 
   if(phase==='roll2'){
@@ -265,7 +199,6 @@ function renderGameUI(){
     document.getElementById('mainBtn').textContent='🎲 继续挑战';
   }
 
-  // 渲染骰子
   renderDice(document.getElementById('playerDice1'), G.playerD1);
   renderDice(document.getElementById('playerDice2'), G.playerD2);
   renderDice(document.getElementById('bossDice1'), G.bossD1);
@@ -279,14 +212,13 @@ function renderGameUI(){
 }
 
 function showGameTable(){
-  document.getElementById('bossSetup').style.display='none';
   document.getElementById('playerSetup').style.display='none';
   document.getElementById('waitingSetup').style.display='none';
   document.getElementById('gameTable').style.display='block';
   document.getElementById('rateInfo').style.display='block';
 }
 
-// ========== 玩家计时器（本地运行，定期同步到 Firebase） ==========
+// ========== 玩家计时器 ==========
 function startTimer(){
   if(timerRunning) return;
   timerRunning=true;
@@ -297,7 +229,6 @@ function startTimer(){
       const pa=document.getElementById('playerArea');
       if(playerTimeSec<=180){pa.querySelector('.resources').classList.add('timer-warn')}
       else{pa.querySelector('.resources').classList.remove('timer-warn')}
-      // 每5秒同步一次到 Firebase
       if(playerTimeSec%5===0 && playerId){
         update(ref(db,'players/'+playerId),{time:playerTimeSec});
       }
@@ -323,7 +254,7 @@ function showGameOver(playerWin){
   const go=document.getElementById('gameOver');
   go.classList.add('open');
   if(playerWin){
-    document.getElementById('gameOverTitle').textContent='🎉 你赢了！';
+    document.getElementById('gameOverTitle').textContent=' 你赢了！';
     document.getElementById('gameOverMsg').innerHTML='hold-master 金币耗尽！<br>你成功击败了大Boss！';
   }else{
     document.getElementById('gameOverTitle').textContent='💀 你输了...';
@@ -331,7 +262,7 @@ function showGameOver(playerWin){
   }
 }
 
-// ========== 下注（仅玩家操作） ==========
+// ========== 下注 ==========
 window.selectBetType=function(type){
   localBetType=type; localSelectedChip=0;
   document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('selected'));
@@ -368,26 +299,21 @@ window.checkBetReady=function(){
 
 window.confirmBet=function(){
   if(!localBetType||!localSelectedChip) return;
-  // 写入 Firebase，两端都会响应
   set(ref(db,'game/betType'), localBetType);
   set(ref(db,'game/betAmount'), localSelectedChip);
   set(ref(db,'game/phase'), 'roll2');
   localBetType=''; localSelectedChip=0;
 };
 
-// ========== 主按钮（玩家操作） ==========
+// ========== 主按钮 ==========
 window.onMainBtn=function(){
-  if(G.phase==='waiting' || G.phase==='result' || G.phase==='idle'){
-    // 开始新一轮
-    if(!isBoss){
-      startNewRound();
-    }
+  if(G.phase==='result' || G.phase==='idle'){
+    startNewRound();
   }
 };
 
 function startNewRound(){
   const newRound = (G.round||0) + 1;
-  // 重置骰子
   set(ref(db,'game'), {
     phase: 'roll1',
     round: newRound,
@@ -398,25 +324,6 @@ function startNewRound(){
     resultOutcome: '', resultText: '', resultDetail: ''
   });
 }
-
-// ========== Boss 开始游戏 ==========
-window.bossStartGame=function(){
-  set(ref(db,'boss/gameStarted'), true);
-  set(ref(db,'boss/gold'), 60);
-  set(ref(db,'boss/mode'), secretMode);
-  set(ref(db,'game'), {
-    phase: 'waiting',
-    round: 0,
-    playerName: '',
-    playerD1:0,playerD2:0,bossD1:0,bossD2:0,
-    betType:'',betAmount:0,
-    resultOutcome:'',resultText:'',resultDetail:''
-  });
-  document.getElementById('bossSetup').style.display='none';
-  showGameTable();
-  document.getElementById('phaseLabel').textContent='等待挑战者加入...';
-  document.getElementById('bossStatusText').textContent='游戏进行中，等待玩家...';
-};
 
 // ========== 玩家加入 ==========
 window.playerJoinGame=function(){
@@ -433,12 +340,17 @@ window.playerJoinGame=function(){
     status:'active'
   });
 
-  // 断开连接时自动移除
   onDisconnect(ref(db,'players/'+playerId)).remove();
+  
+  document.getElementById('waitingSetup').style.display='flex';
 };
 
-// ========== 添加历史记录 ==========
+// ========== 历史记录 ==========
 function addHistory(outcome){
+  const roundKey = G.round+'_'+G.playerName;
+  if(historyAdded.has(roundKey)) return;
+  historyAdded.add(roundKey);
+
   const hist=document.getElementById('history'),list=document.getElementById('histList');
   hist.classList.add('visible');
   const ti=G.betType==='time'?'⏱️':'💧';
@@ -450,110 +362,61 @@ function addHistory(outcome){
   list.insertBefore(item,list.firstChild);
 }
 
-// ========== 连点标题5次打开模式面板 ==========
-let tc=0,tt=null;
-document.getElementById('title').addEventListener('click',()=>{
-  tc++;
-  clearTimeout(tt);
-  tt=setTimeout(()=>tc=0,2000);
-  if(tc>=5){
-    tc=0;
-    document.getElementById('secretPanel').classList.add('open');
-    document.getElementById('overlay').classList.add('open');
-    document.querySelectorAll('.secret-panel .opt').forEach((o,i)=>{
-      o.classList.toggle('active',i===secretMode);
-    });
-  }
-});
-
-// ========== Firebase 监听（核心同步逻辑） ==========
+// ========== Firebase 监听 ==========
 function initSync(){
-  // 监听模式
   onValue(ref(db,'boss/mode'),(snap)=>{
     secretMode=snap.val()||3;
-    updateModeDisplay();
-    setConnStatus(true);
   });
 
-  // 监听 Boss 金币
   onValue(ref(db,'boss/gold'),(snap)=>{
     bossGold=snap.val()||60;
     document.getElementById('bossGoldDisplay').textContent=bossGold;
   });
 
-  // 监听游戏状态（核心同步）
   onValue(ref(db,'game'),(snap)=>{
     if(!snap.exists()) return;
     const data=snap.val();
     const oldPhase=G.phase;
     G={...G,...data};
 
-    // 检测阶段变化，触发动画
     if(G.phase==='roll1' && oldPhase!=='roll1'){
-      // 开始投骰子动画
       animateRoll1();
     } else if(G.phase==='roll2' && oldPhase!=='roll2'){
       animateRoll2();
     } else if(G.phase==='result' && oldPhase!=='result'){
-      // 计算结果（如果还没计算）
       if(!G.resultOutcome){
         calculateAndWriteResult();
       } else {
-        // 结果已计算，添加历史
         addHistory(G.resultOutcome);
-        // 喝水提醒（仅玩家端）
-        if(!isBoss && G.betType==='water' && G.resultOutcome==='lose'){
+        if(G.betType==='water' && G.resultOutcome==='lose'){
           setTimeout(()=>showWaterAlert(playerName+'，喝了'+G.betAmount+'杯水！'),500);
         }
-        // 检查游戏结束
         setTimeout(()=>checkGameOver(),1000);
       }
     }
 
-    // 如果玩家加入且游戏在 waiting，开始计时
     if(G.phase==='waiting' && G.playerName && !timerRunning){
-      if(!isBoss){
-        startTimer();
-      }
+      startTimer();
     }
 
     renderGameUI();
   });
 
-  // 监听玩家数据（时间、水同步）
-  if(isBoss){
-    // Boss 监听所有玩家
-    onValue(ref(db,'players'),(snap)=>{
-      const list=document.getElementById('onlinePlayerList');
-      list.innerHTML='';
-      if(snap.exists()){
-        document.getElementById('onlinePlayers').style.display='block';
-        snap.forEach((child)=>{
-          const p=child.val();
-          const div=document.createElement('div');
-          div.className='online-player';
-          div.innerHTML='<span>'+p.name+'</span><span>'+formatTime(p.time)+' | 💧'+p.water+'</span>';
-          list.appendChild(div);
-        });
-        // 同步第一个玩家的数据到本地显示
-        const firstKey=snap.val()?Object.keys(snap.val())[0]:null;
-        if(firstKey){
-          const p=snap.val()[firstKey];
-          playerTimeSec=p.time||7200;
-          playerWater=p.water||10;
-          G.playerName=p.name||'挑战者';
-          document.getElementById('playerTimeDisplay').textContent=formatTime(playerTimeSec);
-          document.getElementById('playerWaterDisplay').textContent=playerWater;
-          document.getElementById('playerLabel').textContent='🎮 '+G.playerName;
-        }
-      }else{
-        document.getElementById('onlinePlayers').style.display='none';
+  onValue(ref(db,'players'),(snap)=>{
+    if(snap.exists()){
+      const players=snap.val();
+      const keys=Object.keys(players);
+      if(keys.length>0){
+        const p=players[keys[0]];
+        playerTimeSec=p.time||7200;
+        playerWater=p.water||10;
+        if(!G.playerName) G.playerName=p.name||'挑战者';
+        document.getElementById('playerTimeDisplay').textContent=formatTime(playerTimeSec);
+        document.getElementById('playerWaterDisplay').textContent=playerWater;
+        document.getElementById('playerLabel').textContent='🎮 '+G.playerName;
       }
-    });
-  } else {
-    // 玩家监听自己的数据
-    // （由 Firebase game/ 节点同步即可）
-  }
+    }
+  });
 }
 
 // ========== 骰子动画 ==========
@@ -567,17 +430,13 @@ function animateRoll1(){
     if(f>7){
       clearInterval(iv);
       pe.classList.remove('rolling');be.classList.remove('rolling');
-      // 玩家端执行 controlled roll 并写入 Firebase
-      if(!isBoss || isBoss){
-        const pd1=controlledRoll(true,G.round);
-        const bd1=controlledRoll(false,G.round);
-        set(ref(db,'game/playerD1'),pd1);
-        set(ref(db,'game/bossD1'),bd1);
-        // 延迟进入下注阶段
-        setTimeout(()=>{
-          set(ref(db,'game/phase'),'betting');
-        },600);
-      }
+      const pd1=controlledRoll(true,G.round);
+      const bd1=controlledRoll(false,G.round);
+      set(ref(db,'game/playerD1'),pd1);
+      set(ref(db,'game/bossD1'),bd1);
+      setTimeout(()=>{
+        set(ref(db,'game/phase'),'betting');
+      },600);
     }
   },80);
 }
@@ -592,12 +451,10 @@ function animateRoll2(){
     if(f>7){
       clearInterval(iv);
       pe.classList.remove('rolling');be.classList.remove('rolling');
-      // 写入第二颗骰子结果
       const pd2=controlledRoll(true,G.round);
       const bd2=controlledRoll(false,G.round);
       set(ref(db,'game/playerD2'),pd2);
       set(ref(db,'game/bossD2'),bd2);
-      // 延迟计算结果
       setTimeout(()=>{
         calculateAndWriteResult();
       },500);
@@ -605,7 +462,7 @@ function animateRoll2(){
   },80);
 }
 
-// ========== 计算结果并写入 Firebase ==========
+// ========== 计算结果 ==========
 function calculateAndWriteResult(){
   const pt=G.playerD1+G.playerD2;
   const bt=G.bossD1+G.bossD2;
@@ -614,7 +471,7 @@ function calculateAndWriteResult(){
 
   if(pt>bt){
     outcome='win';
-    resultText='🎉 '+pName+' 赢了这局！';
+    resultText=' '+pName+' 赢了这局！';
     if(G.betType==='time'){
       const goldCost=Math.ceil(G.betAmount/2);
       bossGold=Math.max(0,bossGold-goldCost);
@@ -644,7 +501,6 @@ function calculateAndWriteResult(){
     detailText='点数相同，无变化';
   }
 
-  // 更新 Firebase
   const updates={};
   updates['game/resultOutcome']=outcome;
   updates['game/resultText']=resultText;
@@ -652,7 +508,6 @@ function calculateAndWriteResult(){
   updates['game/phase']='result';
   updates['boss/gold']=bossGold;
 
-  // 更新玩家资源
   if(playerId){
     updates['players/'+playerId+'/time']=playerTimeSec;
     updates['players/'+playerId+'/water']=playerWater;
@@ -660,11 +515,9 @@ function calculateAndWriteResult(){
 
   update(ref(db),updates);
 
-  // 本地添加历史
   addHistory(outcome);
 
-  // 喝水提醒
-  if(!isBoss && G.betType==='water' && outcome==='lose'){
+  if(G.betType==='water' && outcome==='lose'){
     setTimeout(()=>showWaterAlert(pName+'，喝了'+G.betAmount+'杯水！'),500);
   }
 
@@ -682,23 +535,15 @@ function initUI(){
   document.getElementById('bossDice1').classList.add('waiting');
   document.getElementById('bossDice2').classList.add('waiting');
 
-  if(isBoss){
-    document.getElementById('bossSetup').style.display='flex';
-  }else{
-    document.getElementById('playerSetup').style.display='flex';
-  }
-
-  updateModeDisplay();
+  document.getElementById('playerSetup').style.display='flex';
   initSync();
 }
 
 try {
   initUI();
-  setConnStatus(true);
 } catch(e) {
   console.error('初始化失败:', e);
   initUI();
-  setConnStatus(false);
 }
 </script>
 </body>
