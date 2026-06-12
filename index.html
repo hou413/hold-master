@@ -122,7 +122,7 @@ const DP={1:[4],2:[2,6],3:[2,4,6],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
 const MN=['👑 你必赢','💀 boss必赢',' 5局内你赢','🎯 纯随机'];
 
 // ========== 工具函数 ==========
-window.formatTime=function(sec){const h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),s=sec%60;const mm=(m<10?'0'+m:m),ss=(s<10?'0'+s:s);return h>0?h+':'+mm+':'+ss:mm+':'+ss};
+window.formatTime=function(sec){const m=Math.floor(sec/60),s=sec%60;return m+':'+(s<10?'0'+s:s)};
 window.renderDice=function(el,v){el.className='dice';el.innerHTML='';if(!v){el.classList.add('waiting');return}const p=DP[v]||[];for(let i=0;i<9;i++){const c=document.createElement('div');c.className='dot-cell';const d=document.createElement('div');d.className='dot'+(p.includes(i)?' visible':'');c.appendChild(d);el.appendChild(c)}};
 window.randInt=function(a,b){return Math.floor(Math.random()*(b-a+1))+a};
 
@@ -395,7 +395,8 @@ function initSync(){
       }
     }
 
-    if(G.phase==='waiting' && G.playerName && !timerRunning){
+    // 游戏开始后（phase 不是 idle）就启动计时器
+    if(G.phase !== 'idle' && G.playerName && !timerRunning && !isBoss){
       startTimer();
     }
 
