@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>🎲 HoldMaster</title>
+<title> HoldMaster</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;touch-action:none}
@@ -16,63 +16,68 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
 .topbar .title{font-weight:700;color:#ffd700;font-size:1em}
 .topbar .info{opacity:.6;font-size:.75em}
 
-.main{flex:1;display:flex;align-items:stretch;padding:10px;gap:10px;min-height:0;overflow:hidden}
+.main{flex:1;display:flex;align-items:stretch;padding:8px 10px;gap:8px;min-height:0;overflow:hidden}
 
-.col-left,.col-right{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:100px;max-width:140px}
-.col-left .label{font-size:.8em;font-weight:700;padding:5px 14px;border-radius:12px;background:rgba(255,215,0,.15);color:#ffd700;margin-bottom:8px}
-.col-right .label{font-size:.8em;font-weight:700;padding:5px 14px;border-radius:12px;background:rgba(81,207,102,.15);color:#51cf66;margin-bottom:8px}
-.resources{background:rgba(0,0,0,.3);border-radius:10px;padding:8px 12px;text-align:center;margin-bottom:8px;width:100%}
-.resources .res-item{display:flex;align-items:center;justify-content:center;gap:5px;font-size:.8em;line-height:1.6}
-.resources .res-val{font-weight:700;font-size:1.1em}
+.col-left,.col-right{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:90px;max-width:130px}
+.col-left .label{font-size:.8em;font-weight:700;padding:5px 14px;border-radius:12px;background:rgba(255,215,0,.15);color:#ffd700;margin-bottom:6px}
+.col-right .label{font-size:.8em;font-weight:700;padding:5px 14px;border-radius:12px;background:rgba(81,207,102,.15);color:#51cf66;margin-bottom:6px}
+.resources{background:rgba(0,0,0,.3);border-radius:10px;padding:6px 10px;text-align:center;margin-bottom:6px;width:100%}
+.resources .res-item{display:flex;align-items:center;justify-content:center;gap:4px;font-size:.8em;line-height:1.5}
+.resources .res-val{font-weight:700;font-size:1.05em}
 .res-gold{color:#ffd700}.res-time{color:#51cf66}.res-water{color:#74c0fc}
 .timer-warn .res-time{animation:pulse 1s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-.col-center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-width:0}
+.col-center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:0}
 
-.vs-badge{font-size:1.1em;font-weight:800;color:rgba(255,255,255,.2)}
-.phase-label{font-size:.85em;padding:6px 16px;border-radius:14px;background:rgba(255,255,255,.1);text-align:center;min-width:100px}
+.vs-badge{font-size:1em;font-weight:800;color:rgba(255,255,255,.15)}
+.phase-label{font-size:.8em;padding:4px 14px;border-radius:12px;background:rgba(255,255,255,.1);text-align:center;min-width:90px}
 
-.dice-pair{display:flex;gap:10px}
-.dice-wrap{width:54px;height:54px;perspective:300px}
-.dice{width:54px;height:54px;background:linear-gradient(145deg,#fff,#e8e8e8);border-radius:11px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:8px;gap:2px;box-shadow:0 3px 12px rgba(0,0,0,.5),inset 0 1px 2px rgba(255,255,255,.8);transition:transform .3s}
+.dice-pair{display:flex;gap:8px}
+.dice-wrap{width:50px;height:50px;perspective:300px}
+.dice{width:50px;height:50px;background:linear-gradient(145deg,#fff,#e8e8e8);border-radius:10px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:7px;gap:2px;box-shadow:0 3px 10px rgba(0,0,0,.5),inset 0 1px 2px rgba(255,255,255,.8);transition:transform .3s}
 .dice.rolling{animation:roll .5s ease-out}
 .dice.waiting{opacity:.25}
 @keyframes roll{0%{transform:rotateX(0) rotateY(0) scale(.8)}25%{transform:rotateX(180deg) rotateY(90deg) scale(1.1)}50%{transform:rotateX(360deg) rotateY(180deg) scale(.9)}75%{transform:rotateX(540deg) rotateY(270deg) scale(1.05)}100%{transform:rotateX(720deg) rotateY(360deg) scale(1)}}
 .dot-cell{display:flex;align-items:center;justify-content:center}
-.dot{width:9px;height:9px;background:radial-gradient(circle at 35% 35%,#4a4a4a,#1a1a1a);border-radius:50%;box-shadow:inset 0 1px 2px rgba(0,0,0,.5);opacity:0;transition:opacity .2s}
+.dot{width:8px;height:8px;background:radial-gradient(circle at 35% 35%,#4a4a4a,#1a1a1a);border-radius:50%;box-shadow:inset 0 1px 2px rgba(0,0,0,.5);opacity:0;transition:opacity .2s}
 .dot.visible{opacity:1}
-.subtotal{font-size:.75em;opacity:.6;margin-top:4px;text-align:center;min-height:14px}
+.subtotal{font-size:.7em;opacity:.6;margin-top:3px;text-align:center;min-height:12px}
 
-.bet-area{display:none;flex-direction:column;align-items:center;gap:8px;width:100%;max-width:320px}
+/* 中央大计时器 */
+.big-timer{font-size:2.8em;font-weight:800;color:#51cf66;text-shadow:0 0 20px rgba(81,207,102,.4);line-height:1;margin:2px 0;letter-spacing:2px}
+.big-timer.warn{color:#ff6b6b;text-shadow:0 0 20px rgba(255,107,107,.4);animation:pulse 1s infinite}
+.big-timer-label{font-size:.7em;opacity:.5;margin-bottom:2px}
+
+.bet-area{display:none;flex-direction:column;align-items:center;gap:6px;width:100%;max-width:300px}
 .bet-area.visible{display:flex}
-.bet-title{font-size:.9em;color:#ffd700;font-weight:600}
-.bet-type{display:flex;gap:10px}
-.type-btn{padding:10px 18px;border:2px solid rgba(255,255,255,.2);border-radius:12px;background:rgba(255,255,255,.05);color:#fff;font-size:.85em;cursor:pointer;transition:all .15s;text-align:center}
+.bet-title{font-size:.85em;color:#ffd700;font-weight:600}
+.bet-type{display:flex;gap:8px}
+.type-btn{padding:8px 16px;border:2px solid rgba(255,255,255,.2);border-radius:10px;background:rgba(255,255,255,.05);color:#fff;font-size:.85em;cursor:pointer;transition:all .15s;text-align:center}
 .type-btn:active{transform:scale(.95)}
 .type-btn.selected{border-color:#ffd700;background:rgba(255,215,0,.15)}
-.type-btn .emoji{font-size:1.1em;margin-right:4px}
-.bet-amount{display:flex;gap:10px}
-.chip{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8em;cursor:pointer;border:2px dashed rgba(255,255,255,.35);transition:all .15s}
+.type-btn .emoji{font-size:1.1em;margin-right:3px}
+.bet-amount{display:flex;gap:8px}
+.chip{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8em;cursor:pointer;border:2px dashed rgba(255,255,255,.35);transition:all .15s}
 .chip:active{transform:scale(.9)}
-.chip.selected{border-style:solid;transform:scale(1.05);box-shadow:0 0 12px rgba(255,255,255,.25)}
+.chip.selected{border-style:solid;transform:scale(1.05);box-shadow:0 0 10px rgba(255,255,255,.25)}
 .chip.c10{background:#3498db}.chip.c20{background:#2ecc71}.chip.c30{background:#e74c3c}.chip.c60{background:#9b59b6}
 .chip.c1{background:#1abc9c}.chip.c2{background:#e67e22}.chip.c3{background:#c0392b}
-.confirm-bet{padding:10px 32px;font-size:.9em;font-weight:700;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:18px;cursor:pointer;transition:all .15s}
+.confirm-bet{padding:8px 28px;font-size:.85em;font-weight:700;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:16px;cursor:pointer;transition:all .15s}
 .confirm-bet:active:not(:disabled){transform:scale(.95)}
 .confirm-bet:disabled{opacity:.35;cursor:not-allowed}
 
 .result-area{display:none;text-align:center}
 .result-area.visible{display:block}
-.result-banner{font-size:1em;font-weight:700;margin-bottom:4px}
+.result-banner{font-size:.95em;font-weight:700;margin-bottom:2px}
 .result-banner.win{color:#51cf66}.result-banner.lose{color:#ff6b6b}.result-banner.tie{color:#ffd43b}
-.result-detail{font-size:.75em;opacity:.6}
+.result-detail{font-size:.7em;opacity:.6}
 
-.main-btn{display:none;padding:12px 36px;font-size:1em;font-weight:700;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:22px;cursor:pointer;transition:all .15s;box-shadow:0 3px 12px rgba(255,215,0,.3)}
+.main-btn{display:none;padding:10px 32px;font-size:.95em;font-weight:700;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:20px;cursor:pointer;transition:all .15s;box-shadow:0 3px 10px rgba(255,215,0,.3)}
 .main-btn.visible{display:block}
 .main-btn:active:not(:disabled){transform:scale(.95)}
 
-.bottombar{flex-shrink:0;display:flex;justify-content:center;align-items:center;padding:5px 16px;background:rgba(0,0,0,.2);font-size:.7em;opacity:.5;gap:12px}
+.bottombar{flex-shrink:0;display:flex;justify-content:center;align-items:center;padding:4px 16px;background:rgba(0,0,0,.2);font-size:.7em;opacity:.5;gap:12px}
 
 .water-alert{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:300;display:none;justify-content:center;align-items:center}
 .water-alert.open{display:flex}
@@ -105,12 +110,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
 @keyframes rotate90{0%,100%{transform:rotate(0deg)}50%{transform:rotate(90deg)}}
 
 @media(max-height:360px){
-  .dice-wrap,.dice{width:46px;height:46px;padding:6px}
+  .dice-wrap,.dice{width:42px;height:42px;padding:6px}
   .dot{width:7px;height:7px}
-  .col-left,.col-right{min-width:85px;max-width:110px}
+  .col-left,.col-right{min-width:80px;max-width:100px}
+  .big-timer{font-size:2.2em}
   .topbar{padding:5px 10px;font-size:.8em}
   .bottombar{padding:3px 10px;font-size:.65em}
-  .main{padding:5px;gap:5px}
+  .main{padding:4px 6px;gap:4px}
 }
 </style>
 </head>
@@ -137,14 +143,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
 
 <div class="setup-screen visible" id="setupScreen">
   <div class="setup-box">
-    <h3>🎲 HoldMaster</h3>
+    <h3> HoldMaster</h3>
     <div class="setup-row">
       <label>你的名字</label>
       <input type="text" id="playerNameInput" placeholder="输入名字" maxlength="10" autocomplete="off">
     </div>
     <div class="setup-info">
       💰 1金币 = 2分钟<br>
-      💧 1杯水 = 6金币
+       1杯水 = 6金币
     </div>
     <button class="setup-btn" onclick="playerJoinGame()">进入挑战</button>
   </div>
@@ -157,6 +163,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
   </div>
 
   <div class="main">
+    <!-- 左：Boss -->
     <div class="col-left">
       <div class="label">👑 Boss</div>
       <div class="resources">
@@ -169,10 +176,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
       <div class="subtotal" id="bossSubtotal"></div>
     </div>
 
+    <!-- 中：计时器+下注+结果 -->
     <div class="col-center">
-      <div class="vs-badge">VS</div>
       <div class="phase-label" id="phaseLabel">等待中</div>
+      
+      <!-- 大计时器 -->
+      <div class="big-timer-label">剩余时间</div>
+      <div class="big-timer" id="bigTimer">120:00</div>
 
+      <!-- 下注区 -->
       <div class="bet-area" id="betArea">
         <div class="bet-title">💰 下注</div>
         <div class="bet-type">
@@ -183,19 +195,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
         <button class="confirm-bet" id="confirmBet" onclick="confirmBet()" disabled>确认</button>
       </div>
 
+      <!-- 结果 -->
       <div class="result-area" id="resultArea">
         <div class="result-banner" id="resultBanner"></div>
         <div class="result-detail" id="resultDetail"></div>
       </div>
 
+      <!-- 主按钮 -->
       <button class="main-btn" id="mainBtn" onclick="onMainBtn()">🎲 开始</button>
     </div>
 
+    <!-- 右：玩家 -->
     <div class="col-right">
-      <div class="label" id="playerLabel">🎮 挑战者</div>
+      <div class="label" id="playerLabel"> 挑战者</div>
       <div class="resources" id="playerResources">
-        <div class="res-item">⏱️ <span class="res-val res-time" id="playerTimeDisplay">120:00</span></div>
-        <div class="res-item">💧 <span class="res-val res-water" id="playerWaterDisplay">10</span></div>
+        <div class="res-item">💧 <span class="res-val res-water" id="playerWaterDisplay">10</span> 杯</div>
       </div>
       <div class="dice-pair">
         <div class="dice-wrap"><div class="dice waiting" id="playerDice1"></div></div>
@@ -292,17 +306,20 @@ function showGameUI() {
   checkOrientation();
 }
 
+function updateBigTimer() {
+  const el = document.getElementById('bigTimer');
+  el.textContent = formatTime(playerTimeSec);
+  el.classList.toggle('warn', playerTimeSec <= 180);
+}
+
 function renderUI() {
   const phase = G.phase;
   
   document.getElementById('bossGoldDisplay').textContent = bossGold;
-  document.getElementById('playerTimeDisplay').textContent = formatTime(playerTimeSec);
   document.getElementById('playerWaterDisplay').textContent = playerWater;
+  updateBigTimer();
   document.getElementById('roundInfo').textContent = '回合 ' + (G.round || '-');
   document.getElementById('modeInfo').textContent = '模式: ' + MN[secretMode];
-
-  const pr = document.getElementById('playerResources');
-  pr.classList.toggle('timer-warn', playerTimeSec <= 180);
 
   const phaseNames = { idle: '等待中', waiting: '等待开始', roll1: '🎲 投骰子', betting: '💰 下注', roll2: '🎲 投骰子', result: '本局结束' };
   document.getElementById('phaseLabel').textContent = phaseNames[phase] || phase;
@@ -326,7 +343,7 @@ function renderUI() {
     document.getElementById('resultBanner').className = 'result-banner ' + (G.resultOutcome || '');
     document.getElementById('resultDetail').textContent = G.resultDetail || '';
     mainBtn.classList.add('visible');
-    mainBtn.textContent = '🎲 继续';
+    mainBtn.textContent = ' 继续';
   }
 
   if (phase === 'idle' || phase === 'waiting') {
@@ -349,8 +366,7 @@ function startTimer() {
   timerInterval = setInterval(() => {
     if (playerTimeSec > 0) {
       playerTimeSec--;
-      document.getElementById('playerTimeDisplay').textContent = formatTime(playerTimeSec);
-      document.getElementById('playerResources').classList.toggle('timer-warn', playerTimeSec <= 180);
+      updateBigTimer();
       if (playerTimeSec % 5 === 0 && playerId) {
         update(ref(db, 'players/' + playerId), { time: playerTimeSec });
       }
@@ -573,7 +589,7 @@ function initSync() {
       if (myData) {
         playerTimeSec = myData.time || 7200;
         playerWater = myData.water || 10;
-        document.getElementById('playerTimeDisplay').textContent = formatTime(playerTimeSec);
+        updateBigTimer();
         document.getElementById('playerWaterDisplay').textContent = playerWater;
       }
     }
