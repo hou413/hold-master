@@ -28,10 +28,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
 .timer-warn .res-time{animation:pulse 1s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-.col-center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:0}
+.col-center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0}
 
 .vs-badge{font-size:1em;font-weight:800;color:rgba(255,255,255,.15)}
-.phase-label{font-size:.8em;padding:4px 14px;border-radius:12px;background:rgba(255,255,255,.1);text-align:center;min-width:90px}
+.phase-label{font-size:.75em;padding:3px 12px;border-radius:10px;background:rgba(255,255,255,.1);text-align:center;min-width:80px}
 
 .dice-pair{display:flex;gap:8px}
 .dice-wrap{width:50px;height:50px;perspective:300px}
@@ -45,25 +45,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
 .subtotal{font-size:.7em;opacity:.6;margin-top:3px;text-align:center;min-height:12px}
 
 /* 中央大计时器 */
-.big-timer{font-size:2.8em;font-weight:800;color:#51cf66;text-shadow:0 0 20px rgba(81,207,102,.4);line-height:1;margin:2px 0;letter-spacing:2px}
+.big-timer{font-size:2em;font-weight:800;color:#51cf66;text-shadow:0 0 15px rgba(81,207,102,.4);line-height:1;margin:1px 0;letter-spacing:1px}
 .big-timer.warn{color:#ff6b6b;text-shadow:0 0 20px rgba(255,107,107,.4);animation:pulse 1s infinite}
-.big-timer-label{font-size:.7em;opacity:.5;margin-bottom:2px}
+.big-timer-label{font-size:.65em;opacity:.5;margin-bottom:0}
 
-.bet-area{display:none;flex-direction:column;align-items:center;gap:6px;width:100%;max-width:300px}
+.bet-area{display:none;flex-direction:column;align-items:center;gap:4px;width:100%;max-width:300px}
 .bet-area.visible{display:flex}
-.bet-title{font-size:.85em;color:#ffd700;font-weight:600}
+.bet-title{font-size:.8em;color:#ffd700;font-weight:600}
 .bet-type{display:flex;gap:8px}
-.type-btn{padding:8px 16px;border:2px solid rgba(255,255,255,.2);border-radius:10px;background:rgba(255,255,255,.05);color:#fff;font-size:.85em;cursor:pointer;transition:all .15s;text-align:center}
+.type-btn{padding:6px 14px;border:2px solid rgba(255,255,255,.2);border-radius:10px;background:rgba(255,255,255,.05);color:#fff;font-size:.8em;cursor:pointer;transition:all .15s;text-align:center}
 .type-btn:active{transform:scale(.95)}
 .type-btn.selected{border-color:#ffd700;background:rgba(255,215,0,.15)}
 .type-btn .emoji{font-size:1.1em;margin-right:3px}
 .bet-amount{display:flex;gap:8px}
-.chip{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8em;cursor:pointer;border:2px dashed rgba(255,255,255,.35);transition:all .15s}
+.chip{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75em;cursor:pointer;border:2px dashed rgba(255,255,255,.35);transition:all .15s}
 .chip:active{transform:scale(.9)}
 .chip.selected{border-style:solid;transform:scale(1.05);box-shadow:0 0 10px rgba(255,255,255,.25)}
 .chip.c10{background:#3498db}.chip.c20{background:#2ecc71}.chip.c30{background:#e74c3c}.chip.c60{background:#9b59b6}
 .chip.c1{background:#1abc9c}.chip.c2{background:#e67e22}.chip.c3{background:#c0392b}
-.confirm-bet{padding:8px 28px;font-size:.85em;font-weight:700;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:16px;cursor:pointer;transition:all .15s}
+.confirm-bet{padding:6px 24px;font-size:.8em;font-weight:700;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:14px;cursor:pointer;transition:all .15s}
 .confirm-bet:active:not(:disabled){transform:scale(.95)}
 .confirm-bet:disabled{opacity:.35;cursor:not-allowed}
 
@@ -113,10 +113,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
   .dice-wrap,.dice{width:42px;height:42px;padding:6px}
   .dot{width:7px;height:7px}
   .col-left,.col-right{min-width:80px;max-width:100px}
-  .big-timer{font-size:2.2em}
+  .big-timer{font-size:1.6em}
   .topbar{padding:5px 10px;font-size:.8em}
   .bottombar{padding:3px 10px;font-size:.65em}
   .main{padding:4px 6px;gap:4px}
+  .chip{width:32px;height:32px;font-size:.7em}
+  .type-btn{padding:5px 10px;font-size:.75em}
 }
 </style>
 </head>
