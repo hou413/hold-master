@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title> HoldMaster</title>
+<title>🎲 HoldMaster</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;touch-action:none}
@@ -12,76 +12,90 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
 
 .app{position:fixed;inset:0;display:flex;flex-direction:column;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);background:rgba(0,0,0,0.4)}
 
-.topbar{flex-shrink:0;display:flex;justify-content:space-between;align-items:center;padding:8px 16px;background:rgba(0,0,0,.3)}
-.topbar .title{font-weight:700;color:#ffd700;font-size:1em}
-.topbar .info{opacity:.6;font-size:.75em}
+.topbar{flex-shrink:0;display:flex;justify-content:space-between;align-items:center;padding:8px 16px;background:rgba(0,0,0,.4)}
+.topbar .title{font-weight:700;color:#ffd700;font-size:.9em}
+.topbar .info{opacity:.6;font-size:.7em}
 
-.main{flex:1;display:flex;align-items:stretch;padding:8px 10px;gap:8px;min-height:0;overflow:hidden}
+.main{flex:1;display:flex;flex-direction:column;align-items:center;padding:8px;gap:6px;min-height:0;overflow-y:auto}
 
-.col-left,.col-right{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:90px;max-width:130px}
-.col-left .label{font-size:.8em;font-weight:700;padding:5px 14px;border-radius:12px;background:rgba(255,215,0,.15);color:#ffd700;margin-bottom:6px}
-.col-right .label{font-size:.8em;font-weight:700;padding:5px 14px;border-radius:12px;background:rgba(81,207,102,.15);color:#51cf66;margin-bottom:6px}
-.resources{background:rgba(0,0,0,.3);border-radius:10px;padding:6px 10px;text-align:center;margin-bottom:6px;width:100%}
-.resources .res-item{display:flex;align-items:center;justify-content:center;gap:4px;font-size:.8em;line-height:1.5}
-.resources .res-val{font-weight:700;font-size:1.05em}
-.res-gold{color:#ffd700}.res-time{color:#51cf66}.res-water{color:#74c0fc}
+/* Boss 区域 */
+.boss-area{display:flex;align-items:center;gap:12px;width:100%;max-width:400px;justify-content:center}
+.boss-area .label{font-size:.8em;font-weight:700;padding:5px 14px;border-radius:12px;background:rgba(255,215,0,.15);color:#ffd700}
+.boss-area .resources{background:rgba(0,0,0,.3);border-radius:10px;padding:6px 12px;text-align:center}
+.boss-area .resources .res-val{font-weight:700;font-size:1em;color:#ffd700}
+.boss-dice{display:flex;gap:6px}
+
+/* VS 分隔 */
+.vs-divider{font-size:.9em;font-weight:800;color:rgba(255,255,255,.2);margin:2px 0}
+
+/* 玩家区域 */
+.player-area{display:flex;align-items:center;gap:12px;width:100%;max-width:400px;justify-content:center}
+.player-area .label{font-size:.8em;font-weight:700;padding:5px 14px;border-radius:12px;background:rgba(81,207,102,.15);color:#51cf66}
+.player-area .resources{background:rgba(0,0,0,.3);border-radius:10px;padding:6px 12px;text-align:center}
+.player-area .resources .res-item{display:flex;align-items:center;gap:4px;font-size:.8em;line-height:1.4}
+.player-area .resources .res-val{font-weight:700;font-size:1em}
+.res-time{color:#51cf66}.res-water{color:#74c0fc}
 .timer-warn .res-time{animation:pulse 1s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.player-dice{display:flex;gap:6px}
 
-.col-center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0}
-
-.vs-badge{font-size:1em;font-weight:800;color:rgba(255,255,255,.15)}
-.phase-label{font-size:.75em;padding:3px 12px;border-radius:10px;background:rgba(255,255,255,.1);text-align:center;min-width:80px}
-
-.dice-pair{display:flex;gap:8px}
-.dice-wrap{width:50px;height:50px;perspective:300px}
-.dice{width:50px;height:50px;background:linear-gradient(145deg,#fff,#e8e8e8);border-radius:10px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:7px;gap:2px;box-shadow:0 3px 10px rgba(0,0,0,.5),inset 0 1px 2px rgba(255,255,255,.8);transition:transform .3s}
+/* 骰子 */
+.dice-wrap{width:48px;height:48px;perspective:300px}
+.dice{width:48px;height:48px;background:linear-gradient(145deg,#fff,#e8e8e8);border-radius:10px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:7px;gap:2px;box-shadow:0 3px 10px rgba(0,0,0,.5),inset 0 1px 2px rgba(255,255,255,.8);transition:transform .3s}
 .dice.rolling{animation:roll .5s ease-out}
 .dice.waiting{opacity:.25}
 @keyframes roll{0%{transform:rotateX(0) rotateY(0) scale(.8)}25%{transform:rotateX(180deg) rotateY(90deg) scale(1.1)}50%{transform:rotateX(360deg) rotateY(180deg) scale(.9)}75%{transform:rotateX(540deg) rotateY(270deg) scale(1.05)}100%{transform:rotateX(720deg) rotateY(360deg) scale(1)}}
 .dot-cell{display:flex;align-items:center;justify-content:center}
 .dot{width:8px;height:8px;background:radial-gradient(circle at 35% 35%,#4a4a4a,#1a1a1a);border-radius:50%;box-shadow:inset 0 1px 2px rgba(0,0,0,.5);opacity:0;transition:opacity .2s}
 .dot.visible{opacity:1}
-.subtotal{font-size:.7em;opacity:.6;margin-top:3px;text-align:center;min-height:12px}
+.subtotal{font-size:.7em;opacity:.6;margin-top:2px;text-align:center;min-height:12px}
 
-/* 中央大计时器 */
-.big-timer{font-size:2em;font-weight:800;color:#51cf66;text-shadow:0 0 15px rgba(81,207,102,.4);line-height:1;margin:1px 0;letter-spacing:1px}
-.big-timer.warn{color:#ff6b6b;text-shadow:0 0 20px rgba(255,107,107,.4);animation:pulse 1s infinite}
-.big-timer-label{font-size:.65em;opacity:.5;margin-bottom:0}
+/* 中央区域 */
+.center-area{display:flex;flex-direction:column;align-items:center;gap:4px;width:100%;max-width:400px}
 
-.bet-area{display:none;flex-direction:column;align-items:center;gap:4px;width:100%;max-width:300px}
+.phase-label{font-size:.75em;padding:3px 12px;border-radius:10px;background:rgba(255,255,255,.1);text-align:center}
+
+/* 大计时器 */
+.big-timer{font-size:2.2em;font-weight:800;color:#51cf66;text-shadow:0 0 15px rgba(81,207,102,.4);line-height:1;margin:2px 0;letter-spacing:1px}
+.big-timer.warn{color:#ff6b6b;text-shadow:0 0 15px rgba(255,107,107,.4);animation:pulse 1s infinite}
+.big-timer-label{font-size:.65em;opacity:.5}
+
+/* 下注区 */
+.bet-area{display:none;flex-direction:column;align-items:center;gap:6px;width:100%}
 .bet-area.visible{display:flex}
-.bet-title{font-size:.8em;color:#ffd700;font-weight:600}
-.bet-type{display:flex;gap:8px}
-.type-btn{padding:6px 14px;border:2px solid rgba(255,255,255,.2);border-radius:10px;background:rgba(255,255,255,.05);color:#fff;font-size:.8em;cursor:pointer;transition:all .15s;text-align:center}
+.bet-title{font-size:.85em;color:#ffd700;font-weight:600}
+.bet-type{display:flex;gap:10px}
+.type-btn{padding:8px 18px;border:2px solid rgba(255,255,255,.2);border-radius:10px;background:rgba(255,255,255,.05);color:#fff;font-size:.85em;cursor:pointer;transition:all .15s;text-align:center}
 .type-btn:active{transform:scale(.95)}
 .type-btn.selected{border-color:#ffd700;background:rgba(255,215,0,.15)}
-.type-btn .emoji{font-size:1.1em;margin-right:3px}
-.bet-amount{display:flex;gap:8px}
-.chip{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75em;cursor:pointer;border:2px dashed rgba(255,255,255,.35);transition:all .15s}
+.type-btn .emoji{font-size:1em;margin-right:3px}
+.bet-amount{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.chip{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8em;cursor:pointer;border:2px dashed rgba(255,255,255,.35);transition:all .15s}
 .chip:active{transform:scale(.9)}
 .chip.selected{border-style:solid;transform:scale(1.05);box-shadow:0 0 10px rgba(255,255,255,.25)}
 .chip.c10{background:#3498db}.chip.c20{background:#2ecc71}.chip.c30{background:#e74c3c}.chip.c60{background:#9b59b6}
 .chip.c1{background:#1abc9c}.chip.c2{background:#e67e22}.chip.c3{background:#c0392b}
-.confirm-bet{padding:6px 24px;font-size:.8em;font-weight:700;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:14px;cursor:pointer;transition:all .15s}
-.confirm-bet:active:not(:disabled){transform:scale(.95)}
-.confirm-bet:disabled{opacity:.35;cursor:not-allowed}
-.confirm-bet-mobile{margin-top:8px;padding:8px 16px;font-size:.8em;font-weight:700;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:14px;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(255,215,0,.3)}
+
+/* 确认键 */
+.confirm-bet-mobile{margin-top:4px;padding:10px 28px;font-size:.9em;font-weight:700;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:16px;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(255,215,0,.3)}
 .confirm-bet-mobile:active:not(:disabled){transform:scale(.95)}
 .confirm-bet-mobile:disabled{opacity:.35;cursor:not-allowed}
 
+/* 结果 */
 .result-area{display:none;text-align:center}
 .result-area.visible{display:block}
 .result-banner{font-size:.95em;font-weight:700;margin-bottom:2px}
 .result-banner.win{color:#51cf66}.result-banner.lose{color:#ff6b6b}.result-banner.tie{color:#ffd43b}
 .result-detail{font-size:.7em;opacity:.6}
 
-.main-btn{display:none;padding:10px 32px;font-size:.95em;font-weight:700;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:20px;cursor:pointer;transition:all .15s;box-shadow:0 3px 10px rgba(255,215,0,.3)}
+/* 主按钮 */
+.main-btn{display:none;padding:12px 36px;font-size:1em;font-weight:700;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:20px;cursor:pointer;transition:all .15s;box-shadow:0 3px 10px rgba(255,215,0,.3)}
 .main-btn.visible{display:block}
 .main-btn:active:not(:disabled){transform:scale(.95)}
 
-.bottombar{flex-shrink:0;display:flex;justify-content:center;align-items:center;padding:4px 16px;background:rgba(0,0,0,.2);font-size:.7em;opacity:.5;gap:12px}
+.bottombar{flex-shrink:0;display:flex;justify-content:center;align-items:center;padding:4px 16px;background:rgba(0,0,0,.3);font-size:.7em;opacity:.5;gap:12px}
 
+/* 弹窗 */
 .water-alert{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:300;display:none;justify-content:center;align-items:center}
 .water-alert.open{display:flex}
 .water-alert-content{background:rgba(20,15,40,.98);border:2px solid #74c0fc;border-radius:18px;padding:28px 24px;text-align:center;max-width:260px}
@@ -95,6 +109,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
 .game-over .msg{font-size:1.1em;margin-bottom:24px;text-align:center;line-height:1.5;max-width:260px}
 .game-over .restart-btn{padding:14px 40px;font-size:1.05em;font-weight:700;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:22px;cursor:pointer}
 
+/* 设置界面 */
 .setup-screen{position:fixed;inset:0;display:none;justify-content:center;align-items:center;padding:20px;z-index:50;background:rgba(0,0,0,.5)}
 .setup-screen.visible{display:flex}
 .setup-box{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:18px;padding:28px 24px;width:100%;max-width:300px;text-align:center}
@@ -106,31 +121,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
 .setup-info{margin-top:12px;padding:12px;background:rgba(255,215,0,.08);border-radius:10px;text-align:left;font-size:.8em;line-height:1.5}
 .setup-btn{margin-top:14px;width:100%;padding:13px;font-size:1.05em;font-weight:700;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:20px;cursor:pointer}
 
-.rotate-hint{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:999;display:none;justify-content:center;align-items:center;flex-direction:column;text-align:center;padding:20px}
-.rotate-hint.visible{display:flex}
-.rotate-hint .icon{font-size:3em;margin-bottom:16px;animation:rotate90 2s infinite}
-.rotate-hint .text{font-size:1.1em;opacity:.7}
-@keyframes rotate90{0%,100%{transform:rotate(0deg)}50%{transform:rotate(90deg)}}
-
-@media(max-height:360px){
+/* 小屏幕优化 */
+@media(max-height:600px){
+  .big-timer{font-size:1.8em}
   .dice-wrap,.dice{width:42px;height:42px;padding:6px}
   .dot{width:7px;height:7px}
-  .col-left,.col-right{min-width:80px;max-width:100px}
-  .big-timer{font-size:1.6em}
-  .topbar{padding:5px 10px;font-size:.8em}
-  .bottombar{padding:3px 10px;font-size:.65em}
-  .main{padding:4px 6px;gap:4px}
-  .chip{width:32px;height:32px;font-size:.7em}
-  .type-btn{padding:5px 10px;font-size:.75em}
+  .main{padding:4px;gap:4px}
 }
 </style>
 </head>
 <body>
-
-<div class="rotate-hint" id="rotateHint">
-  <div class="icon">📱</div>
-  <div class="text">请横屏使用</div>
-</div>
 
 <div class="water-alert" id="waterAlert">
   <div class="water-alert-content">
@@ -148,14 +148,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
 
 <div class="setup-screen visible" id="setupScreen">
   <div class="setup-box">
-    <h3> HoldMaster</h3>
+    <h3>🎲 HoldMaster</h3>
     <div class="setup-row">
       <label>你的名字</label>
       <input type="text" id="playerNameInput" placeholder="输入名字" maxlength="10" autocomplete="off">
     </div>
     <div class="setup-info">
       💰 1金币 = 2分钟<br>
-       1杯水 = 6金币
+      💧 1杯水 = 6金币
     </div>
     <button class="setup-btn" onclick="playerJoinGame()">进入挑战</button>
   </div>
@@ -168,24 +168,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
   </div>
 
   <div class="main">
-    <!-- 左：Boss + 确认键 -->
-    <div class="col-left">
+    <!-- Boss 区域 -->
+    <div class="boss-area">
       <div class="label">👑 Boss</div>
       <div class="resources">
-        <div class="res-item">💰 <span class="res-val res-gold" id="bossGoldDisplay">60</span></div>
+        <div class="res-val">💰 <span id="bossGoldDisplay">60</span></div>
       </div>
-      <div class="dice-pair">
+      <div class="boss-dice">
         <div class="dice-wrap"><div class="dice waiting" id="bossDice1"></div></div>
         <div class="dice-wrap"><div class="dice waiting" id="bossDice2"></div></div>
       </div>
-      <div class="subtotal" id="bossSubtotal"></div>
     </div>
+    <div class="subtotal" id="bossSubtotal"></div>
 
-    <!-- 中：计时器+下注+结果 -->
-    <div class="col-center">
+    <div class="vs-divider">VS</div>
+
+    <!-- 中央区域 -->
+    <div class="center-area">
       <div class="phase-label" id="phaseLabel">等待中</div>
       
-      <!-- 大计时器 -->
       <div class="big-timer-label">剩余时间</div>
       <div class="big-timer" id="bigTimer">120:00</div>
 
@@ -209,19 +210,23 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
       <button class="main-btn" id="mainBtn" onclick="onMainBtn()">🎲 开始</button>
     </div>
 
-    <!-- 右：玩家 -->
-    <div class="col-right">
-      <div class="label" id="playerLabel"> 挑战者</div>
+    <div class="vs-divider">VS</div>
+
+    <!-- 玩家区域 -->
+    <div class="player-area">
+      <div class="label" id="playerLabel">🎮 挑战者</div>
       <div class="resources" id="playerResources">
         <div class="res-item">💧 <span class="res-val res-water" id="playerWaterDisplay">10</span> 杯</div>
       </div>
-      <div class="dice-pair">
+      <div class="player-dice">
         <div class="dice-wrap"><div class="dice waiting" id="playerDice1"></div></div>
         <div class="dice-wrap"><div class="dice waiting" id="playerDice2"></div></div>
       </div>
-      <div class="subtotal" id="playerSubtotal"></div>
-      <button class="confirm-bet-mobile" id="confirmBetMobile" onclick="confirmBet()" style="display:none">确认下注</button>
     </div>
+    <div class="subtotal" id="playerSubtotal"></div>
+
+    <!-- 确认键 -->
+    <button class="confirm-bet-mobile" id="confirmBetMobile" onclick="confirmBet()" style="display:none">确认下注</button>
   </div>
 
   <div class="bottombar">
@@ -298,17 +303,9 @@ function controlledRoll(isPlayer, round) {
   return randInt(1, 6);
 }
 
-function checkOrientation() {
-  const isLandscape = window.innerWidth > window.innerHeight;
-  document.getElementById('rotateHint').classList.toggle('visible', !isLandscape);
-}
-window.addEventListener('resize', checkOrientation);
-window.addEventListener('orientationchange', () => setTimeout(checkOrientation, 200));
-
 function showGameUI() {
   document.getElementById('setupScreen').classList.remove('visible');
   document.getElementById('gameApp').style.display = 'flex';
-  checkOrientation();
 }
 
 function updateBigTimer() {
@@ -332,11 +329,12 @@ function renderUI() {
   const betArea = document.getElementById('betArea');
   const resultArea = document.getElementById('resultArea');
   const mainBtn = document.getElementById('mainBtn');
+  const confirmBtn = document.getElementById('confirmBetMobile');
 
   betArea.classList.remove('visible');
-  document.getElementById('confirmBetMobile').style.display = 'none';
   resultArea.classList.remove('visible');
   mainBtn.classList.remove('visible');
+  confirmBtn.style.display = 'none';
 
   if (phase === 'betting') {
     betArea.classList.add('visible');
@@ -349,7 +347,7 @@ function renderUI() {
     document.getElementById('resultBanner').className = 'result-banner ' + (G.resultOutcome || '');
     document.getElementById('resultDetail').textContent = G.resultDetail || '';
     mainBtn.classList.add('visible');
-    mainBtn.textContent = ' 继续';
+    mainBtn.textContent = '🎲 继续';
   }
 
   if (phase === 'idle' || phase === 'waiting') {
@@ -614,7 +612,6 @@ function initUI() {
   document.getElementById('bossDice1').classList.add('waiting');
   document.getElementById('bossDice2').classList.add('waiting');
   initSync();
-  checkOrientation();
 }
 
 initUI();
