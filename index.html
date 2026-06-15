@@ -66,6 +66,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
 .confirm-bet{padding:6px 24px;font-size:.8em;font-weight:700;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:14px;cursor:pointer;transition:all .15s}
 .confirm-bet:active:not(:disabled){transform:scale(.95)}
 .confirm-bet:disabled{opacity:.35;cursor:not-allowed}
+.confirm-bet-mobile{margin-top:8px;padding:8px 16px;font-size:.8em;font-weight:700;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:14px;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(255,215,0,.3)}
+.confirm-bet-mobile:active:not(:disabled){transform:scale(.95)}
+.confirm-bet-mobile:disabled{opacity:.35;cursor:not-allowed}
 
 .result-area{display:none;text-align:center}
 .result-area.visible{display:block}
@@ -165,7 +168,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
   </div>
 
   <div class="main">
-    <!-- 左：Boss -->
+    <!-- 左：Boss + 确认键 -->
     <div class="col-left">
       <div class="label">👑 Boss</div>
       <div class="resources">
@@ -176,6 +179,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
         <div class="dice-wrap"><div class="dice waiting" id="bossDice2"></div></div>
       </div>
       <div class="subtotal" id="bossSubtotal"></div>
+      <button class="confirm-bet-mobile" id="confirmBetMobile" onclick="confirmBet()" style="display:none">确认下注</button>
     </div>
 
     <!-- 中：计时器+下注+结果 -->
@@ -194,7 +198,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
           <div class="type-btn" onclick="selectBetType('water')"><span class="emoji">💧</span>水</div>
         </div>
         <div class="bet-amount" id="betAmount"></div>
-        <button class="confirm-bet" id="confirmBet" onclick="confirmBet()" disabled>确认</button>
       </div>
 
       <!-- 结果 -->
@@ -331,6 +334,7 @@ function renderUI() {
   const mainBtn = document.getElementById('mainBtn');
 
   betArea.classList.remove('visible');
+  document.getElementById('confirmBetMobile').style.display = 'none';
   resultArea.classList.remove('visible');
   mainBtn.classList.remove('visible');
 
@@ -419,7 +423,9 @@ window.selectChip = function(val) {
 };
 
 window.checkBetReady = function() {
-  document.getElementById('confirmBet').disabled = !(localBetType && localSelectedChip);
+  const btn = document.getElementById('confirmBetMobile');
+  btn.disabled = !(localBetType && localSelectedChip);
+  btn.style.display = 'block';
 };
 
 window.confirmBet = function() {
