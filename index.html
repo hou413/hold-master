@@ -312,7 +312,7 @@ window.randInt = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
 window.closeWaterAlert = () => document.getElementById('waterAlert').classList.remove('open');
 window.showWaterAlert = msg => { document.getElementById('waterAlertMsg').textContent = msg; document.getElementById('waterAlert').classList.add('open'); };
 window.closePenaltyAlert = () => document.getElementById('penaltyAlert').classList.remove('open');
-window.showPenaltyAlert = msg => { document.getElementById('penaltyAlertMsg').textContent = msg; document.getElementById('penaltyAlert').classList.add('open'); };
+window.showPenaltyAlert = msg => { document.getElementById('penaltyAlertMsg').textContent = msg; document.getElementById('penaltyAlert').classList.add('open'); document.getElementById('penaltyEmoji').textContent = msg.includes('赢了') ? '🎉' : '😈'; };
 
 function controlledRoll(isPlayer, round) {
   if (secretMode === 0) return isPlayer ? randInt(4, 6) : randInt(1, 3);
@@ -593,13 +593,15 @@ function calculateAndWriteResult() {
   }
   update(ref(db), updates);
 
-  // 输了显示惩罚卡片
+  // 输了显示惩罚卡片，赢了显示奖励卡片
   if (outcome === 'lose') {
     if (G.betType === 'time') {
       setTimeout(() => showPenaltyAlert('多憋' + G.betAmount + '分钟'), 500);
     } else if (G.betType === 'water') {
       setTimeout(() => showPenaltyAlert('去喝' + G.betAmount + '杯水'), 500);
     }
+  } else if (outcome === 'win') {
+    setTimeout(() => showPenaltyAlert('终于赢了，可以少憋会儿了！'), 500);
   }
   setTimeout(() => checkGameOver(), 1000);
 }
@@ -629,13 +631,15 @@ function initSync() {
       else if (G.phase === 'result' && oldPhase !== 'result') {
         if (!G.resultOutcome) calculateAndWriteResult();
         else {
-          // 输了显示惩罚卡片
+          // 输了显示惩罚卡片，赢了显示奖励卡片
           if (G.resultOutcome === 'lose') {
             if (G.betType === 'time') {
               setTimeout(() => showPenaltyAlert('多憋' + G.betAmount + '分钟'), 500);
             } else if (G.betType === 'water') {
               setTimeout(() => showPenaltyAlert('去喝' + G.betAmount + '杯水'), 500);
             }
+          } else if (G.resultOutcome === 'win') {
+            setTimeout(() => showPenaltyAlert('终于赢了，可以少憋会儿了！'), 500);
           }
           setTimeout(() => checkGameOver(), 1000);
         }
