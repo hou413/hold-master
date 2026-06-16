@@ -19,11 +19,19 @@ h1{text-align:center;font-size:2em;margin-bottom:10px;color:#ffd700;text-shadow:
 .mode-btn .emoji{font-size:2em;display:block;margin-bottom:8px}
 .mode-btn .label{font-weight:bold}
 .mode-btn .desc{font-size:.8em;opacity:.7;margin-top:5px}
-.reset-btn{width:100%;padding:15px;margin-top:20px;background:linear-gradient(135deg,#ff6b6b,#ee5a52);color:#fff;border:none;border-radius:15px;font-size:1em;font-weight:bold;cursor:pointer;transition:all .3s}
-.reset-btn:hover{transform:translateY(-2px);box-shadow:0 5px 20px rgba(255,107,107,.4)}
 .conn-status{position:fixed;top:20px;right:20px;font-size:.8em;padding:6px 12px;border-radius:15px;background:rgba(0,0,0,.5)}
 .conn-status.ok{color:#51cf66;border:1px solid #51cf66}
 .conn-status.err{color:#ff6b6b;border:1px solid #ff6b6b}
+
+/* 房间列表 */
+.room-list{display:flex;flex-direction:column;gap:10px}
+.room-item{display:flex;justify-content:space-between;align-items:center;padding:15px;background:rgba(0,0,0,.2);border-radius:10px}
+.room-item .room-code{font-size:1.2em;font-weight:700;color:#ffd700}
+.room-item .room-info{font-size:.8em;opacity:.7;text-align:right}
+.room-item .room-status{font-size:.8em;padding:3px 8px;border-radius:8px}
+.room-item .room-status.active{background:rgba(81,207,102,.2);color:#51cf66}
+.room-item .room-status.idle{background:rgba(255,255,255,.1);color:rgba(255,255,255,.5)}
+.empty-state{text-align:center;padding:30px;opacity:.5;font-size:.9em}
 </style>
 </head>
 <body>
@@ -33,7 +41,8 @@ h1{text-align:center;font-size:2em;margin-bottom:10px;color:#ffd700;text-shadow:
 <p class="subtitle">管理后台 - 游戏模式控制</p>
 
 <div class="card">
-<h2>🎯 游戏模式</h2>
+<h2>🎯 全局默认模式</h2>
+<p style="font-size:.8em;opacity:.5;margin-bottom:15px">新创建的房间将使用此模式</p>
 <div class="mode-grid">
 <button class="mode-btn" data-mode="0" onclick="setMode(0)">
 <span class="emoji">🎲</span>
@@ -52,20 +61,21 @@ h1{text-align:center;font-size:2em;margin-bottom:10px;color:#ffd700;text-shadow:
 </button>
 </div>
 </div>
-</div>
 
 <div class="card">
-<h2>⚙️ 游戏控制</h2>
-<button class="reset-btn" onclick="resetGame()">🔄 重置游戏</button>
+<h2>🏠 活跃房间</h2>
+<div class="room-list" id="roomList">
+<div class="empty-state">暂无活跃房间</div>
+</div>
 </div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getDatabase, ref, set, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC1GwYRgXZ8DfTQ52PZ_KtWRtqa3DMtVlI",
+  apiKey: "AIzaSy…tVlI",
   authDomain: "holdmaster-11c61.firebaseapp.com",
   projectId: "holdmaster-11c61",
   storageBucket: "holdmaster-11c61.firebasestorage.app",
@@ -80,50 +90,65 @@ const db = getDatabase(app);
 
 let secretMode = 2;
 
-function setConnStatus(ok){
-  const el=document.getElementById('connStatus');
-  el.textContent=ok?'✅ 已连接':'❌ 连接断开';
-  el.className='conn-status '+(ok?'ok':'err');
+function setConnStatus(ok) {
+  const el = document.getElementById('connStatus');
+  el.textContent = ok ? '✅ 已连接' : '❌ 连接断开';
+  el.className = 'conn-status ' + (ok ? 'ok' : 'err');
 }
 
-window.setMode=function(m){
-  secretMode=m;
-  set(ref(db,'boss/mode'),m);
+window.setMode = function(m) {
+  secretMode = m;
+  set(ref(db, 'boss/mode'), m);
   updateModeButtons();
 };
 
-function updateModeButtons(){
-  document.querySelectorAll('.mode-btn').forEach(btn=>{
-    btn.classList.toggle('active', parseInt(btn.dataset.mode)===secretMode);
+function updateModeButtons() {
+  document.querySelectorAll('.mode-btn').forEach(btn => {
+    btn.classList.toggle('active', parseInt(btn.dataset.mode) === secretMode);
   });
 }
 
-onValue(ref(db,'boss/mode'),(snap)=>{
-  secretMode=snap.val()||2;
+// 监听全局模式
+onValue(ref(db, 'boss/mode'), (snap) => {
+  secretMode = snap.val() != null ? snap.val() : 2;
   updateModeButtons();
   setConnStatus(true);
 });
 
-window.resetGame=function(){
-  if(confirm('确定要重置游戏吗？所有游戏进度将被清空。')){
-    set(ref(db,'game'),{
-      phase:'idle',
-      round:0,
-      playerD1:0,
-      playerD2:0,
-      bossD1:0,
-      bossD2:0,
-      betType:'',
-      betAmount:0,
-      resultText:'',
-      resultDetail:''
-    }).then(()=>{
-      alert('游戏已重置');
-    }).catch((err)=>{
-      alert('重置失败：'+err.message);
-    });
+// 监听房间列表
+onValue(ref(db, 'rooms'), (snap) => {
+  const list = document.getElementById('roomList');
+  if (!snap.exists()) {
+    list.innerHTML = '<div class="empty-state">暂无活跃房间</div>';
+    return;
   }
-};
+
+  list.innerHTML = '';
+  snap.forEach((child) => {
+    const room = child.val();
+    const roomCode = child.key;
+    const player = room.player || {};
+    const game = room.game || {};
+    const modeNames = ['10%胜率', '玩家必输', '纯随机'];
+    const mode = room.mode != null ? room.mode : secretMode;
+    const phase = game.phase || 'idle';
+    const phaseNames = { idle: '等待中', roll1: '投骰子', betting: '下注', roll2: '投骰子', result: '本局结束' };
+    const isPlaying = phase !== 'idle';
+
+    const div = document.createElement('div');
+    div.className = 'room-item';
+    div.innerHTML = `
+      <div>
+        <div class="room-code">#${roomCode}</div>
+        <div class="room-info">${player.name || '未知'} | ${phaseNames[phase] || phase}</div>
+      </div>
+      <div style="text-align:right">
+        <div class="room-status ${isPlaying ? 'active' : 'idle'}">${modeNames[mode]}</div>
+      </div>
+    `;
+    list.appendChild(div);
+  });
+});
 
 setConnStatus(true);
 </script>

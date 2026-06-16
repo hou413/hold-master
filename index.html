@@ -14,18 +14,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
 
 .topbar{flex-shrink:0;display:flex;justify-content:space-between;align-items:center;padding:8px 16px;background:rgba(0,0,0,.4)}
 .topbar .title{font-weight:700;color:#ffd700;font-size:.9em}
-.topbar .info{opacity:.6;font-size:.7em}
+.topbar .room-code{font-size:.7em;opacity:.7;background:rgba(255,255,255,.1);padding:2px 8px;border-radius:8px}
 
 .main{flex:1;display:flex;flex-direction:column;align-items:center;padding:8px;gap:6px;min-height:0;overflow-y:auto}
 
 /* Boss 区域 */
 .boss-area{display:flex;align-items:center;gap:12px;width:100%;max-width:400px;justify-content:center}
 .boss-area .label{font-size:.8em;font-weight:700;padding:5px 14px;border-radius:12px;background:rgba(255,215,0,.15);color:#ffd700}
-.boss-area .resources{background:rgba(0,0,0,.3);border-radius:10px;padding:6px 12px;text-align:center}
-.boss-area .resources .res-val{font-weight:700;font-size:1em;color:#ffd700}
 .boss-dice{display:flex;gap:6px}
 
-/* VS 分隔 */
 .vs-divider{font-size:.9em;font-weight:800;color:rgba(255,255,255,.2);margin:2px 0}
 
 /* 玩家区域 */
@@ -34,9 +31,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
 .player-area .resources{background:rgba(0,0,0,.3);border-radius:10px;padding:6px 12px;text-align:center}
 .player-area .resources .res-item{display:flex;align-items:center;gap:4px;font-size:.8em;line-height:1.4}
 .player-area .resources .res-val{font-weight:700;font-size:1em}
-.res-time{color:#51cf66}.res-water{color:#74c0fc}
-.timer-warn .res-time{animation:pulse 1s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.res-water{color:#74c0fc}
 .player-dice{display:flex;gap:6px}
 
 /* 骰子 */
@@ -48,22 +43,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
 .dot-cell{display:flex;align-items:center;justify-content:center}
 .dot{width:8px;height:8px;background:radial-gradient(circle at 35% 35%,#4a4a4a,#1a1a1a);border-radius:50%;box-shadow:inset 0 1px 2px rgba(0,0,0,.5);opacity:0;transition:opacity .2s}
 .dot.visible{opacity:1}
-.subtotal{font-size:.7em;opacity:.6;margin-top:2px;text-align:center;min-height:12px}
 
 /* 中央区域 */
 .center-area{display:flex;flex-direction:column;align-items:center;gap:4px;width:100%;max-width:400px}
-
 .phase-label{font-size:.75em;padding:3px 12px;border-radius:10px;background:rgba(255,255,255,.1);text-align:center}
 
 /* 大计时器 */
 .big-timer{font-size:3.5em;font-weight:800;color:#51cf66;text-shadow:0 0 20px rgba(81,207,102,.5);line-height:1;margin:4px 0;letter-spacing:2px}
 .big-timer.warn{color:#ff6b6b;text-shadow:0 0 20px rgba(255,107,107,.5);animation:pulse 1s infinite}
 .big-timer-label{font-size:.9em;opacity:.7;font-weight:600;color:#ffd700;margin-bottom:2px}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
 /* 下注区 */
 .bet-area{display:none;flex-direction:column;align-items:center;gap:6px;width:100%}
 .bet-area.visible{display:flex}
-.bet-title{font-size:.85em;color:#ffd700;font-weight:600}
 .bet-hint{font-size:.8em;color:rgba(255,255,255,.5);margin-bottom:2px}
 .bet-type{display:flex;gap:10px}
 .type-btn{padding:8px 18px;border:2px solid rgba(255,255,255,.2);border-radius:10px;background:rgba(255,255,255,.05);color:#fff;font-size:.85em;cursor:pointer;transition:all .15s;text-align:center}
@@ -74,8 +67,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
 .chip{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8em;cursor:pointer;border:2px dashed rgba(255,255,255,.35);transition:all .15s}
 .chip:active{transform:scale(.9)}
 .chip.selected{border-style:solid;transform:scale(1.05);box-shadow:0 0 10px rgba(255,255,255,.25)}
-.chip.c10{background:#3498db}.chip.c20{background:#2ecc71}.chip.c30{background:#e74c3c}.chip.c60{background:#9b59b6}
-.chip.c1{background:#1abc9c}.chip.c2{background:#e67e22}.chip.c3{background:#c0392b}
+.chip.c1{background:#1abc9c}.chip.c3{background:#e67e22}.chip.c5{background:#c0392b}.chip.c10{background:#3498db}.chip.c15{background:#9b59b6}.chip.c30{background:#e74c3c}
 
 /* 确认键 */
 .confirm-bet-mobile{margin-top:4px;padding:10px 28px;font-size:.9em;font-weight:700;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:16px;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(255,215,0,.3)}
@@ -95,8 +87,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
 .main-btn.visible{display:block}
 .main-btn:active:not(:disabled){transform:scale(.95)}
 
-.bottombar{flex-shrink:0;display:flex;justify-content:center;align-items:center;padding:4px 16px;background:rgba(0,0,0,.3);font-size:.7em;opacity:.5;gap:12px}
-
 /* 弹窗 */
 .water-alert{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:300;display:none;justify-content:center;align-items:center}
 .water-alert.open{display:flex}
@@ -114,14 +104,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
 /* 设置界面 */
 .setup-screen{position:fixed;inset:0;display:none;justify-content:center;align-items:center;padding:20px;z-index:50;background:rgba(0,0,0,.5)}
 .setup-screen.visible{display:flex}
-.setup-box{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:18px;padding:28px 24px;width:100%;max-width:300px;text-align:center}
+.setup-box{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:18px;padding:28px 24px;width:100%;max-width:320px;text-align:center;max-height:90vh;overflow-y:auto}
 .setup-box h3{margin-bottom:16px;color:#ffd700;font-size:1.2em}
 .setup-row{margin-bottom:14px;text-align:left}
 .setup-row label{display:block;font-size:.85em;opacity:.7;margin-bottom:5px}
 .setup-row input{width:100%;padding:12px 14px;border:1px solid rgba(255,255,255,.2);border-radius:10px;background:rgba(0,0,0,.3);color:#fff;font-size:1em;outline:none}
 .setup-row input:focus{border-color:#ffd700}
 .setup-lore{margin-bottom:14px;padding:14px;background:rgba(255,107,107,.08);border-left:3px solid #ff6b6b;border-radius:0 10px 10px 0;text-align:left;font-size:.85em;line-height:1.6;color:#ffa8a8}
-.setup-info{margin-top:12px;padding:12px;background:rgba(255,215,0,.08);border-radius:10px;text-align:left;font-size:.8em;line-height:1.5}
+
+/* 房间选择 */
+.room-tabs{display:flex;gap:0;margin-bottom:14px;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.2)}
+.room-tab{flex:1;padding:10px;text-align:center;font-size:.85em;cursor:pointer;background:rgba(255,255,255,.05);color:rgba(255,255,255,.6);transition:all .2s}
+.room-tab.active{background:rgba(255,215,0,.2);color:#ffd700;font-weight:700}
+.join-room-input{display:none;margin-bottom:14px}
+.join-room-input.visible{display:block}
+.join-room-input input{text-align:center;font-size:1.2em;letter-spacing:8px;font-weight:700}
+
 .setup-btn{margin-top:8px;width:100%;padding:13px;font-size:1.05em;font-weight:700;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:20px;cursor:pointer}
 
 /* 小屏幕优化 */
@@ -176,6 +174,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
       游戏赢了，可以减少hold时间<br>
       倒计时归零，你就可以去释放了
     </div>
+    <div class="room-tabs">
+      <div class="room-tab active" onclick="switchRoomTab('create')">创建房间</div>
+      <div class="room-tab" onclick="switchRoomTab('join')">加入房间</div>
+    </div>
+    <div class="join-room-input" id="joinRoomInput">
+      <div class="setup-row">
+        <label>房间号</label>
+        <input type="text" id="roomCodeInput" placeholder="0000" maxlength="4" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+      </div>
+    </div>
     <button class="setup-btn" onclick="playerJoinGame()">快点开始吧 真的憋不住了</button>
   </div>
 </div>
@@ -183,6 +191,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
 <div class="app" id="gameApp" style="display:none">
   <div class="topbar">
     <span class="title">🎲 HoldMaster</span>
+    <span class="room-code" id="roomCodeDisplay">房间: ----</span>
   </div>
 
   <div class="main">
@@ -244,13 +253,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
       (1杯水等于6分钟)
     </div>
   </div>
-
-  <div class="bottombar"></div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, set, onValue, update, onDisconnect } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getDatabase, ref, set, get, update, onValue, onDisconnect, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSy…tVlI",
@@ -266,89 +273,246 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
+// ========== 变量 ==========
+let roomId = null;
 let playerId = null;
-let playerName = '挑战者';
+let playerName = '';
+let playerQQ = '';
 let secretMode = 2;
-
-let G = {
-  phase: 'idle', round: 0, playerName: '',
-  playerD1: 0, playerD2: 0, bossD1: 0, bossD2: 0,
-  betType: '', betAmount: 0,
-  resultOutcome: '', resultText: '', resultDetail: ''
-};
-
 let playerTimeSec = 1800;
 let playerWater = 10;
 let timerInterval = null, timerRunning = false;
 let localBetType = '', localSelectedChip = 0;
 let hasJoined = false;
+let setupTab = 'create';
 
-const DP={1:[4],2:[2,6],3:[2,4,6],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
-const MN=['👑必赢','💀必输','🔥5局赢','🎯随机'];
-const BOSS_NAME = 'HoldMaster';
+let G = {
+  phase: 'idle', round: 0,
+  playerD1: 0, playerD2: 0, bossD1: 0, bossD2: 0,
+  betType: '', betAmount: 0,
+  resultOutcome: '', resultText: '', resultDetail: ''
+};
 
-window.formatTime = s => { const m=Math.floor(s/60),sec=s%60; return m+':'+(sec<10?'0'+sec:sec); };
+// ========== 房间路径 ==========
+function rp(path) { return 'rooms/' + roomId + '/' + path; }
 
-window.renderDice = function(el, v) {
-  el.className = 'dice';
-  el.innerHTML = '';
-  if (!v) { el.classList.add('waiting'); return; }
-  const p = DP[v] || [];
-  for (let i = 0; i < 9; i++) {
-    const c = document.createElement('div');
-    c.className = 'dot-cell';
-    const d = document.createElement('div');
-    d.className = 'dot' + (p.includes(i) ? ' visible' : '');
-    c.appendChild(d);
-    el.appendChild(c);
+// ========== 房间选择 ==========
+window.switchRoomTab = function(tab) {
+  setupTab = tab;
+  document.querySelectorAll('.room-tab').forEach(t => t.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.getElementById('joinRoomInput').classList.toggle('visible', tab === 'join');
+};
+
+// ========== 生成房间号 ==========
+async function generateRoomCode() {
+  for (let i = 0; i < 100; i++) {
+    const code = String(Math.floor(1000 + Math.random() * 9000));
+    const snap = await get(ref(db, 'rooms/' + code));
+    if (!snap.exists()) return code;
+  }
+  return String(Date.now()).slice(-4);
+}
+
+// ========== 创建房间 ==========
+async function createRoom() {
+  const code = await generateRoomCode();
+  roomId = code;
+  playerId = 'p_' + Date.now();
+
+  // 读取全局模式
+  const modeSnap = await get(ref(db, 'boss/mode'));
+  secretMode = modeSnap.val() != null ? modeSnap.val() : 2;
+
+  // 创建房间
+  await set(ref(db, 'rooms/' + roomId), {
+    mode: secretMode,
+    createdAt: Date.now(),
+    player: {
+      id: playerId,
+      name: playerName,
+      qq: playerQQ,
+      time: 1800,
+      water: 10,
+      status: 'active'
+    },
+    game: {
+      phase: 'idle', round: 0,
+      playerD1: 0, playerD2: 0, bossD1: 0, bossD2: 0,
+      betType: '', betAmount: 0,
+      resultOutcome: '', resultText: '', resultDetail: ''
+    }
+  });
+
+  // 断开连接时标记离线
+  onDisconnect(ref(db, rp('player/status'))).set('disconnected');
+}
+
+// ========== 加入房间 ==========
+async function joinRoom(code) {
+  const snap = await get(ref(db, 'rooms/' + code));
+  if (!snap.exists()) {
+    alert('房间不存在，请检查房间号');
+    return false;
+  }
+
+  roomId = code;
+  const data = snap.val();
+  secretMode = data.mode != null ? data.mode : 2;
+  playerId = 'p_' + Date.now();
+
+  // 重置房间游戏状态
+  await update(ref(db, 'rooms/' + roomId), {
+    player: {
+      id: playerId,
+      name: playerName,
+      qq: playerQQ,
+      time: 1800,
+      water: 10,
+      status: 'active'
+    },
+    game: {
+      phase: 'idle', round: 0,
+      playerD1: 0, playerD2: 0, bossD1: 0, bossD2: 0,
+      betType: '', betAmount: 0,
+      resultOutcome: '', resultText: '', resultDetail: ''
+    }
+  });
+
+  onDisconnect(ref(db, rp('player/status'))).set('disconnected');
+  return true;
+}
+
+// ========== 飞书通知 ==========
+const FEISHU_WEBHOOK = 'https://open.feishu.cn/open-apis/bot/v2/hook/c042c8cf-3dda-4c00-a774-78fb0895589f';
+
+async function notifyFeishu(name, qq, roomCode) {
+  try {
+    await fetch(FEISHU_WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        msg_type: 'interactive',
+        card: {
+          header: { title: { tag: 'plain_text', content: '🎮 新玩家加入' } },
+          elements: [
+            { tag: 'div', text: { tag: 'lark_md', content: '**昵称：** ' + name + '\n**QQ号：** ' + qq + '\n**房间号：** ' + roomCode } }
+          ]
+        }
+      })
+    });
+  } catch (e) { console.error('飞书通知失败:', e); }
+}
+
+// ========== 进入游戏 ==========
+function enterGame() {
+  hasJoined = true;
+  document.getElementById('setupScreen').classList.remove('visible');
+  document.getElementById('gameApp').style.display = 'flex';
+  document.getElementById('roomCodeDisplay').textContent = '房间: ' + roomId;
+  document.getElementById('playerLabel').textContent = '👧 ' + playerName;
+  notifyFeishu(playerName, playerQQ, roomId);
+  initSync();
+  renderUI();
+}
+
+// ========== 玩家加入 ==========
+window.playerJoinGame = async function() {
+  const name = document.getElementById('playerNameInput').value.trim();
+  const qq = document.getElementById('playerQQInput').value.trim();
+  if (!name) { alert('请输入昵称'); return; }
+  if (!qq) { alert('请输入QQ号'); return; }
+
+  playerName = name;
+  playerQQ = qq;
+
+  if (setupTab === 'create') {
+    await createRoom();
+    enterGame();
+  } else {
+    const code = document.getElementById('roomCodeInput').value.trim();
+    if (!code || code.length !== 4) { alert('请输入4位房间号'); return; }
+    const ok = await joinRoom(code);
+    if (ok) enterGame();
   }
 };
 
-window.randInt = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
-window.closeWaterAlert = () => document.getElementById('waterAlert').classList.remove('open');
-window.showWaterAlert = msg => { document.getElementById('waterAlertMsg').textContent = msg; document.getElementById('waterAlert').classList.add('open'); };
-window.closePenaltyAlert = () => document.getElementById('penaltyAlert').classList.remove('open');
-window.showPenaltyAlert = msg => { document.getElementById('penaltyAlertMsg').textContent = msg; document.getElementById('penaltyAlert').classList.add('open'); document.getElementById('penaltyEmoji').textContent = msg.includes('赢了') ? '🎉' : '😈'; };
+// ========== 工具函数 ==========
+function randInt(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function formatTime(sec) { const m = Math.floor(sec / 60), s = sec % 60; return m + ':' + (s < 10 ? '0' + s : s); }
 
-function controlledRoll(isPlayer, round) {
+function controlledRoll(isPlayer) {
   if (secretMode === 0) {
-    // 10%胜率：玩家10%概率赢，90%概率输
-    const winChance = Math.random();
-    if (winChance < 0.1) {
-      return isPlayer ? randInt(4, 6) : randInt(1, 3);
-    } else {
-      return isPlayer ? randInt(1, 3) : randInt(4, 6);
-    }
+    // 10%胜率
+    if (Math.random() < 0.1) return isPlayer ? randInt(4, 6) : randInt(1, 3);
+    return isPlayer ? randInt(1, 3) : randInt(4, 6);
   }
   if (secretMode === 1) return isPlayer ? randInt(1, 3) : randInt(4, 6);
   return randInt(1, 6);
 }
 
-function showGameUI() {
-  document.getElementById('setupScreen').classList.remove('visible');
-  document.getElementById('gameApp').style.display = 'flex';
-}
+// ========== 骰子渲染 ==========
+const DP = { 1: [4], 2: [2, 6], 3: [2, 4, 6], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8] };
 
-function updateBigTimer() {
-  const el = document.getElementById('bigTimer');
-  el.textContent = formatTime(playerTimeSec);
-  el.classList.toggle('warn', playerTimeSec <= 180);
-  // 剩余时间超过70分钟/45分钟时切换背景
-  if (playerTimeSec > 4200) {
-    document.body.style.backgroundImage = "url('bg_verylong.jpg')";
-  } else if (playerTimeSec > 2700) {
-    document.body.style.backgroundImage = "url('bg_long.jpg')";
-  } else {
-    document.body.style.backgroundImage = "url('bg.jpg')";
+function renderDice(el, val) {
+  el.innerHTML = '';
+  for (let i = 0; i < 9; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'dot-cell';
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (DP[val] && DP[val].includes(i) ? ' visible' : '');
+    cell.appendChild(dot);
+    el.appendChild(cell);
   }
 }
 
+// ========== 计时器 ==========
+function updateBigTimer() {
+  const el = document.getElementById('bigTimer');
+  el.textContent = formatTime(Math.max(0, playerTimeSec));
+  el.classList.toggle('warn', playerTimeSec <= 180);
+  // 背景切换
+  if (playerTimeSec > 4200) document.body.style.backgroundImage = "url('bg_verylong.jpg')";
+  else if (playerTimeSec > 2700) document.body.style.backgroundImage = "url('bg_long.jpg')";
+  else document.body.style.backgroundImage = "url('bg.jpg')";
+}
+
+function startTimer() {
+  if (timerRunning) return;
+  timerRunning = true;
+  timerInterval = setInterval(() => {
+    if (playerTimeSec > 0) {
+      playerTimeSec--;
+      updateBigTimer();
+      if (playerTimeSec % 5 === 0) {
+        update(ref(db, rp('player')), { time: playerTimeSec });
+      }
+      if (playerTimeSec <= 0) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        checkGameOver();
+      }
+    }
+  }, 1000);
+}
+
+function checkGameOver() {
+  if (playerTimeSec <= 0) showGameOver(true);
+  else if (playerWater <= 0) showGameOver(false);
+}
+
+function showGameOver(playerWin) {
+  if (timerRunning) { clearInterval(timerInterval); timerRunning = false; }
+  document.getElementById('gameOver').classList.add('open');
+  document.getElementById('gameOverTitle').textContent = playerWin ? '🎉 释放！' : '😈 输了';
+  document.getElementById('gameOverMsg').textContent = playerWin ? '你可以去释放了！' : '水喝完了，时间还没到...';
+}
+
+// ========== UI 渲染 ==========
 function renderUI() {
   const phase = G.phase;
-  
   document.getElementById('playerWaterDisplay').textContent = playerWater;
   updateBigTimer();
-
 
   const phaseNames = { idle: '等待中', waiting: '等待开始', roll1: '🎲 投骰子', betting: '💰 下注', roll2: '🎲 投骰子', result: '本局结束' };
   document.getElementById('phaseLabel').textContent = phaseNames[phase] || phase;
@@ -356,20 +520,15 @@ function renderUI() {
   const betArea = document.getElementById('betArea');
   const resultArea = document.getElementById('resultArea');
   const mainBtn = document.getElementById('mainBtn');
-  const confirmBtn = document.getElementById('confirmBetMobile');
-
   betArea.classList.remove('visible');
   resultArea.classList.remove('visible');
   mainBtn.classList.remove('visible');
-  confirmBtn.style.display = 'none';
 
   if (phase === 'betting') {
     betArea.classList.add('visible');
     document.getElementById('betHint').style.display = localBetType ? 'none' : 'block';
     document.getElementById('betAmount').innerHTML = '';
-    if (!localBetType) {
-      document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
-    }
+    if (!localBetType) document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
   }
 
   if (phase === 'result') {
@@ -390,44 +549,15 @@ function renderUI() {
   renderDice(document.getElementById('playerDice2'), G.playerD2);
   renderDice(document.getElementById('bossDice1'), G.bossD1);
   renderDice(document.getElementById('bossDice2'), G.bossD2);
-
-
 }
 
-function startTimer() {
-  if (timerRunning) return;
-  timerRunning = true;
-  timerInterval = setInterval(() => {
-    if (playerTimeSec > 0) {
-      playerTimeSec--;
-      updateBigTimer();
-      if (playerTimeSec % 5 === 0 && playerId) {
-        update(ref(db, 'players/' + playerId), { time: playerTimeSec });
-      }
-      if (playerTimeSec <= 0) { clearInterval(timerInterval); timerRunning = false; checkGameOver(); }
-    }
-  }, 1000);
-}
-
-function checkGameOver() {
-  if (playerTimeSec <= 0) showGameOver(true);
-  else if (playerWater <= 0) showGameOver(false);
-}
-
-function showGameOver(playerWin) {
-  if (timerRunning) { clearInterval(timerInterval); timerRunning = false; }
-  document.getElementById('gameOver').classList.add('open');
-  document.getElementById('gameOverTitle').textContent = playerWin ? ' 释放！' : '😈 输了';
-  document.getElementById('gameOverMsg').textContent = playerWin ? '你可以去释放了！' : '水喝完了，时间还没到...';
-}
-
+// ========== 下注 ==========
 window.selectBetType = function(type) {
   localBetType = type;
   localSelectedChip = 0;
   document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
   event.currentTarget.classList.add('selected');
   renderBetChips();
-  checkBetReady();
 };
 
 window.renderBetChips = function() {
@@ -448,91 +578,42 @@ window.selectChip = function(val) {
   localSelectedChip = val;
   document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
   event.target.classList.add('selected');
-  checkBetReady();
-};
-
-window.checkBetReady = function() {
   const btn = document.getElementById('confirmBetMobile');
-  btn.disabled = !(localBetType && localSelectedChip);
+  btn.disabled = false;
   btn.style.display = 'block';
 };
 
 window.confirmBet = function() {
   if (!localBetType || !localSelectedChip) return;
-  set(ref(db, 'game/betType'), localBetType);
-  set(ref(db, 'game/betAmount'), localSelectedChip);
-  set(ref(db, 'game/phase'), 'roll2');
+  update(ref(db, rp('game')), {
+    betType: localBetType,
+    betAmount: localSelectedChip,
+    phase: 'roll2'
+  });
   localBetType = '';
   localSelectedChip = 0;
   document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('confirmBetMobile').style.display = 'none';
 };
 
 window.onMainBtn = function() {
-  if (G.phase === 'result' || G.phase === 'idle') {
-    startNewRound();
-  }
+  if (G.phase === 'result' || G.phase === 'idle') startNewRound();
 };
 
 function startNewRound() {
   const newRound = (G.round || 0) + 1;
-  set(ref(db, 'game'), {
-    phase: 'roll1', round: newRound, playerName: playerName,
+  update(ref(db, rp('game')), {
+    phase: 'roll1', round: newRound,
     playerD1: 0, playerD2: 0, bossD1: 0, bossD2: 0,
     betType: '', betAmount: 0,
     resultOutcome: '', resultText: '', resultDetail: ''
   });
 }
 
-// 飞书 Webhook URL - 需要替换成你自己的
-const FEISHU_WEBHOOK = 'https://open.feishu.cn/open-apis/bot/v2/hook/c042c8cf-3dda-4c00-a774-78fb0895589f';
-
-async function notifyFeishu(name, qq) {
-  try {
-    await fetch(FEISHU_WEBHOOK, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        msg_type: 'interactive',
-        card: {
-          header: { title: { tag: 'plain_text', content: '🎮 新玩家加入' } },
-          elements: [
-            { tag: 'div', text: { tag: 'lark_md', content: '**昵称：** ' + name + '\n**QQ号：** ' + qq } }
-          ]
-        }
-      })
-    });
-  } catch (e) { console.error('飞书通知失败:', e); }
-}
-
-window.playerJoinGame = function() {
-  const name = document.getElementById('playerNameInput').value.trim();
-  const qq = document.getElementById('playerQQInput').value.trim();
-  
-  if (!name) { alert('请输入昵称'); return; }
-  if (!qq) { alert('请输入QQ号'); return; }
-  
-  playerName = name;
-  playerId = 'player_' + Date.now();
-  hasJoined = true;
-  
-  // 推送到飞书
-  notifyFeishu(name, qq);
-  
-  document.getElementById('playerLabel').textContent = '👧 ' + playerName;
-  
-  set(ref(db, 'players/' + playerId), {
-    name: playerName, time: playerTimeSec, water: playerWater, status: 'active', qq: qq
-  });
-  onDisconnect(ref(db, 'players/' + playerId)).remove();
-  
-  showGameUI();
-  renderUI();
-};
-
+// ========== 动画 ==========
 function animateRoll1() {
   const pe = document.getElementById('playerDice1'), be = document.getElementById('bossDice1');
-  pe.classList.add('rolling');
-  be.classList.add('rolling');
+  pe.classList.add('rolling'); be.classList.add('rolling');
   let f = 0;
   const iv = setInterval(() => {
     renderDice(pe, randInt(1, 6));
@@ -540,19 +621,19 @@ function animateRoll1() {
     f++;
     if (f > 7) {
       clearInterval(iv);
-      pe.classList.remove('rolling');
-      be.classList.remove('rolling');
-      set(ref(db, 'game/playerD1'), controlledRoll(true, G.round));
-      set(ref(db, 'game/bossD1'), controlledRoll(false, G.round));
-      setTimeout(() => set(ref(db, 'game/phase'), 'betting'), 600);
+      pe.classList.remove('rolling'); be.classList.remove('rolling');
+      update(ref(db, rp('game')), {
+        playerD1: controlledRoll(true),
+        bossD1: controlledRoll(false),
+        phase: 'betting'
+      });
     }
   }, 80);
 }
 
 function animateRoll2() {
   const pe = document.getElementById('playerDice2'), be = document.getElementById('bossDice2');
-  pe.classList.add('rolling');
-  be.classList.add('rolling');
+  pe.classList.add('rolling'); be.classList.add('rolling');
   let f = 0;
   const iv = setInterval(() => {
     renderDice(pe, randInt(1, 6));
@@ -560,15 +641,17 @@ function animateRoll2() {
     f++;
     if (f > 7) {
       clearInterval(iv);
-      pe.classList.remove('rolling');
-      be.classList.remove('rolling');
-      set(ref(db, 'game/playerD2'), controlledRoll(true, G.round));
-      set(ref(db, 'game/bossD2'), controlledRoll(false, G.round));
+      pe.classList.remove('rolling'); be.classList.remove('rolling');
+      update(ref(db, rp('game')), {
+        playerD2: controlledRoll(true),
+        bossD2: controlledRoll(false)
+      });
       setTimeout(() => calculateAndWriteResult(), 500);
     }
   }, 80);
 }
 
+// ========== 计算结果 ==========
 function calculateAndWriteResult() {
   const pt = G.playerD1 + G.playerD2, bt = G.bossD1 + G.bossD2;
   let outcome, resultText, detailText;
@@ -576,102 +659,101 @@ function calculateAndWriteResult() {
   if (pt > bt) {
     outcome = 'win';
     resultText = '🎉 你赢了！';
-    if (G.betType === 'time') { const reduce = G.betAmount * 60; playerTimeSec = Math.max(0, playerTimeSec - reduce); detailText = '倒计时 -' + G.betAmount + '分钟'; }
-    else if (G.betType === 'water') { const reduce = G.betAmount * 6 * 60; playerTimeSec = Math.max(0, playerTimeSec - reduce); detailText = '倒计时 -' + (G.betAmount * 6) + '分钟'; }
-    else detailText = pt + ' vs ' + bt;
+    if (G.betType === 'time') {
+      const reduce = G.betAmount * 60;
+      playerTimeSec = Math.max(0, playerTimeSec - reduce);
+      detailText = '倒计时 -' + G.betAmount + '分钟';
+    } else if (G.betType === 'water') {
+      const reduce = G.betAmount * 6 * 60;
+      playerTimeSec = Math.max(0, playerTimeSec - reduce);
+      detailText = '倒计时 -' + (G.betAmount * 6) + '分钟';
+    } else detailText = pt + ' vs ' + bt;
   } else if (pt < bt) {
     outcome = 'lose';
     resultText = '😢 你输了';
-    if (G.betType === 'time') { playerTimeSec += G.betAmount * 60; detailText = '时间 +' + G.betAmount + '分钟'; }
-    else if (G.betType === 'water') { playerWater = Math.max(0, playerWater - G.betAmount); playerTimeSec += G.betAmount * 6 * 60; detailText = '喝了' + G.betAmount + '杯水，时间 +' + (G.betAmount * 6) + '分钟'; }
-    else detailText = pt + ' vs ' + bt;
+    if (G.betType === 'time') {
+      playerTimeSec += G.betAmount * 60;
+      detailText = '时间 +' + G.betAmount + '分钟';
+    } else if (G.betType === 'water') {
+      playerWater = Math.max(0, playerWater - G.betAmount);
+      playerTimeSec += G.betAmount * 6 * 60;
+      detailText = '喝了' + G.betAmount + '杯水，时间 +' + (G.betAmount * 6) + '分钟';
+    } else detailText = pt + ' vs ' + bt;
   } else {
     outcome = 'tie';
     resultText = '⚖️ 平局';
     detailText = '点数相同';
   }
 
-  const updates = {};
-  updates['game/resultOutcome'] = outcome;
-  updates['game/resultText'] = resultText;
-  updates['game/resultDetail'] = detailText;
-  updates['game/phase'] = 'result';
-  if (playerId) {
-    updates['players/' + playerId + '/time'] = playerTimeSec;
-    updates['players/' + playerId + '/water'] = playerWater;
-  }
-  update(ref(db), updates);
+  update(ref(db, rp('game')), {
+    resultOutcome: outcome,
+    resultText: resultText,
+    resultDetail: detailText,
+    phase: 'result'
+  });
+  update(ref(db, rp('player')), {
+    time: playerTimeSec,
+    water: playerWater
+  });
   updateBigTimer();
 
-  // 输了显示惩罚卡片，赢了显示奖励卡片
+  // 卡片提示
   if (outcome === 'lose') {
-    if (G.betType === 'time') {
-      setTimeout(() => showPenaltyAlert('多憋' + G.betAmount + '分钟'), 500);
-    } else if (G.betType === 'water') {
-      setTimeout(() => showPenaltyAlert('去喝' + G.betAmount + '杯水'), 500);
-    }
+    if (G.betType === 'time') setTimeout(() => showPenaltyAlert('多憋' + G.betAmount + '分钟'), 500);
+    else if (G.betType === 'water') setTimeout(() => showPenaltyAlert('去喝' + G.betAmount + '杯水'), 500);
   } else if (outcome === 'win') {
     setTimeout(() => showPenaltyAlert('终于赢了，可以少憋会儿了！'), 500);
   }
   setTimeout(() => checkGameOver(), 1000);
 }
 
+// ========== Firebase 同步 ==========
 function initSync() {
-  onValue(ref(db, 'boss/mode'), snap => {
+  // 监听房间模式
+  onValue(ref(db, rp('mode')), snap => {
     const newMode = snap.val();
-    console.log('模式同步:', secretMode, '->', newMode);
-    secretMode = newMode !== null ? newMode : 2;
-    if (hasJoined) renderUI();
+    secretMode = newMode != null ? newMode : 2;
   });
 
-  onValue(ref(db, 'game'), snap => {
+  // 监听游戏状态
+  onValue(ref(db, rp('game')), snap => {
     if (!snap.exists()) return;
     const data = snap.val();
     const oldPhase = G.phase;
     G = { ...G, ...data };
 
-    if (hasJoined) {
-      if (G.phase === 'roll1' && oldPhase !== 'roll1') animateRoll1();
-      else if (G.phase === 'roll2' && oldPhase !== 'roll2') animateRoll2();
-      else if (G.phase === 'result' && oldPhase !== 'result') {
-        if (!G.resultOutcome) calculateAndWriteResult();
-        else {
-          // 输了显示惩罚卡片，赢了显示奖励卡片
-          if (G.resultOutcome === 'lose') {
-            if (G.betType === 'time') {
-              setTimeout(() => showPenaltyAlert('多憋' + G.betAmount + '分钟'), 500);
-            } else if (G.betType === 'water') {
-              setTimeout(() => showPenaltyAlert('去喝' + G.betAmount + '杯水'), 500);
-            }
-          } else if (G.resultOutcome === 'win') {
-            setTimeout(() => showPenaltyAlert('终于赢了，可以少憋会儿了！'), 500);
-          }
-          setTimeout(() => checkGameOver(), 1000);
-        }
-      }
-
-      if (G.phase !== 'idle' && G.phase !== 'waiting' && !timerRunning) {
-        startTimer();
-      }
-
-      renderUI();
+    if (G.phase === 'roll1' && oldPhase !== 'roll1') animateRoll1();
+    else if (G.phase === 'roll2' && oldPhase !== 'roll2') animateRoll2();
+    else if (G.phase === 'result' && oldPhase !== 'result') {
+      if (!G.resultOutcome) calculateAndWriteResult();
     }
+
+    if (G.phase !== 'idle' && G.phase !== 'waiting' && !timerRunning) startTimer();
+    renderUI();
   });
 
-  onValue(ref(db, 'players'), snap => {
-    if (snap.exists() && hasJoined) {
-      const players = snap.val();
-      const myData = players[playerId];
-      if (myData) {
-        playerTimeSec = myData.time != null ? myData.time : 1800;
-        playerWater = myData.water != null ? myData.water : 10;
-        updateBigTimer();
-        document.getElementById('playerWaterDisplay').textContent = playerWater;
-      }
-    }
+  // 监听玩家数据
+  onValue(ref(db, rp('player')), snap => {
+    if (!snap.exists()) return;
+    const data = snap.val();
+    if (data.time != null) playerTimeSec = data.time;
+    if (data.water != null) playerWater = data.water;
+    updateBigTimer();
+    document.getElementById('playerWaterDisplay').textContent = playerWater;
   });
 }
 
+// ========== 弹窗 ==========
+window.closeWaterAlert = () => document.getElementById('waterAlert').classList.remove('open');
+window.showWaterAlert = msg => { document.getElementById('waterAlertMsg').textContent = msg; document.getElementById('waterAlert').classList.add('open'); };
+window.closePenaltyAlert = () => document.getElementById('penaltyAlert').classList.remove('open');
+window.showPenaltyAlert = msg => {
+  document.getElementById('penaltyAlertMsg').textContent = msg;
+  document.getElementById('penaltyAlert').classList.add('open');
+  document.getElementById('penaltyEmoji').textContent = msg.includes('赢') ? '🎉' : '😈';
+};
+
+// ========== 初始化UI ==========
 function initUI() {
   renderDice(document.getElementById('playerDice1'), 1);
   renderDice(document.getElementById('playerDice2'), 1);
@@ -681,7 +763,6 @@ function initUI() {
   document.getElementById('playerDice2').classList.add('waiting');
   document.getElementById('bossDice1').classList.add('waiting');
   document.getElementById('bossDice2').classList.add('waiting');
-  initSync();
 }
 
 initUI();
