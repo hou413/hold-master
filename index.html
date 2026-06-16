@@ -223,7 +223,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
 
     <!-- 玩家区域 -->
     <div class="player-area">
-      <div class="label" id="playerLabel">👧 挑战者</div>
+      <div class="label" id="playerLabel">👧 holding~girl</div>
       <div class="resources" id="playerResources">
         <div class="res-item">💧 <span class="res-val res-water" id="playerWaterDisplay">10</span> 杯水</div>
       </div>
@@ -414,7 +414,7 @@ window.renderBetChips = function() {
   chips.forEach(v => {
     const d = document.createElement('div');
     d.className = 'chip c' + v;
-    d.innerHTML = localBetType === 'time' ? '⏱️' + v : '💧' + v;
+    d.textContent = localBetType === 'time' ? v + '分' : v + '杯';
     d.onclick = () => selectChip(v);
     el.appendChild(d);
   });
