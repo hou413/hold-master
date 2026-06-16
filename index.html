@@ -8,7 +8,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;touch-action:none}
-body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;background:url('bg.jpg') center/cover no-repeat fixed;color:#fff;user-select:none;position:fixed;width:100%;inset:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;background:url('bg.jpg') center/cover no-repeat fixed;color:#fff;user-select:none;position:fixed;width:100%;inset:0;transition:background-image .5s}
 
 .app{position:fixed;inset:0;display:flex;flex-direction:column;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);background:rgba(0,0,0,0.35)}
 
@@ -330,6 +330,12 @@ function updateBigTimer() {
   const el = document.getElementById('bigTimer');
   el.textContent = formatTime(playerTimeSec);
   el.classList.toggle('warn', playerTimeSec <= 180);
+  // 剩余时间超过45分钟时切换背景
+  if (playerTimeSec > 2700) {
+    document.body.style.backgroundImage = "url('bg_long.jpg')";
+  } else {
+    document.body.style.backgroundImage = "url('bg.jpg')";
+  }
 }
 
 function renderUI() {
