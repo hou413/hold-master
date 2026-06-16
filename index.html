@@ -64,6 +64,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
 .bet-area{display:none;flex-direction:column;align-items:center;gap:6px;width:100%}
 .bet-area.visible{display:flex}
 .bet-title{font-size:.85em;color:#ffd700;font-weight:600}
+.bet-hint{font-size:.8em;color:rgba(255,255,255,.5);margin-bottom:2px}
 .bet-type{display:flex;gap:10px}
 .type-btn{padding:8px 18px;border:2px solid rgba(255,255,255,.2);border-radius:10px;background:rgba(255,255,255,.05);color:#fff;font-size:.85em;cursor:pointer;transition:all .15s;text-align:center}
 .type-btn:active{transform:scale(.95)}
@@ -189,8 +190,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
         <div class="dice-wrap"><div class="dice waiting" id="bossDice2"></div></div>
       </div>
     </div>
-    <div class="subtotal" id="bossSubtotal"></div>
-
     <div class="vs-divider">VS</div>
 
     <!-- 中央区域 -->
@@ -202,7 +201,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
 
       <!-- 下注区 -->
       <div class="bet-area" id="betArea">
-        
+        <div class="bet-hint" id="betHint">请选择押时间或水</div>
         <div class="bet-type">
           <div class="type-btn" onclick="selectBetType('time')"><span class="emoji">⏱️</span>时间</div>
           <div class="type-btn" onclick="selectBetType('water')"><span class="emoji">💧</span>水</div>
@@ -233,17 +232,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
         <div class="dice-wrap"><div class="dice waiting" id="playerDice2"></div></div>
       </div>
     </div>
-    <div class="subtotal" id="playerSubtotal"></div>
-
     <!-- 确认键 -->
     <button class="confirm-bet-mobile" id="confirmBetMobile" onclick="confirmBet()" style="display:none">确认下注</button>
   </div>
 
-  <div class="bottombar">
-    <span id="roundInfo">回合 -</span>
-    <span>|</span>
-    <span id="modeInfo">模式: 随机</span>
-  </div>
+  <div class="bottombar"></div>
 </div>
 
 <script type="module">
@@ -331,8 +324,7 @@ function renderUI() {
   document.getElementById('bossGoldDisplay').textContent = bossGold;
   document.getElementById('playerWaterDisplay').textContent = playerWater;
   updateBigTimer();
-  document.getElementById('roundInfo').textContent = '回合 ' + (G.round || '-');
-  document.getElementById('modeInfo').textContent = '模式: ' + MN[secretMode];
+
 
   const phaseNames = { idle: '等待中', waiting: '等待开始', roll1: '🎲 投骰子', betting: '💰 下注', roll2: '🎲 投骰子', result: '本局结束' };
   document.getElementById('phaseLabel').textContent = phaseNames[phase] || phase;
@@ -349,7 +341,11 @@ function renderUI() {
 
   if (phase === 'betting') {
     betArea.classList.add('visible');
-    renderBetChips();
+    document.getElementById('betHint').style.display = localBetType ? 'none' : 'block';
+    document.getElementById('betAmount').innerHTML = '';
+    if (!localBetType) {
+      document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
+    }
   }
 
   if (phase === 'result') {
@@ -371,8 +367,7 @@ function renderUI() {
   renderDice(document.getElementById('bossDice1'), G.bossD1);
   renderDice(document.getElementById('bossDice2'), G.bossD2);
 
-  document.getElementById('playerSubtotal').textContent = G.playerD1 ? (G.playerD2 ? '=' + (G.playerD1 + G.playerD2) : G.playerD1) : '';
-  document.getElementById('bossSubtotal').textContent = G.bossD1 ? (G.bossD2 ? '=' + (G.bossD1 + G.bossD2) : G.bossD1) : '';
+
 }
 
 function startTimer() {
@@ -414,11 +409,12 @@ window.selectBetType = function(type) {
 window.renderBetChips = function() {
   const el = document.getElementById('betAmount');
   el.innerHTML = '';
+  document.getElementById('betHint').style.display = 'none';
   const chips = localBetType === 'time' ? [10, 20, 30, 60] : [1, 2, 3];
   chips.forEach(v => {
     const d = document.createElement('div');
     d.className = 'chip c' + v;
-    d.textContent = localBetType === 'water' ? v + '杯' : v;
+    d.innerHTML = localBetType === 'time' ? '⏱️' + v : '💧' + v;
     d.onclick = () => selectChip(v);
     el.appendChild(d);
   });
@@ -444,6 +440,7 @@ window.confirmBet = function() {
   set(ref(db, 'game/phase'), 'roll2');
   localBetType = '';
   localSelectedChip = 0;
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
 };
 
 window.onMainBtn = function() {
