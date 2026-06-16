@@ -330,8 +330,10 @@ function updateBigTimer() {
   const el = document.getElementById('bigTimer');
   el.textContent = formatTime(playerTimeSec);
   el.classList.toggle('warn', playerTimeSec <= 180);
-  // 剩余时间超过45分钟时切换背景
-  if (playerTimeSec > 2700) {
+  // 剩余时间超过70分钟/45分钟时切换背景
+  if (playerTimeSec > 4200) {
+    document.body.style.backgroundImage = "url('bg_verylong.jpg')";
+  } else if (playerTimeSec > 2700) {
     document.body.style.backgroundImage = "url('bg_long.jpg')";
   } else {
     document.body.style.backgroundImage = "url('bg.jpg')";
