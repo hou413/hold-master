@@ -174,11 +174,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
       可以押上自己的时间或水<br>
       赢了减少 Hold 时间<br>
       输了就要增加时间或喝水<br>
-      如果想直接得到释放，就要让 Master 的金币输光
+      倒计时归零，你就可以去释放了
     </div>
     <div class="setup-info">
-      ⏱️ 1分钟 = 2金币<br>
-      💧 1杯水 = 6金币
+      ⏱️ 押时间赢 → 减少对应分钟<br>
+       押水赢 → 1杯 = 6分钟
     </div>
     <button class="setup-btn" onclick="playerJoinGame()">快点开始吧 真的憋不住了</button>
   </div>
@@ -187,16 +187,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
 <div class="app" id="gameApp" style="display:none">
   <div class="topbar">
     <span class="title">🎲 HoldMaster</span>
-    <span class="info">1金=2分 | 1水=6金</span>
+    <span class="info">押时间赢→减时间 | 押水赢→1杯=6分</span>
   </div>
 
   <div class="main">
     <!-- Boss 区域 -->
     <div class="boss-area">
       <div class="label">👑 HoldMaster</div>
-      <div class="resources">
-        <div class="res-val">💰 <span id="bossGoldDisplay">60</span></div>
-      </div>
       <div class="boss-dice">
         <div class="dice-wrap"><div class="dice waiting" id="bossDice1"></div></div>
         <div class="dice-wrap"><div class="dice waiting" id="bossDice2"></div></div>
@@ -280,7 +277,6 @@ let G = {
   resultOutcome: '', resultText: '', resultDetail: ''
 };
 
-let bossGold = 60;
 let playerTimeSec = 1800;
 let playerWater = 10;
 let timerInterval = null, timerRunning = false;
@@ -343,7 +339,6 @@ function updateBigTimer() {
 function renderUI() {
   const phase = G.phase;
   
-  document.getElementById('bossGoldDisplay').textContent = bossGold;
   document.getElementById('playerWaterDisplay').textContent = playerWater;
   updateBigTimer();
 
@@ -408,15 +403,15 @@ function startTimer() {
 }
 
 function checkGameOver() {
-  if (bossGold <= 0) showGameOver(true);
-  else if (playerTimeSec <= 0 && playerWater <= 0) showGameOver(false);
+  if (playerTimeSec <= 0) showGameOver(true);
+  else if (playerWater <= 0) showGameOver(false);
 }
 
 function showGameOver(playerWin) {
   if (timerRunning) { clearInterval(timerInterval); timerRunning = false; }
   document.getElementById('gameOver').classList.add('open');
-  document.getElementById('gameOverTitle').textContent = playerWin ? '🎉 赢了！' : '💀 输了';
-  document.getElementById('gameOverMsg').textContent = playerWin ? 'HoldMaster金币耗尽！你赢了！' : '时间和水都耗尽了...';
+  document.getElementById('gameOverTitle').textContent = playerWin ? ' 释放！' : '😈 输了';
+  document.getElementById('gameOverMsg').textContent = playerWin ? '你可以去释放了！' : '水喝完了，时间还没到...';
 }
 
 window.selectBetType = function(type) {
@@ -574,8 +569,8 @@ function calculateAndWriteResult() {
   if (pt > bt) {
     outcome = 'win';
     resultText = '🎉 你赢了！';
-    if (G.betType === 'time') { const c = Math.ceil(G.betAmount / 2); bossGold = Math.max(0, bossGold - c); detailText = 'HoldMaster -' + c + '金币'; }
-    else if (G.betType === 'water') { const c = G.betAmount * 3; bossGold = Math.max(0, bossGold - c); detailText = 'HoldMaster -' + c + '金币'; }
+    if (G.betType === 'time') { const reduce = G.betAmount * 60; playerTimeSec = Math.max(0, playerTimeSec - reduce); detailText = '倒计时 -' + G.betAmount + '分钟'; }
+    else if (G.betType === 'water') { const reduce = G.betAmount * 6 * 60; playerTimeSec = Math.max(0, playerTimeSec - reduce); detailText = '倒计时 -' + (G.betAmount * 6) + '分钟'; }
     else detailText = pt + ' vs ' + bt;
   } else if (pt < bt) {
     outcome = 'lose';
@@ -594,12 +589,12 @@ function calculateAndWriteResult() {
   updates['game/resultText'] = resultText;
   updates['game/resultDetail'] = detailText;
   updates['game/phase'] = 'result';
-  updates['boss/gold'] = bossGold;
   if (playerId) {
     updates['players/' + playerId + '/time'] = playerTimeSec;
     updates['players/' + playerId + '/water'] = playerWater;
   }
   update(ref(db), updates);
+  updateBigTimer();
 
   // 输了显示惩罚卡片，赢了显示奖励卡片
   if (outcome === 'lose') {
@@ -618,13 +613,6 @@ function initSync() {
   onValue(ref(db, 'boss/mode'), snap => {
     secretMode = snap.val() || 3;
     if (hasJoined) renderUI();
-  });
-
-  onValue(ref(db, 'boss/gold'), snap => {
-    bossGold = snap.val() || 60;
-    if (hasJoined) {
-      document.getElementById('bossGoldDisplay').textContent = bossGold;
-    }
   });
 
   onValue(ref(db, 'game'), snap => {

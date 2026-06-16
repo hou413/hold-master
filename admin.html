@@ -70,14 +70,10 @@ h1{text-align:center;font-size:2em;margin-bottom:10px;color:#ffd700;text-shadow:
 </div>
 
 <div class="card">
-<h2>📊 游戏状态</h2>
+<h2> 游戏状态</h2>
 <div class="status-item">
-<span class="label">💰 HoldMaster金币</span>
-<span class="value gold" id="bossGold">60</span>
-</div>
-<div class="status-item">
-<span class="label">⏱️ 玩家时间</span>
-<span class="value time" id="playerTime">120:00</span>
+<span class="label">️ 玩家时间</span>
+<span class="value time" id="playerTime">30:00</span>
 </div>
 <div class="status-item">
 <span class="label">💧 玩家水量</span>
@@ -127,8 +123,7 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 let secretMode = 3;
-let bossGold = 60;
-let playerTimeSec = 7200;
+let playerTimeSec = 1800;
 let playerWater = 10;
 
 const MN=[' 玩家必赢','💀 HoldMaster必赢','🔥 5局内玩家赢','🎯 纯随机'];
@@ -158,11 +153,6 @@ function initSync(){
     secretMode=snap.val()||3;
     updateModeButtons();
     setConnStatus(true);
-  });
-
-  onValue(ref(db,'boss/gold'),(snap)=>{
-    bossGold=snap.val()||60;
-    document.getElementById('bossGold').textContent=bossGold;
   });
 
   onValue(ref(db,'game'),(snap)=>{
@@ -195,7 +185,6 @@ function initSync(){
 }
 
 window.startGame=function(){
-  set(ref(db,'boss/gold'),60);
   set(ref(db,'game'),{
     phase:'roll1',round:1,playerName:'',
     playerD1:0,playerD2:0,bossD1:0,bossD2:0,
@@ -207,7 +196,6 @@ window.startGame=function(){
 
 window.resetGame=function(){
   if(confirm('确定要重置游戏吗？所有进度将丢失。')){
-    set(ref(db,'boss/gold'),60);
     set(ref(db,'game'),{
       phase:'idle',round:0,playerName:'',
       playerD1:0,playerD2:0,bossD1:0,bossD2:0,
