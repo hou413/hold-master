@@ -19,6 +19,8 @@ h1{text-align:center;font-size:2em;margin-bottom:10px;color:#ffd700;text-shadow:
 .mode-btn .emoji{font-size:2em;display:block;margin-bottom:8px}
 .mode-btn .label{font-weight:bold}
 .mode-btn .desc{font-size:.8em;opacity:.7;margin-top:5px}
+.reset-btn{width:100%;padding:15px;margin-top:20px;background:linear-gradient(135deg,#ff6b6b,#ee5a52);color:#fff;border:none;border-radius:15px;font-size:1em;font-weight:bold;cursor:pointer;transition:all .3s}
+.reset-btn:hover{transform:translateY(-2px);box-shadow:0 5px 20px rgba(255,107,107,.4)}
 .conn-status{position:fixed;top:20px;right:20px;font-size:.8em;padding:6px 12px;border-radius:15px;background:rgba(0,0,0,.5)}
 .conn-status.ok{color:#51cf66;border:1px solid #51cf66}
 .conn-status.err{color:#ff6b6b;border:1px solid #ff6b6b}
@@ -49,6 +51,12 @@ h1{text-align:center;font-size:2em;margin-bottom:10px;color:#ffd700;text-shadow:
 <span class="desc">完全随机，公平对战</span>
 </button>
 </div>
+</div>
+</div>
+
+<div class="card">
+<h2>⚙️ 游戏控制</h2>
+<button class="reset-btn" onclick="resetGame()">🔄 重置游戏</button>
 </div>
 </div>
 
@@ -95,6 +103,27 @@ onValue(ref(db,'boss/mode'),(snap)=>{
   updateModeButtons();
   setConnStatus(true);
 });
+
+window.resetGame=function(){
+  if(confirm('确定要重置游戏吗？所有游戏进度将被清空。')){
+    set(ref(db,'game'),{
+      phase:'idle',
+      round:0,
+      playerD1:0,
+      playerD2:0,
+      bossD1:0,
+      bossD2:0,
+      betType:'',
+      betAmount:0,
+      resultText:'',
+      resultDetail:''
+    }).then(()=>{
+      alert('游戏已重置');
+    }).catch((err)=>{
+      alert('重置失败：'+err.message);
+    });
+  }
+};
 
 setConnStatus(true);
 </script>
