@@ -49,11 +49,11 @@ h1{text-align:center;font-size:2em;margin-bottom:10px;color:#ffd700;text-shadow:
 <button class="mode-btn" data-mode="0" onclick="setMode(0)">
 <span class="emoji">👑</span>
 <span class="label">玩家必赢</span>
-<span class="desc">Boss容易输</span>
+<span class="desc">HoldMaster容易输</span>
 </button>
 <button class="mode-btn" data-mode="1" onclick="setMode(1)">
 <span class="emoji">💀</span>
-<span class="label">Boss必赢</span>
+<span class="label">HoldMaster必赢</span>
 <span class="desc">玩家很难赢</span>
 </button>
 <button class="mode-btn" data-mode="2" onclick="setMode(2)">
@@ -72,7 +72,7 @@ h1{text-align:center;font-size:2em;margin-bottom:10px;color:#ffd700;text-shadow:
 <div class="card">
 <h2>📊 游戏状态</h2>
 <div class="status-item">
-<span class="label">💰 Boss金币</span>
+<span class="label">💰 HoldMaster金币</span>
 <span class="value gold" id="bossGold">60</span>
 </div>
 <div class="status-item">
@@ -131,7 +131,7 @@ let bossGold = 60;
 let playerTimeSec = 7200;
 let playerWater = 10;
 
-const MN=[' 玩家必赢','💀 Boss必赢','🔥 5局内玩家赢','🎯 纯随机'];
+const MN=[' 玩家必赢','💀 HoldMaster必赢','🔥 5局内玩家赢','🎯 纯随机'];
 
 function formatTime(sec){const m=Math.floor(sec/60),s=sec%60;return m+':'+(s<10?'0'+s:s)};
 

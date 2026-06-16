@@ -180,7 +180,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
   <div class="main">
     <!-- Boss 区域 -->
     <div class="boss-area">
-      <div class="label">👑 Boss</div>
+      <div class="label">👑 HoldMaster</div>
       <div class="resources">
         <div class="res-val">💰 <span id="bossGoldDisplay">60</span></div>
       </div>
@@ -197,12 +197,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
     <div class="center-area">
       <div class="phase-label" id="phaseLabel">等待中</div>
       
-      <div class="big-timer-label">剩余时间</div>
-      <div class="big-timer" id="bigTimer">120:00</div>
+      <div class="big-timer-label">释放倒计时</div>
+      <div class="big-timer" id="bigTimer">30:00</div>
 
       <!-- 下注区 -->
       <div class="bet-area" id="betArea">
-        <div class="bet-title">💰 下注</div>
+        
         <div class="bet-type">
           <div class="type-btn" onclick="selectBetType('time')"><span class="emoji">⏱️</span>时间</div>
           <div class="type-btn" onclick="selectBetType('water')"><span class="emoji">💧</span>水</div>
@@ -224,9 +224,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
 
     <!-- 玩家区域 -->
     <div class="player-area">
-      <div class="label" id="playerLabel">🎮 挑战者</div>
+      <div class="label" id="playerLabel">👧 挑战者</div>
       <div class="resources" id="playerResources">
-        <div class="res-item">💧 <span class="res-val res-water" id="playerWaterDisplay">10</span> 杯</div>
+        <div class="res-item">💧 <span class="res-val res-water" id="playerWaterDisplay">10</span> 杯水</div>
       </div>
       <div class="player-dice">
         <div class="dice-wrap"><div class="dice waiting" id="playerDice1"></div></div>
@@ -276,7 +276,7 @@ let G = {
 };
 
 let bossGold = 60;
-let playerTimeSec = 7200;
+let playerTimeSec = 1800;
 let playerWater = 10;
 let timerInterval = null, timerRunning = false;
 let localBetType = '', localSelectedChip = 0;
@@ -284,6 +284,7 @@ let hasJoined = false;
 
 const DP={1:[4],2:[2,6],3:[2,4,6],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
 const MN=['👑必赢','💀必输','🔥5局赢','🎯随机'];
+const BOSS_NAME = 'HoldMaster';
 
 window.formatTime = s => { const m=Math.floor(s/60),sec=s%60; return m+':'+(sec<10?'0'+sec:sec); };
 
@@ -398,7 +399,7 @@ function showGameOver(playerWin) {
   if (timerRunning) { clearInterval(timerInterval); timerRunning = false; }
   document.getElementById('gameOver').classList.add('open');
   document.getElementById('gameOverTitle').textContent = playerWin ? '🎉 赢了！' : '💀 输了';
-  document.getElementById('gameOverMsg').textContent = playerWin ? 'Boss金币耗尽！你赢了！' : '时间和水都耗尽了...';
+  document.getElementById('gameOverMsg').textContent = playerWin ? 'HoldMaster金币耗尽！你赢了！' : '时间和水都耗尽了...';
 }
 
 window.selectBetType = function(type) {
@@ -467,7 +468,7 @@ window.playerJoinGame = function() {
   playerId = 'player_' + Date.now();
   hasJoined = true;
   
-  document.getElementById('playerLabel').textContent = '🎮 ' + playerName;
+  document.getElementById('playerLabel').textContent = '👧 ' + playerName;
   
   set(ref(db, 'players/' + playerId), {
     name: playerName, time: playerTimeSec, water: playerWater, status: 'active'
@@ -525,8 +526,8 @@ function calculateAndWriteResult() {
   if (pt > bt) {
     outcome = 'win';
     resultText = '🎉 你赢了！';
-    if (G.betType === 'time') { const c = Math.ceil(G.betAmount / 2); bossGold = Math.max(0, bossGold - c); detailText = 'Boss -' + c + '金币'; }
-    else if (G.betType === 'water') { const c = G.betAmount * 3; bossGold = Math.max(0, bossGold - c); detailText = 'Boss -' + c + '金币'; }
+    if (G.betType === 'time') { const c = Math.ceil(G.betAmount / 2); bossGold = Math.max(0, bossGold - c); detailText = 'HoldMaster -' + c + '金币'; }
+    else if (G.betType === 'water') { const c = G.betAmount * 3; bossGold = Math.max(0, bossGold - c); detailText = 'HoldMaster -' + c + '金币'; }
     else detailText = pt + ' vs ' + bt;
   } else if (pt < bt) {
     outcome = 'lose';
