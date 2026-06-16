@@ -663,8 +663,8 @@ function initSync() {
       const players = snap.val();
       const myData = players[playerId];
       if (myData) {
-        playerTimeSec = myData.time || 7200;
-        playerWater = myData.water || 10;
+        playerTimeSec = myData.time != null ? myData.time : 1800;
+        playerWater = myData.water != null ? myData.water : 10;
         updateBigTimer();
         document.getElementById('playerWaterDisplay').textContent = playerWater;
       }
