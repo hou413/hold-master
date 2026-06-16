@@ -583,7 +583,7 @@ function calculateAndWriteResult() {
     outcome = 'lose';
     resultText = '😢 你输了';
     if (G.betType === 'time') { playerTimeSec += G.betAmount * 60; detailText = '时间 +' + G.betAmount + '分钟'; }
-    else if (G.betType === 'water') { playerWater = Math.max(0, playerWater - G.betAmount); detailText = '喝了' + G.betAmount + '杯水'; }
+    else if (G.betType === 'water') { playerWater = Math.max(0, playerWater - G.betAmount); playerTimeSec += G.betAmount * 6 * 60; detailText = '喝了' + G.betAmount + '杯水，时间 +' + (G.betAmount * 6) + '分钟'; }
     else detailText = pt + ' vs ' + bt;
   } else {
     outcome = 'tie';
