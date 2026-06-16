@@ -81,6 +81,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
 .confirm-bet-mobile{margin-top:4px;padding:10px 28px;font-size:.9em;font-weight:700;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:16px;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(255,215,0,.3)}
 .confirm-bet-mobile:active:not(:disabled){transform:scale(.95)}
 .confirm-bet-mobile:disabled{opacity:.35;cursor:not-allowed}
+.bet-rules-hint{font-size:.7em;opacity:.45;text-align:center;line-height:1.5;margin-top:6px}
 
 /* 结果 */
 .result-area{display:none;text-align:center}
@@ -243,6 +244,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
     </div>
     <!-- 确认键 -->
     <button class="confirm-bet-mobile" id="confirmBetMobile" onclick="confirmBet()" style="display:none">确认下注</button>
+    <div class="bet-rules-hint">
+      下注时间，根据输赢增减相应时间<br>
+      下注水，根据输赢增减时间<br>
+      (1杯水等于6分钟)
+    </div>
   </div>
 
   <div class="bottombar"></div>
@@ -427,7 +433,7 @@ window.renderBetChips = function() {
   const el = document.getElementById('betAmount');
   el.innerHTML = '';
   document.getElementById('betHint').style.display = 'none';
-  const chips = localBetType === 'time' ? [5, 10, 15, 30] : [1, 2, 3];
+  const chips = localBetType === 'time' ? [1, 3, 5] : [1, 2, 3];
   chips.forEach(v => {
     const d = document.createElement('div');
     d.className = 'chip c' + v;
