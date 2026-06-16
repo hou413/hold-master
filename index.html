@@ -618,7 +618,9 @@ function calculateAndWriteResult() {
 
 function initSync() {
   onValue(ref(db, 'boss/mode'), snap => {
-    secretMode = snap.val() || 2;
+    const newMode = snap.val();
+    console.log('模式同步:', secretMode, '->', newMode);
+    secretMode = newMode !== null ? newMode : 2;
     if (hasJoined) renderUI();
   });
 
