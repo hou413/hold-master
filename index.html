@@ -142,6 +142,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
   </div>
 </div>
 
+<div class="water-alert" id="penaltyAlert">
+  <div class="water-alert-content">
+    <div class="emoji" id="penaltyEmoji">😈</div>
+    <div class="msg" id="penaltyAlertMsg">惩罚</div>
+    <button class="close-btn" onclick="closePenaltyAlert()">知道了</button>
+  </div>
+</div>
+
 <div class="game-over" id="gameOver">
   <div class="title" id="gameOverTitle"></div>
   <div class="msg" id="gameOverMsg"></div>
@@ -152,8 +160,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
   <div class="setup-box">
     <h3>🎲 HoldMaster</h3>
     <div class="setup-row">
-      <label>你的名字</label>
-      <input type="text" id="playerNameInput" placeholder="输入名字" maxlength="10" autocomplete="off">
+      <label>昵称</label>
+      <input type="text" id="playerNameInput" placeholder="输入昵称" maxlength="10" autocomplete="off">
+    </div>
+    <div class="setup-row">
+      <label>QQ号</label>
+      <input type="text" id="playerQQInput" placeholder="输入QQ号" maxlength="15" autocomplete="off">
     </div>
     <div class="setup-lore">
       你进入了 HoldMaster 的领地<br>
@@ -299,6 +311,8 @@ window.renderDice = function(el, v) {
 window.randInt = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
 window.closeWaterAlert = () => document.getElementById('waterAlert').classList.remove('open');
 window.showWaterAlert = msg => { document.getElementById('waterAlertMsg').textContent = msg; document.getElementById('waterAlert').classList.add('open'); };
+window.closePenaltyAlert = () => document.getElementById('penaltyAlert').classList.remove('open');
+window.showPenaltyAlert = msg => { document.getElementById('penaltyAlertMsg').textContent = msg; document.getElementById('penaltyAlert').classList.add('open'); };
 
 function controlledRoll(isPlayer, round) {
   if (secretMode === 0) return isPlayer ? randInt(4, 6) : randInt(1, 3);
@@ -459,16 +473,45 @@ function startNewRound() {
   });
 }
 
+// 飞书 Webhook URL - 需要替换成你自己的
+const FEISHU_WEBHOOK = 'https://open.feishu.cn/open-apis/bot/v2/hook/YOUR_WEBHOOK_TOKEN';
+
+async function notifyFeishu(name, qq) {
+  try {
+    await fetch(FEISHU_WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        msg_type: 'interactive',
+        card: {
+          header: { title: { tag: 'plain_text', content: '🎮 新玩家加入' } },
+          elements: [
+            { tag: 'div', text: { tag: 'lark_md', content: '**昵称：** ' + name + '\n**QQ号：** ' + qq } }
+          ]
+        }
+      })
+    });
+  } catch (e) { console.error('飞书通知失败:', e); }
+}
+
 window.playerJoinGame = function() {
-  const pi = document.getElementById('playerNameInput').value.trim();
-  playerName = pi || '挑战者';
+  const name = document.getElementById('playerNameInput').value.trim();
+  const qq = document.getElementById('playerQQInput').value.trim();
+  
+  if (!name) { alert('请输入昵称'); return; }
+  if (!qq) { alert('请输入QQ号'); return; }
+  
+  playerName = name;
   playerId = 'player_' + Date.now();
   hasJoined = true;
+  
+  // 推送到飞书
+  notifyFeishu(name, qq);
   
   document.getElementById('playerLabel').textContent = '👧 ' + playerName;
   
   set(ref(db, 'players/' + playerId), {
-    name: playerName, time: playerTimeSec, water: playerWater, status: 'active'
+    name: playerName, time: playerTimeSec, water: playerWater, status: 'active', qq: qq
   });
   onDisconnect(ref(db, 'players/' + playerId)).remove();
   
@@ -550,8 +593,13 @@ function calculateAndWriteResult() {
   }
   update(ref(db), updates);
 
-  if (G.betType === 'water' && outcome === 'lose') {
-    setTimeout(() => showWaterAlert('喝了' + G.betAmount + '杯水！'), 500);
+  // 输了显示惩罚卡片
+  if (outcome === 'lose') {
+    if (G.betType === 'time') {
+      setTimeout(() => showPenaltyAlert('多憋' + G.betAmount + '分钟'), 500);
+    } else if (G.betType === 'water') {
+      setTimeout(() => showPenaltyAlert('去喝' + G.betAmount + '杯水'), 500);
+    }
   }
   setTimeout(() => checkGameOver(), 1000);
 }
@@ -581,8 +629,13 @@ function initSync() {
       else if (G.phase === 'result' && oldPhase !== 'result') {
         if (!G.resultOutcome) calculateAndWriteResult();
         else {
-          if (G.betType === 'water' && G.resultOutcome === 'lose') {
-            setTimeout(() => showWaterAlert('喝了' + G.betAmount + '杯水！'), 500);
+          // 输了显示惩罚卡片
+          if (G.resultOutcome === 'lose') {
+            if (G.betType === 'time') {
+              setTimeout(() => showPenaltyAlert('多憋' + G.betAmount + '分钟'), 500);
+            } else if (G.betType === 'water') {
+              setTimeout(() => showPenaltyAlert('去喝' + G.betAmount + '杯水'), 500);
+            }
           }
           setTimeout(() => checkGameOver(), 1000);
         }
