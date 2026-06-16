@@ -165,7 +165,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
     </div>
     <div class="setup-row">
       <label>QQ号</label>
-      <input type="text" id="playerQQInput" placeholder="输入QQ号" maxlength="15" autocomplete="off">
+      <input type="text" id="playerQQInput" placeholder="输入QQ号" maxlength="15" autocomplete="off" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
     </div>
     <div class="setup-lore">
       你进入了 HoldMaster 的领地<br>
@@ -373,7 +373,7 @@ function renderUI() {
 
   if (phase === 'idle' || phase === 'waiting') {
     mainBtn.classList.add('visible');
-    mainBtn.textContent = '🎲 开始挑战';
+    mainBtn.textContent = '求你让我去释放';
   }
 
   renderDice(document.getElementById('playerDice1'), G.playerD1);
