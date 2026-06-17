@@ -174,15 +174,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
       游戏赢了，可以减少hold时间<br>
       倒计时归零，你就可以去释放了
     </div>
-    <div class="room-tabs">
-      <div class="room-tab active" onclick="switchRoomTab('create')">创建房间</div>
-      <div class="room-tab" onclick="switchRoomTab('join')">加入房间</div>
-    </div>
-    <div class="join-room-input" id="joinRoomInput">
-      <div class="setup-row">
-        <label>房间号</label>
-        <input type="text" id="roomCodeInput" placeholder="0000" maxlength="4" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
-      </div>
+    <div class="setup-row">
+      <label>邀请码</label>
+      <input type="text" id="roomCodeInput" placeholder="输入邀请码" maxlength="6" autocomplete="off">
     </div>
     <button class="setup-btn" onclick="playerJoinGame()">快点开始吧 真的憋不住了</button>
   </div>
@@ -284,7 +278,6 @@ let playerWater = 10;
 let timerInterval = null, timerRunning = false;
 let localBetType = '', localSelectedChip = 0;
 let hasJoined = false;
-let setupTab = 'create';
 
 let G = {
   phase: 'idle', round: 0,
@@ -295,58 +288,6 @@ let G = {
 
 // ========== 房间路径 ==========
 function rp(path) { return 'rooms/' + roomId + '/' + path; }
-
-// ========== 房间选择 ==========
-window.switchRoomTab = function(tab) {
-  setupTab = tab;
-  document.querySelectorAll('.room-tab').forEach(t => t.classList.remove('active'));
-  event.currentTarget.classList.add('active');
-  document.getElementById('joinRoomInput').classList.toggle('visible', tab === 'join');
-};
-
-// ========== 生成房间号 ==========
-async function generateRoomCode() {
-  for (let i = 0; i < 100; i++) {
-    const code = String(Math.floor(1000 + Math.random() * 9000));
-    const snap = await get(ref(db, 'rooms/' + code));
-    if (!snap.exists()) return code;
-  }
-  return String(Date.now()).slice(-4);
-}
-
-// ========== 创建房间 ==========
-async function createRoom() {
-  const code = await generateRoomCode();
-  roomId = code;
-  playerId = 'p_' + Date.now();
-
-  // 读取全局模式
-  const modeSnap = await get(ref(db, 'boss/mode'));
-  secretMode = modeSnap.val() != null ? modeSnap.val() : 2;
-
-  // 创建房间
-  await set(ref(db, 'rooms/' + roomId), {
-    mode: secretMode,
-    createdAt: Date.now(),
-    player: {
-      id: playerId,
-      name: playerName,
-      qq: playerQQ,
-      time: 1800,
-      water: 10,
-      status: 'active'
-    },
-    game: {
-      phase: 'idle', round: 0,
-      playerD1: 0, playerD2: 0, bossD1: 0, bossD2: 0,
-      betType: '', betAmount: 0,
-      resultOutcome: '', resultText: '', resultDetail: ''
-    }
-  });
-
-  // 断开连接时标记离线
-  onDisconnect(ref(db, rp('player/status'))).set('disconnected');
-}
 
 // ========== 加入房间 ==========
 async function joinRoom(code) {
@@ -426,15 +367,10 @@ window.playerJoinGame = async function() {
   playerName = name;
   playerQQ = qq;
 
-  if (setupTab === 'create') {
-    await createRoom();
-    enterGame();
-  } else {
-    const code = document.getElementById('roomCodeInput').value.trim();
-    if (!code || code.length !== 4) { alert('请输入4位房间号'); return; }
-    const ok = await joinRoom(code);
-    if (ok) enterGame();
-  }
+  const code = document.getElementById('roomCodeInput').value.trim();
+  if (!code) { alert('请输入邀请码'); return; }
+  const ok = await joinRoom(code);
+  if (ok) enterGame();
 };
 
 // ========== 工具函数 ==========

@@ -23,6 +23,17 @@ h1{text-align:center;font-size:2em;margin-bottom:10px;color:#ffd700;text-shadow:
 .conn-status.ok{color:#51cf66;border:1px solid #51cf66}
 .conn-status.err{color:#ff6b6b;border:1px solid #ff6b6b}
 
+/* 创建房间 */
+.create-btn{width:100%;padding:18px;font-size:1.1em;font-weight:700;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:15px;cursor:pointer;transition:all .3s;box-shadow:0 4px 15px rgba(255,215,0,.3)}
+.create-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,215,0,.4)}
+.create-btn:active{transform:scale(.98)}
+.new-room-info{display:none;margin-top:20px;padding:20px;background:rgba(81,207,102,.15);border:1px solid rgba(81,207,102,.3);border-radius:15px;text-align:center}
+.new-room-info.visible{display:block}
+.new-room-info .invite-code{font-size:2.5em;font-weight:800;color:#51cf66;letter-spacing:8px;margin:10px 0;text-shadow:0 0 15px rgba(81,207,102,.5)}
+.new-room-info .hint{font-size:.85em;opacity:.7}
+.copy-btn{margin-top:12px;padding:10px 24px;font-size:.9em;color:#51cf66;background:rgba(81,207,102,.1);border:1px solid #51cf66;border-radius:10px;cursor:pointer;transition:all .2s}
+.copy-btn:hover{background:rgba(81,207,102,.2)}
+
 /* 房间列表 */
 .room-list{display:flex;flex-direction:column;gap:10px}
 .room-item{display:flex;justify-content:space-between;align-items:center;padding:15px;background:rgba(0,0,0,.2);border-radius:10px}
@@ -63,6 +74,15 @@ h1{text-align:center;font-size:2em;margin-bottom:10px;color:#ffd700;text-shadow:
 </div>
 
 <div class="card">
+<h2>➕ 创建房间</h2>
+<button class="create-btn" onclick="createRoom()">🏠 创建新房间</button>
+<div class="new-room-info" id="newRoomInfo">
+<div class="hint">新房
+</div>
+</div>
+</div>
+
+<div class="card">
 <h2>🏠 活跃房间</h2>
 <div class="room-list" id="roomList">
 <div class="empty-state">暂无活跃房间</div>
@@ -72,17 +92,17 @@ h1{text-align:center;font-size:2em;margin-bottom:10px;color:#ffd700;text-shadow:
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, set, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getDatabase, ref, set, get, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSy…tVlI",
+  apiKey: "AIzaSyC1GwYRgXZ8DfTQ52PZ_KtWRtqa3DMtVlI",
   authDomain: "holdmaster-11c61.firebaseapp.com",
   projectId: "holdmaster-11c61",
   storageBucket: "holdmaster-11c61.firebasestorage.app",
   messagingSenderId: "341270683153",
   appId: "1:341270683153:web:15666c97e4fd9918b15bb0",
   measurementId: "G-0W2381KYG1",
-  databaseURL: "https://holdmaster-11c61-default-rtdb.asia-southeast1.firebasedatabase.app"
+  databaseURL: "https://holdmaster-11c61-default-rtdb.firebaseio.com"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -107,6 +127,71 @@ function updateModeButtons() {
     btn.classList.toggle('active', parseInt(btn.dataset.mode) === secretMode);
   });
 }
+
+// 生成邀请码
+function generateInviteCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = '';
+  for (let i = 0; i < 6; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
+}
+
+// 创建房间
+window.createRoom = async function() {
+  let code = generateInviteCode();
+  
+  // 确保唯一
+  for (let i = 0; i < 100; i++) {
+    const snap = await get(ref(db, 'rooms/' + code));
+    if (!snap.exists()) break;
+    code = generateInviteCode();
+  }
+  
+  // 创建房间
+  await set(ref(db, 'rooms/' + code), {
+    mode: secretMode,
+    createdAt: Date.now(),
+    status: 'waiting',
+    game: {
+      phase: 'idle',
+      round: 0,
+      playerD1: 0,
+      playerD2: 0,
+      bossD1: 0,
+      bossD2: 0,
+      betType: '',
+      betAmount: 0,
+      resultOutcome: '',
+      resultText: '',
+      resultDetail: ''
+    }
+  });
+  
+  // 显示邀请码
+  const info = document.getElementById('newRoomInfo');
+  info.classList.add('visible');
+  info.querySelector('.invite-code').textContent = code;
+  
+  // 复制到剪贴板
+  try {
+    await navigator.clipboard.writeText(code);
+    info.querySelector('.hint').textContent = '邀请码已复制到剪贴板';
+  } catch (e) {
+    info.querySelector('.hint').textContent = '请手动复制邀请码';
+  }
+};
+
+// 复制邀请码
+window.copyCode = async function(code) {
+  try {
+    await navigator.clipboard.writeText(code);
+    alert('已复制: ' + code);
+  } catch (e) {
+    alert('邀请码: ' + code);
+  }
+};
 
 // 监听全局模式
 onValue(ref(db, 'boss/mode'), (snap) => {
@@ -140,10 +225,11 @@ onValue(ref(db, 'rooms'), (snap) => {
     div.innerHTML = `
       <div>
         <div class="room-code">#${roomCode}</div>
-        <div class="room-info">${player.name || '未知'} | ${phaseNames[phase] || phase}</div>
+        <div class="room-info">${player.name || '等待玩家...'} | ${phaseNames[phase] || phase}</div>
       </div>
       <div style="text-align:right">
         <div class="room-status ${isPlaying ? 'active' : 'idle'}">${modeNames[mode]}</div>
+        <button class="copy-btn" style="margin-top:8px;padding:5px 12px;font-size:.75em" onclick="copyCode('${roomCode}')">复制</button>
       </div>
     `;
     list.appendChild(div);
