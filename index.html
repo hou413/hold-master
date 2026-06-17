@@ -294,9 +294,10 @@ function rp(path) { return 'rooms/' + roomId + '/' + path; }
 
 // ========== 加入房间 ==========
 async function joinRoom(code) {
+  code = code.toUpperCase();
   const snap = await get(ref(db, 'rooms/' + code));
   if (!snap.exists()) {
-    alert('房间不存在，请检查房间号');
+    alert('房间不存在，请检查邀请码');
     return false;
   }
 
@@ -362,6 +363,7 @@ function enterGame() {
 
 // ========== 玩家加入 ==========
 window.playerJoinGame = async function() {
+  console.log('按钮被点击了');
   const name = document.getElementById('playerNameInput').value.trim();
   const qq = document.getElementById('playerQQInput').value.trim();
   if (!name) { alert('请输入昵称'); return; }
@@ -370,10 +372,18 @@ window.playerJoinGame = async function() {
   playerName = name;
   playerQQ = qq;
 
-  const code = document.getElementById('roomCodeInput').value.trim();
+  const code = document.getElementById('roomCodeInput').value.trim().toUpperCase();
   if (!code) { alert('请输入邀请码'); return; }
-  const ok = await joinRoom(code);
-  if (ok) enterGame();
+  
+  console.log('尝试加入房间:', code);
+  try {
+    const ok = await joinRoom(code);
+    console.log('joinRoom 结果:', ok);
+    if (ok) enterGame();
+  } catch (err) {
+    console.error('加入房间失败:', err);
+    alert('加入房间失败: ' + err.message);
+  }
 };
 
 // ========== 工具函数 ==========
