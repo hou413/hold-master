@@ -77,7 +77,9 @@ h1{text-align:center;font-size:2em;margin-bottom:10px;color:#ffd700;text-shadow:
 <h2>➕ 创建房间</h2>
 <button class="create-btn" onclick="createRoom()">🏠 创建新房间</button>
 <div class="new-room-info" id="newRoomInfo">
-<div class="hint">新房
+  <div class="hint">邀请码</div>
+  <div class="invite-code"></div>
+  <button class="copy-btn" onclick="copyCurrentCode()">复制邀请码</button>
 </div>
 </div>
 </div>
@@ -170,6 +172,7 @@ window.createRoom = async function() {
   });
   
   // 显示邀请码
+  currentCode = code;
   const info = document.getElementById('newRoomInfo');
   info.classList.add('visible');
   info.querySelector('.invite-code').textContent = code;
@@ -180,6 +183,19 @@ window.createRoom = async function() {
     info.querySelector('.hint').textContent = '邀请码已复制到剪贴板';
   } catch (e) {
     info.querySelector('.hint').textContent = '请手动复制邀请码';
+  }
+};
+
+let currentCode = '';
+
+// 复制当前创建的邀请码
+window.copyCurrentCode = async function() {
+  if (!currentCode) return;
+  try {
+    await navigator.clipboard.writeText(currentCode);
+    alert('已复制: ' + currentCode);
+  } catch (e) {
+    alert('邀请码: ' + currentCode);
   }
 };
 
