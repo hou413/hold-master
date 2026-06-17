@@ -102,9 +102,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
 .game-over .restart-btn{padding:14px 40px;font-size:1.05em;font-weight:700;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:22px;cursor:pointer}
 
 /* 设置界面 */
-.setup-screen{position:fixed;inset:0;display:none;justify-content:center;align-items:center;padding:20px;z-index:50;background:rgba(0,0,0,.5)}
+.setup-screen{position:fixed;inset:0;display:none;justify-content:center;align-items:center;padding:20px;z-index:50;background:rgba(0,0,0,.5);touch-action:auto;overflow-y:auto}
 .setup-screen.visible{display:flex}
-.setup-box{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:18px;padding:28px 24px;width:100%;max-width:320px;text-align:center;max-height:90vh;overflow-y:auto}
+.setup-box{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:18px;padding:28px 24px;width:100%;max-width:320px;text-align:center;max-height:90vh;overflow-y:auto;touch-action:auto;-webkit-overflow-scrolling:touch}
 .setup-box h3{margin-bottom:16px;color:#ffd700;font-size:1.2em}
 .setup-row{margin-bottom:14px;text-align:left}
 .setup-row label{display:block;font-size:.85em;opacity:.7;margin-bottom:5px}
@@ -120,7 +120,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
 .join-room-input.visible{display:block}
 .join-room-input input{text-align:center;font-size:1.2em;letter-spacing:8px;font-weight:700}
 
-.setup-btn{margin-top:8px;width:100%;padding:13px;font-size:1.05em;font-weight:700;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:20px;cursor:pointer}
+.setup-btn{margin-top:8px;width:100%;padding:13px;font-size:1.05em;font-weight:700;color:#000;background:linear-gradient(145deg,#ffd700,#ffaa00);border:none;border-radius:20px;cursor:pointer;touch-action:auto;user-select:none;-webkit-user-select:none}
 
 /* 小屏幕优化 */
 @media(max-height:600px){
@@ -166,19 +166,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
       <label>QQ号</label>
       <input type="text" id="playerQQInput" placeholder="输入QQ号" maxlength="15" autocomplete="off" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
     </div>
-    <div class="setup-lore">
-      你进入了 HoldMaster 的领地<br>
-      必须 乖乖Hold 30 分钟<br>
-      <br>
-      不过你可以押上自己的时间或水<br>
-      游戏赢了，可以减少hold时间<br>
-      倒计时归零，你就可以去释放了
-    </div>
     <div class="setup-row">
       <label>邀请码</label>
       <input type="text" id="roomCodeInput" placeholder="输入邀请码" maxlength="6" autocomplete="off">
     </div>
     <button class="setup-btn" onclick="playerJoinGame()">快点开始吧 真的憋不住了</button>
+    <details style="margin-top:10px;text-align:left">
+      <summary style="font-size:.8em;opacity:.5;cursor:pointer">游戏规则说明</summary>
+      <div class="setup-lore" style="margin-top:8px;margin-bottom:0">
+        你进入了 HoldMaster 的领地<br>
+        必须 乖乖Hold 30 分钟<br>
+        <br>
+        不过你可以押上自己的时间或水<br>
+        游戏赢了，可以减少hold时间<br>
+        倒计时归零，你就可以去释放了
+      </div>
+    </details>
   </div>
 </div>
 
