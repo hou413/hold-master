@@ -170,7 +170,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;backg
       <label>邀请码</label>
       <input type="text" id="roomCodeInput" placeholder="输入邀请码" maxlength="6" autocomplete="off">
     </div>
-    <button class="setup-btn" onclick="playerJoinGame()">快点开始吧 真的憋不住了</button>
+    <button class="setup-btn" id="joinBtn">快点开始吧 真的憋不住了</button>
     <details style="margin-top:10px;text-align:left">
       <summary style="font-size:.8em;opacity:.5;cursor:pointer">游戏规则说明</summary>
       <div class="setup-lore" style="margin-top:8px;margin-bottom:0">
@@ -269,6 +269,20 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+
+// ========== 初始化按钮事件 ==========
+const joinBtn = document.getElementById('joinBtn');
+if (joinBtn) {
+  joinBtn.addEventListener('click', () => {
+    console.log('按钮点击事件触发');
+    window.playerJoinGame();
+  });
+  joinBtn.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    console.log('按钮触摸事件触发');
+    window.playerJoinGame();
+  }, { passive: false });
+}
 
 // ========== 变量 ==========
 let roomId = null;
